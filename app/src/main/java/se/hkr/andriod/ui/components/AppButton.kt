@@ -11,7 +11,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import se.hkr.andriod.ui.theme.AndriodTheme
-import se.hkr.andriod.ui.theme.DisabledButtonBLue
+import se.hkr.andriod.ui.theme.disabledButtonBlue
 
 @Composable
 fun AppButton(
@@ -31,7 +31,7 @@ fun AppButton(
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.primary,
             contentColor = MaterialTheme.colorScheme.onPrimary,
-            disabledContainerColor = DisabledButtonBLue,
+            disabledContainerColor = MaterialTheme.colorScheme.disabledButtonBlue,
             disabledContentColor = MaterialTheme.colorScheme.onPrimary
         ),
         elevation = ButtonDefaults.buttonElevation(defaultElevation = 0.dp)

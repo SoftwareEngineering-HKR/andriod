@@ -15,11 +15,11 @@ import androidx.compose.ui.text.input.*
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import se.hkr.andriod.ui.theme.AndriodTheme
-import se.hkr.andriod.ui.theme.InputFieldFill
-import se.hkr.andriod.ui.theme.InputFieldOutline
-import se.hkr.andriod.ui.theme.InputFieldPlaceholder
-import se.hkr.andriod.ui.theme.LightRed
-import se.hkr.andriod.ui.theme.MiddleRed
+import se.hkr.andriod.ui.theme.inputFieldFill
+import se.hkr.andriod.ui.theme.inputFieldOutline
+import se.hkr.andriod.ui.theme.inputFieldPlaceholder
+import se.hkr.andriod.ui.theme.lightRed
+import se.hkr.andriod.ui.theme.middleRed
 
 @Composable
 fun AppTextField(
@@ -80,13 +80,13 @@ fun AppTextField(
             shape = MaterialTheme.shapes.small,
             modifier = Modifier.fillMaxWidth(),
             colors = TextFieldDefaults.colors(
-                unfocusedContainerColor = InputFieldFill,
-                focusedContainerColor = InputFieldFill,
-                unfocusedIndicatorColor = InputFieldOutline,
-                focusedPlaceholderColor = InputFieldPlaceholder,
-                unfocusedPlaceholderColor = InputFieldPlaceholder,
-                errorContainerColor = LightRed,
-                errorIndicatorColor = MiddleRed,
+                unfocusedContainerColor = MaterialTheme.colorScheme.inputFieldFill,
+                focusedContainerColor = MaterialTheme.colorScheme.inputFieldFill,
+                unfocusedIndicatorColor = MaterialTheme.colorScheme.inputFieldOutline,
+                focusedPlaceholderColor = MaterialTheme.colorScheme.inputFieldPlaceholder,
+                unfocusedPlaceholderColor = MaterialTheme.colorScheme.inputFieldPlaceholder,
+                errorContainerColor = MaterialTheme.colorScheme.lightRed,
+                errorIndicatorColor = MaterialTheme.colorScheme.middleRed
             )
         )
 

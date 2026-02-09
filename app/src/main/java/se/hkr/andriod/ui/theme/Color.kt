@@ -23,3 +23,7 @@ val LightGreen = Color(0xFFF0FCF3)
 val DarkRed = Color(0xFFB91C1C)
 val MiddleRed = Color(0xFFFECACA)
 val LightRed = Color(0xFFFFF1F1)
+
+val InputFieldFill = Color(0xFFFAFAFC)
+val InputFieldOutline = Color(0xFFE3E3E5)
+val InputFieldPlaceholder = Color(0xFF8C8B91)

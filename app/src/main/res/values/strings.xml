@@ -1,3 +1,18 @@
 <resources>
-    <string name="app_name">Andriod</string>
+    <string name="app_name">Interactive House</string>
+
+    <string name="home_icon_description">Home Icon</string>
+    <string name="login_subtitle">Sign in to control your devices</string>
+    <string name="email_label">Email</string>
+    <string name="password_label">Password</string>
+    <string name="email_placeholder">example@email.com</string>
+    <string name="password_placeholder">••••••••</string>
+    <string name="password_helper_text">Must contain 8 characters</string>
+    <string name="sign_in_button">Sign In</string>
+    <string name="sign_up_button">Sign Up</string>
+    <string name="logout_button">Logout</string>
+    <string name="dont_have_account_text">Don\'t have an account?</string>
+    <string name="error_email_empty">Email cannot be empty</string>
+    <string name="error_password_short">Password must be at least 8 characters</string>
+    <string name="signing_in">Signing in...</string>
 </resources>

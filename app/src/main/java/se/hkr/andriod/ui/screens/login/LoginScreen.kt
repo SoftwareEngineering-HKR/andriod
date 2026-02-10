@@ -13,12 +13,14 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import se.hkr.andriod.ui.components.AppButton
 import se.hkr.andriod.ui.components.AppTextField
 import se.hkr.andriod.ui.theme.cardBackground
 import se.hkr.andriod.ui.theme.lightBlue
+import se.hkr.andriod.R
 
 sealed interface LoginEvent {
     object LoginClicked : LoginEvent
@@ -61,42 +63,42 @@ fun LoginScreen(
                 ) {
                     Icon(
                         imageVector = Icons.Rounded.Home,
-                        contentDescription = "Home Icon",
+                        contentDescription = stringResource(R.string.home_icon_description),
                         tint = MaterialTheme.colorScheme.onPrimary,
                         modifier = Modifier.size(56.dp)
                     )
                 }
 
                 Text(
-                    text = "Smart Home",
+                    text = stringResource(R.string.app_name),
                     style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold)
                 )
 
                 Text(
-                    text = "Sign in to control your devices",
+                    text = stringResource(R.string.login_subtitle),
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
 
                 AppTextField(
-                    label = "Email",
+                    label = stringResource(R.string.email_label),
                     value = email,
                     onValueChange = { email = it },
-                    placeholder = "example@email.com",
+                    placeholder = stringResource(R.string.email_placeholder),
                     keyboardType = androidx.compose.ui.text.input.KeyboardType.Email
                 )
 
                 AppTextField(
-                    label = "Password",
+                    label = stringResource(R.string.password_label),
                     value = password,
                     onValueChange = { password = it },
-                    placeholder = "••••••••",
+                    placeholder = stringResource(R.string.password_placeholder),
                     isPassword = true,
                 )
 
 
                 AppButton(
-                    text = "Sign In",
+                    text = stringResource(R.string.sign_in_button),
                     icon = Icons.Rounded.Lock,
                     onClick = { onEvent(LoginEvent.LoginClicked) },
                     modifier = Modifier.fillMaxWidth().padding(top = 8.dp)
@@ -106,10 +108,10 @@ fun LoginScreen(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.padding(8.dp)
                 ) {
-                    Text(text = "Don't have an account? ")
+                    Text(text = stringResource(R.string.dont_have_account_text))
 
                     Text(
-                        text = "Sign Up",
+                        text = stringResource(R.string.sign_up_button),
                         color = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.clickable(
                             indication = null,

@@ -2,7 +2,6 @@ package se.hkr.andriod.ui.screens.login
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
@@ -22,17 +21,20 @@ import se.hkr.andriod.ui.theme.cardBackground
 import se.hkr.andriod.ui.theme.lightBlue
 import se.hkr.andriod.R
 
-sealed interface LoginEvent {
-    object LoginClicked : LoginEvent
-    object SignUpClicked : LoginEvent
-}
-
 @Composable
 fun LoginScreen(
-    onEvent: (LoginEvent) -> Unit
+    viewModel: LoginViewModel,
+    onNavigateToHome: () -> Unit,
+    onSignUpClicked: () -> Unit
 ) {
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
+    val uiState by viewModel.uiState.collectAsState()
+
+    if (uiState.navigateToHome) {
+        LaunchedEffect(Unit) {
+            onNavigateToHome()
+            viewModel.onNavigationDone()
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -63,7 +65,7 @@ fun LoginScreen(
                 ) {
                     Icon(
                         imageVector = Icons.Rounded.Home,
-                        contentDescription = stringResource(R.string.home_icon_description),
+                        contentDescription = null,
                         tint = MaterialTheme.colorScheme.onPrimary,
                         modifier = Modifier.size(56.dp)
                     )
@@ -82,26 +84,30 @@ fun LoginScreen(
 
                 AppTextField(
                     label = stringResource(R.string.email_label),
-                    value = email,
-                    onValueChange = { email = it },
+                    value = uiState.email,
+                    onValueChange = { viewModel.onEmailChanged(it) },
                     placeholder = stringResource(R.string.email_placeholder),
-                    keyboardType = androidx.compose.ui.text.input.KeyboardType.Email
+                    keyboardType = androidx.compose.ui.text.input.KeyboardType.Email,
+                    errorText = uiState.emailError?.let { stringResource(it) }
                 )
 
                 AppTextField(
                     label = stringResource(R.string.password_label),
-                    value = password,
-                    onValueChange = { password = it },
+                    value = uiState.password,
+                    onValueChange = { viewModel.onPasswordChanged(it) },
                     placeholder = stringResource(R.string.password_placeholder),
                     isPassword = true,
+                    errorText = uiState.passwordError?.let { stringResource(it) }
                 )
 
 
                 AppButton(
                     text = stringResource(R.string.sign_in_button),
+                    loadingText = stringResource(R.string.signing_in),
                     icon = Icons.Rounded.Lock,
-                    onClick = { onEvent(LoginEvent.LoginClicked) },
-                    modifier = Modifier.fillMaxWidth().padding(top = 8.dp)
+                    onClick = { viewModel.onLoginClicked() },
+                    modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+                    isLoading = uiState.isLoading
                 )
 
                 Row(
@@ -109,16 +115,11 @@ fun LoginScreen(
                     modifier = Modifier.padding(8.dp)
                 ) {
                     Text(text = stringResource(R.string.dont_have_account_text))
-
+                    Spacer(modifier = Modifier.width(4.dp))
                     Text(
                         text = stringResource(R.string.sign_up_button),
                         color = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.clickable(
-                            indication = null,
-                            interactionSource = remember { MutableInteractionSource() }
-                        ) {
-                            onEvent(LoginEvent.SignUpClicked)
-                        }
+                        modifier = Modifier.clickable { onSignUpClicked() }
                     )
                 }
             }

@@ -1,13 +1,14 @@
 package se.hkr.andriod.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import se.hkr.andriod.ui.screens.deviceoverview.DeviceOverviewEvent
 import se.hkr.andriod.ui.screens.deviceoverview.DeviceOverviewScreen
-import se.hkr.andriod.ui.screens.login.LoginEvent
 import se.hkr.andriod.ui.screens.login.LoginScreen
+import se.hkr.andriod.ui.screens.login.LoginViewModel
 import se.hkr.andriod.ui.screens.signup.SignUpEvent
 import se.hkr.andriod.ui.screens.signup.SignUpScreen
 
@@ -20,18 +21,20 @@ fun AppNavGraph() {
         startDestination = Routes.LOGIN
     ) {
         composable(Routes.LOGIN) {
-            LoginScreen { event ->
-                when (event) {
-                    LoginEvent.LoginClicked -> {
-                        navController.navigate(Routes.DEVICE_OVERVIEW) {
-                            popUpTo(Routes.LOGIN) { inclusive = true }
-                        }
+            val loginViewModel: LoginViewModel = viewModel()
+
+            LoginScreen(
+                viewModel = loginViewModel,
+                onNavigateToHome = {
+                    // Navigate to device overview after login
+                    navController.navigate(Routes.DEVICE_OVERVIEW) {
+                        popUpTo(Routes.LOGIN) { inclusive = true }
                     }
-                    LoginEvent.SignUpClicked -> {
-                        navController.navigate(Routes.SIGN_UP)
-                    }
+                },
+                onSignUpClicked = {
+                    navController.navigate(Routes.SIGN_UP)
                 }
-            }
+            )
         }
 
         composable(Routes.SIGN_UP) {

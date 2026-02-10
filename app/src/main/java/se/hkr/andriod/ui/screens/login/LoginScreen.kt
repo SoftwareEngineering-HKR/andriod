@@ -67,7 +67,7 @@ fun LoginScreen(
                 ) {
                     Box(
                         modifier = Modifier
-                            .size(96.dp)
+                            .size(80.dp)
                             .clip(CircleShape)
                             .background(MaterialTheme.colorScheme.primary),
                         contentAlignment = Alignment.Center
@@ -76,18 +76,23 @@ fun LoginScreen(
                             imageVector = Icons.Rounded.Home,
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.onPrimary,
-                            modifier = Modifier.size(56.dp)
+                            modifier = Modifier.size(48.dp)
                         )
                     }
 
-                    Text(
-                        text = stringResource(R.string.app_name),
-                        style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold)
-                    )
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        Text(
+                            text = stringResource(R.string.app_name),
+                            style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold)
+                        )
 
-                    Text(
-                        text = stringResource(R.string.login_subtitle),
-                    )
+                        Text(
+                            text = stringResource(R.string.login_subtitle),
+                        )
+                    }
 
                     Spacer(modifier = Modifier.height(16.dp))
 

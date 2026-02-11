@@ -87,11 +87,13 @@ fun LoginScreen(
                     ) {
                         Text(
                             text = stringResource(R.string.app_name),
-                            style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold)
+                            style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
+                            color = MaterialTheme.colorScheme.onSurface
                         )
 
                         Text(
                             text = stringResource(R.string.login_subtitle),
+                            color = MaterialTheme.colorScheme.onSurface
                         )
                     }
 
@@ -128,7 +130,10 @@ fun LoginScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.padding(8.dp)
                     ) {
-                        Text(text = stringResource(R.string.dont_have_account_text))
+                        Text(
+                            text = stringResource(R.string.dont_have_account_text),
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
                             text = stringResource(R.string.sign_up_button),

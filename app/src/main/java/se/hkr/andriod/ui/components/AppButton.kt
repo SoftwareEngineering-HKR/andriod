@@ -55,7 +55,8 @@ fun AppButton(
                 if (icon != null) {
                     Icon(
                         imageVector = icon,
-                        contentDescription = null
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.secondary
                     )
                 }
 
@@ -65,7 +66,10 @@ fun AppButton(
                 }
 
                 if (!text.isNullOrEmpty()) {
-                    Text(text = text)
+                    Text(
+                        text = text,
+                        color = MaterialTheme.colorScheme.secondary
+                    )
                 }
             }
         }

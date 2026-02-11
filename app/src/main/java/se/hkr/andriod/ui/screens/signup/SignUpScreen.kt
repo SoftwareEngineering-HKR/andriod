@@ -77,7 +77,7 @@ fun SignUpScreen(
                         Icon(
                             imageVector = Icons.Rounded.Home,
                             contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onPrimary,
+                            tint = MaterialTheme.colorScheme.secondary,
                             modifier = Modifier.size(48.dp)
                         )
                     }

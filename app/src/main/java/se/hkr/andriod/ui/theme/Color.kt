@@ -3,9 +3,9 @@ package se.hkr.andriod.ui.theme
 import androidx.compose.ui.graphics.Color
 
 val DarkBlueLight = Color(0xFF4F39F7)
-val DarkBlueDark = Color(0xFF2B1B8F)
+val DarkBlueDark = Color(0xFF6756E6)
 val MiddleBlueLight = Color(0xFFE0E7FF)
-val MiddleBlueDark = Color(0xFF1A1F33)
+val MiddleBlueDark = Color(0xFFCED5EB)
 val LightBlueLight = Color(0xFFEBF3FF)
 val LightBlueDark = Color(0xFF2C2F44)
 val DisabledButtonBlueLight = Color(0xFF7D86FF)

@@ -63,7 +63,7 @@ fun SignUpScreen(
             ) {
                 Column(
                     modifier = Modifier.padding(24.dp).padding(top = 24.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(6.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
 
@@ -77,21 +77,26 @@ fun SignUpScreen(
                         Icon(
                             imageVector = Icons.Rounded.Home,
                             contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onPrimary,
+                            tint = MaterialTheme.colorScheme.secondary,
                             modifier = Modifier.size(48.dp)
                         )
                     }
 
                     Column(
+                        modifier = Modifier.padding(top = 20.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
                         Text(
                             text = stringResource(R.string.app_name),
-                            style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold)
+                            style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
+                            color = MaterialTheme.colorScheme.onSurface
                         )
 
-                        Text(text = stringResource(R.string.sign_up_subtitle))
+                        Text(
+                            text = stringResource(R.string.sign_up_subtitle),
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
                     }
 
                     Spacer(modifier = Modifier.height(16.dp))
@@ -146,12 +151,16 @@ fun SignUpScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.padding(8.dp)
                     ) {
-                        Text(text = stringResource(R.string.already_have_account_text))
+                        Text(
+                            text = stringResource(R.string.already_have_account_text),
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
                             text = stringResource(R.string.sign_in_button),
                             color = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.clickable { onLoginClicked() }
+                            modifier = Modifier.clickable { onLoginClicked() },
+                            fontWeight = FontWeight.Bold
                         )
                     }
                 }

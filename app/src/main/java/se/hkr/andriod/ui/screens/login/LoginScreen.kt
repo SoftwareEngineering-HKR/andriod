@@ -62,7 +62,7 @@ fun LoginScreen(
             ) {
                 Column(
                     modifier = Modifier.padding(24.dp).padding(top = 24.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(6.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Box(
@@ -81,6 +81,7 @@ fun LoginScreen(
                     }
 
                     Column(
+                        modifier = Modifier.padding(top = 20.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
@@ -132,7 +133,8 @@ fun LoginScreen(
                         Text(
                             text = stringResource(R.string.sign_up_button),
                             color = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.clickable { onSignUpClicked() }
+                            modifier = Modifier.clickable { onSignUpClicked() },
+                            fontWeight = FontWeight.Bold
                         )
                     }
                 }

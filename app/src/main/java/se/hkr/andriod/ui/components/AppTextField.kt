@@ -91,20 +91,24 @@ fun AppTextField(
         )
 
         // Error or helper text
-        if (errorText != null) {
-            Text(
-                text = errorText,
-                color = MaterialTheme.colorScheme.error,
-                style = MaterialTheme.typography.bodySmall,
-                modifier = Modifier.padding(top = 4.dp, start = 0.dp)
-            )
-        } else if (helperText != null) {
-            Text(
-                text = helperText,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                style = MaterialTheme.typography.bodySmall,
-                modifier = Modifier.padding(top = 4.dp, start = 0.dp)
-            )
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 4.dp)
+                .defaultMinSize(minHeight = 16.dp)
+        ) {
+            val supportingText = errorText ?: helperText
+
+            if (supportingText != null) {
+                Text(
+                    text = supportingText,
+                    color = if (errorText != null)
+                        MaterialTheme.colorScheme.error
+                    else
+                        MaterialTheme.colorScheme.onSurfaceVariant,
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
         }
     }
 }

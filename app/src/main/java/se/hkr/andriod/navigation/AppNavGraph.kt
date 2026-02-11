@@ -9,8 +9,8 @@ import se.hkr.andriod.ui.screens.deviceoverview.DeviceOverviewEvent
 import se.hkr.andriod.ui.screens.deviceoverview.DeviceOverviewScreen
 import se.hkr.andriod.ui.screens.login.LoginScreen
 import se.hkr.andriod.ui.screens.login.LoginViewModel
-import se.hkr.andriod.ui.screens.signup.SignUpEvent
 import se.hkr.andriod.ui.screens.signup.SignUpScreen
+import se.hkr.andriod.ui.screens.signup.SignUpViewModel
 
 @Composable
 fun AppNavGraph() {
@@ -38,18 +38,21 @@ fun AppNavGraph() {
         }
 
         composable(Routes.SIGN_UP) {
-            SignUpScreen { event ->
-                when (event) {
-                    SignUpEvent.SignUpClicked -> {
-                        navController.navigate(Routes.DEVICE_OVERVIEW) {
-                            popUpTo(Routes.LOGIN) { inclusive = true }
-                        }
+
+            val registerViewModel: SignUpViewModel = viewModel()
+
+            SignUpScreen(
+                viewModel = registerViewModel,
+                onNavigateToHome = {
+                    // Navigate to device overview after signup
+                    navController.navigate(Routes.DEVICE_OVERVIEW) {
+                        popUpTo(Routes.LOGIN) { inclusive = true }
                     }
-                    SignUpEvent.GoToLoginClicked -> {
-                        navController.popBackStack()
-                    }
+                },
+                onLoginClicked = {
+                    navController.navigate(Routes.LOGIN)
                 }
-            }
+            )
         }
 
         composable(Routes.DEVICE_OVERVIEW) {

@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import se.hkr.andriod.navigation.Routes
 import se.hkr.andriod.ui.screens.devicemanagement.DeviceManagementScreen
-import se.hkr.andriod.ui.screens.deviceoverview.DeviceOverviewEvent
 import se.hkr.andriod.ui.screens.deviceoverview.DeviceOverviewScreen
 import se.hkr.andriod.ui.screens.settings.SettingsScreen
 import androidx.compose.material3.*
@@ -81,14 +80,7 @@ fun MainScreen(
         ) {
 
             composable(Routes.DEVICE_OVERVIEW) {
-                // Temporary and will be removed once the DeviceOverviewScreen is implemented.
-                DeviceOverviewScreen { event ->
-                    when (event) {
-                        DeviceOverviewEvent.LogOutClicked -> {
-                            onLogout()
-                        }
-                    }
-                }
+                DeviceOverviewScreen()
             }
 
             composable(Routes.DEVICE_MANAGEMENT) {

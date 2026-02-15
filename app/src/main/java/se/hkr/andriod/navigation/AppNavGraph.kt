@@ -5,10 +5,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import se.hkr.andriod.ui.screens.deviceoverview.DeviceOverviewEvent
-import se.hkr.andriod.ui.screens.deviceoverview.DeviceOverviewScreen
 import se.hkr.andriod.ui.screens.login.LoginScreen
 import se.hkr.andriod.ui.screens.login.LoginViewModel
+import se.hkr.andriod.ui.screens.main.MainScreen
 import se.hkr.andriod.ui.screens.signup.SignUpScreen
 import se.hkr.andriod.ui.screens.signup.SignUpViewModel
 
@@ -26,8 +25,7 @@ fun AppNavGraph() {
             LoginScreen(
                 viewModel = loginViewModel,
                 onNavigateToHome = {
-                    // Navigate to device overview after login
-                    navController.navigate(Routes.DEVICE_OVERVIEW) {
+                    navController.navigate(Routes.MAIN) {
                         popUpTo(Routes.LOGIN) { inclusive = true }
                     }
                 },
@@ -38,14 +36,12 @@ fun AppNavGraph() {
         }
 
         composable(Routes.SIGN_UP) {
-
             val registerViewModel: SignUpViewModel = viewModel()
 
             SignUpScreen(
                 viewModel = registerViewModel,
                 onNavigateToHome = {
-                    // Navigate to device overview after signup
-                    navController.navigate(Routes.DEVICE_OVERVIEW) {
+                    navController.navigate(Routes.MAIN) {
                         popUpTo(Routes.LOGIN) { inclusive = true }
                     }
                 },
@@ -55,16 +51,14 @@ fun AppNavGraph() {
             )
         }
 
-        composable(Routes.DEVICE_OVERVIEW) {
-            DeviceOverviewScreen { event ->
-                when (event) {
-                    DeviceOverviewEvent.LogOutClicked -> {
-                        navController.navigate(Routes.LOGIN) {
-                            popUpTo(Routes.DEVICE_OVERVIEW) { inclusive = true }
-                        }
+        composable(Routes.MAIN) {
+            MainScreen(
+                onLogout = {
+                    navController.navigate(Routes.LOGIN) {
+                        popUpTo(Routes.MAIN) { inclusive = true }
                     }
                 }
-            }
+            )
         }
     }
 }

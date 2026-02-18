@@ -1,5 +1,7 @@
 package se.hkr.andriod.ui.screens.main
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import se.hkr.andriod.navigation.Routes
@@ -16,6 +18,8 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.*
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import se.hkr.andriod.navigation.BottomNavItem
+import se.hkr.andriod.ui.theme.cardBackground
+import se.hkr.andriod.ui.theme.lightBlue
 
 @Composable
 fun MainScreen(
@@ -30,11 +34,13 @@ fun MainScreen(
     )
 
     Scaffold(
+        contentWindowInsets = WindowInsets(0),
         bottomBar = {
             NavigationBar(
                 modifier = Modifier
-                    .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
-
+                    .background(MaterialTheme.colorScheme.lightBlue)
+                    .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)),
+                containerColor = MaterialTheme.colorScheme.cardBackground
             ) {
                 val currentDestination =
                     navController.currentBackStackEntryAsState().value?.destination

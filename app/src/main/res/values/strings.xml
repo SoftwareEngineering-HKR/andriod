@@ -28,4 +28,10 @@
 
     <!-- Device overview -->
     <string name="logout_button">Logout</string>
+
+    <!-- Add device bottom sheet-->
+    <string name="would_you_like_to">Would you like to...</string>
+    <string name="scan_for_devices">Scan for devices</string>
+    <string name="add_a_device">Add a device</string>
+    <string name="create_a_room">Create a room</string>
 </resources>

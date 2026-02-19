@@ -27,7 +27,10 @@
     <string name="error_passwords_do_not_match">Passwords do not match</string>
 
     <!-- Device overview -->
-    <string name="logout_button">Logout</string>
+    <string name="device_overview">Device Overview</string>
+
+    <!-- Device management -->
+    <string name="device_management">Device Management</string>
 
     <!-- Add device bottom sheet -->
     <string name="would_you_like_to">Would you like to...</string>

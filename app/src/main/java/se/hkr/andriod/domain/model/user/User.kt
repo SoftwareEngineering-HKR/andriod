@@ -1,4 +1,4 @@
-package se.hkr.andriod.domain.model
+package se.hkr.andriod.domain.model.user
 
 import java.util.UUID
 

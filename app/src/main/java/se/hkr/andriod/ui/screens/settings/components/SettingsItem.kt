@@ -24,7 +24,7 @@ fun SettingsItem(
             .fillMaxWidth()
             .padding(vertical = 4.dp)
             .clickable { onClick() },
-        shape = MaterialTheme.shapes.medium,
+        shape = MaterialTheme.shapes.small,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.cardBackground),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
     ) {

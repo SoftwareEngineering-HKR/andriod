@@ -17,4 +17,12 @@ data class User(
     fun effectivePermissions(): Set<Permission> {
         return role.defaultPermissions + extraPermissions
     }
+
+    // Permission helpers
+    fun canAddDevice(): Boolean = effectivePermissions().contains(Permission.ADD_DEVICE)
+
+    fun canAddRoom(): Boolean = effectivePermissions().contains(Permission.ADD_ROOM)
+
+    // Helper to check if the plus button on the overview page should be visible at all.
+    fun canShowPlus(): Boolean = canAddDevice() || canAddRoom()
 }

@@ -27,5 +27,18 @@
     <string name="error_passwords_do_not_match">Passwords do not match</string>
 
     <!-- Device overview -->
-    <string name="logout_button">Logout</string>
+    <string name="device_overview">Device Overview</string>
+
+    <!-- Device management -->
+    <string name="device_management">Device Management</string>
+
+    <!-- Add device bottom sheet -->
+    <string name="would_you_like_to">Would you like to...</string>
+    <string name="scan_for_devices">Scan for devices</string>
+    <string name="add_a_device">Add a device</string>
+    <string name="create_a_room">Create a room</string>
+
+    <!-- Home top bar -->
+    <string name="device_status">%1$d online / %2$d offline</string>
+    <string name="add_icon_description">Add</string>
 </resources>

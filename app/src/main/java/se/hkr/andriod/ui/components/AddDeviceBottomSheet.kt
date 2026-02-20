@@ -21,7 +21,9 @@ fun AddDeviceBottomSheet(
     onAddDeviceClick: () -> Unit,
     onCreateRoomClick: () -> Unit
 ) {
-    val sheetState = rememberModalBottomSheetState()
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true
+    )
 
     ModalBottomSheet(
         onDismissRequest = onDismiss,
@@ -44,6 +46,7 @@ fun AddDeviceBottomSheet(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .wrapContentHeight()
                 .padding(horizontal = 24.dp, vertical = 12.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {

@@ -28,4 +28,11 @@
 
     <!-- Device overview -->
     <string name="logout_button">Logout</string>
+
+    <!-- Device Card -->
+    <string name="device_control">Control</string>
+    <string name="device_schedule">Schedule</string>
+    <string name="device_online">Online</string>
+    <string name="device_offline">Offline</string>
+    <string name="device_last_updated">%1$s</string>
 </resources>

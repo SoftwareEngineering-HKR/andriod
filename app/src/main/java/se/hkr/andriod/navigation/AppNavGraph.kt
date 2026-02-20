@@ -73,17 +73,7 @@ fun AppNavGraph() {
 
         composable(Routes.DEVICE_CARD) {
             DeviceCardScreen(
-                // Test device
-                uiState = DeviceScreenUiState(
-                    deviceName = "Living Room Lamp",
-                    roomName = "Living Room",
-                    isOnline = false,
-                    isEnabled = false,
-                    lastUpdatedText = "5"
-                ),
-                onBackClick = {},
-                onToggleChange = {},
-                onScheduleToggle = {}
+                viewModel = DeviceCardViewModel()
             )
         }
     }

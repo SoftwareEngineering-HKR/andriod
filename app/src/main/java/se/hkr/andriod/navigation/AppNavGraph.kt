@@ -11,6 +11,9 @@ import se.hkr.andriod.ui.screens.login.LoginScreen
 import se.hkr.andriod.ui.screens.login.LoginViewModel
 import se.hkr.andriod.ui.screens.signup.SignUpScreen
 import se.hkr.andriod.ui.screens.signup.SignUpViewModel
+import se.hkr.andriod.ui.screens.devicecard.DeviceCardScreen
+import se.hkr.andriod.ui.screens.devicecard.DeviceCardViewModel
+import se.hkr.andriod.ui.screens.devicecard.DeviceScreenUiState
 
 @Composable
 fun AppNavGraph() {
@@ -18,8 +21,9 @@ fun AppNavGraph() {
 
     NavHost(
         navController = navController,
-        startDestination = Routes.LOGIN
+        startDestination = Routes.DEVICE_CARD // CHANGED
     ) {
+        /* ! Disabled until making the DeviceCardScreen
         composable(Routes.LOGIN) {
             val loginViewModel: LoginViewModel = viewModel()
 
@@ -65,6 +69,22 @@ fun AppNavGraph() {
                     }
                 }
             }
+        }*/
+
+        composable(Routes.DEVICE_CARD) {
+            DeviceCardScreen(
+                // Test device
+                uiState = DeviceScreenUiState(
+                    deviceName = "Living Room Lamp",
+                    roomName = "Living Room",
+                    isOnline = false,
+                    isEnabled = false,
+                    lastUpdatedText = "5"
+                ),
+                onBackClick = {},
+                onToggleChange = {},
+                onScheduleToggle = {}
+            )
         }
     }
 }

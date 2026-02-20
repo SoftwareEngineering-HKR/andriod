@@ -5,6 +5,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import se.hkr.andriod.ui.screens.devicecard.DeviceCardScreen
+import se.hkr.andriod.ui.screens.devicecard.DeviceCardViewModel
 import se.hkr.andriod.ui.screens.login.LoginScreen
 import se.hkr.andriod.ui.screens.login.LoginViewModel
 import se.hkr.andriod.ui.screens.main.MainScreen
@@ -17,8 +19,9 @@ fun AppNavGraph() {
 
     NavHost(
         navController = navController,
-        startDestination = Routes.LOGIN
+        startDestination = Routes.DEVICE_CARD // CHANGED
     ) {
+        /* Disabled for testing Device Card
         composable(Routes.LOGIN) {
             val loginViewModel: LoginViewModel = viewModel()
 
@@ -58,6 +61,14 @@ fun AppNavGraph() {
                         popUpTo(Routes.MAIN) { inclusive = true }
                     }
                 }
+            )
+        } */
+
+        composable(Routes.DEVICE_CARD) {
+            val deviceCardViewModel: DeviceCardViewModel = viewModel()
+
+            DeviceCardScreen(
+                viewModel = deviceCardViewModel
             )
         }
     }

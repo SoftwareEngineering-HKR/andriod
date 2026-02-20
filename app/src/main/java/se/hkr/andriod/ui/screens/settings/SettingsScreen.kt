@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import se.hkr.andriod.data.mock.currentUser
 import se.hkr.andriod.ui.components.AppButton
 import se.hkr.andriod.ui.screens.settings.components.SettingsItem
 import se.hkr.andriod.ui.theme.lightBlue
@@ -30,10 +31,10 @@ fun SettingsScreen(
             .background(MaterialTheme.colorScheme.lightBlue)
     ) {
         LazyColumn(
-            modifier = Modifier
-                .fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(16.dp)
         ) {
+            // General Settings
             item {
                 Text(
                     text = "General Settings",
@@ -45,18 +46,30 @@ fun SettingsScreen(
             item { SettingsItem(title = "Language") { /* navigate */ } }
             item { SettingsItem(title = "Account Info") { /* navigate */ } }
 
-            item { Spacer(modifier = Modifier.height(16.dp)) }
-            item {
-                Text(
-                    text = "Household Settings",
-                    modifier = Modifier.padding(bottom = 8.dp),
-                    style = MaterialTheme.typography.titleMedium
-                )
+            // Household Settings
+            if (currentUser.canShowHouseholdSettings()) {
+                item { Spacer(modifier = Modifier.height(16.dp)) }
+                item {
+                    Text(
+                        text = "Household Settings",
+                        modifier = Modifier.padding(bottom = 8.dp),
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                }
             }
-            item { SettingsItem(title = "Users & Permissions") { /* navigate */ } }
-            item { SettingsItem(title = "Devices") { /* navigate */ } }
-            item { SettingsItem(title = "Rooms") { /* navigate */ } }
-            item { SettingsItem(title = "Schedules") { /* navigate */ } }
+
+            if (currentUser.canManageUsers()) {
+                item { SettingsItem(title = "Users & Permissions") { /* navigate */ } }
+            }
+            if (currentUser.canViewDevices()) {
+                item { SettingsItem(title = "Devices") { /* navigate */ } }
+            }
+            if (currentUser.canViewRooms()) {
+                item { SettingsItem(title = "Rooms") { /* navigate */ } }
+            }
+            if (currentUser.canManageSchedules()) {
+                item { SettingsItem(title = "Schedules") { /* navigate */ } }
+            }
 
             item { Spacer(modifier = Modifier.height(16.dp)) }
 

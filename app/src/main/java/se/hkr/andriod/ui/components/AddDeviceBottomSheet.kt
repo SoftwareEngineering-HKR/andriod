@@ -9,6 +9,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import se.hkr.andriod.R
+import se.hkr.andriod.data.mock.currentUser
 import se.hkr.andriod.ui.theme.AndriodTheme
 import se.hkr.andriod.ui.theme.cardBackground
 
@@ -51,9 +52,13 @@ fun AddDeviceBottomSheet(
                 style = MaterialTheme.typography.headlineSmall
             )
 
-            AppButton(text = stringResource(R.string.scan_for_devices), onClick = onScanClick)
-            AppButton(text = stringResource(R.string.add_a_device), onClick = onAddDeviceClick)
-            AppButton(text = stringResource(R.string.create_a_room), onClick = onCreateRoomClick)
+            if (currentUser.canAddDevice()) {
+                AppButton(text = stringResource(R.string.scan_for_devices), onClick = onScanClick)
+                AppButton(text = stringResource(R.string.add_a_device), onClick = onAddDeviceClick)
+            }
+            if (currentUser.canAddRoom()) {
+                AppButton(text = stringResource(R.string.create_a_room), onClick = onCreateRoomClick)
+            }
         }
     }
 }

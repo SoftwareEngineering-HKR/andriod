@@ -1,5 +1,7 @@
 package se.hkr.andriod.data.mock
 
-import se.hkr.andriod.domain.model.user.User
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 
-var currentUser: User = MockUsers.adminUser
+var currentUser by mutableStateOf(MockUsers.adminUser)

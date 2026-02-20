@@ -1,5 +1,6 @@
 package se.hkr.andriod.data.mock
 
+import se.hkr.andriod.domain.model.user.Permission
 import se.hkr.andriod.domain.model.user.User
 import se.hkr.andriod.domain.model.user.UserRole
 import java.util.UUID
@@ -12,12 +13,29 @@ object MockUsers {
         role = UserRole.ADMIN
     )
 
-    val normalUser = User(
+    val baseUser = User(
         id = UUID.randomUUID(),
         username = "john_doe",
         email = "john@example.com",
-        role = UserRole.NORMAL
+        role = UserRole.BASE
     )
 
-    val allUsers = listOf(adminUser, normalUser)
+    val baseWithRename = User(
+        id = UUID.randomUUID(),
+        username = "renamer",
+        email = "renamer@example.com",
+        role = UserRole.BASE,
+        extraPermissions = setOf(Permission.RENAME_DEVICE, Permission.RENAME_ROOM)
+    )
+
+
+    val deviceManager = User(
+        id = UUID.randomUUID(),
+        username = "manager",
+        email = "manager@example.com",
+        role = UserRole.DEVICE_MANAGER,
+        extraPermissions = setOf(Permission.ADD_DEVICE)
+    )
+
+    val allUsers = listOf(adminUser, baseUser)
 }

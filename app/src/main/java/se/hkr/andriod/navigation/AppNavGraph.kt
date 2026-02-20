@@ -5,15 +5,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import se.hkr.andriod.ui.screens.deviceoverview.DeviceOverviewEvent
-import se.hkr.andriod.ui.screens.deviceoverview.DeviceOverviewScreen
 import se.hkr.andriod.ui.screens.login.LoginScreen
 import se.hkr.andriod.ui.screens.login.LoginViewModel
+import se.hkr.andriod.ui.screens.main.MainScreen
 import se.hkr.andriod.ui.screens.signup.SignUpScreen
 import se.hkr.andriod.ui.screens.signup.SignUpViewModel
-import se.hkr.andriod.ui.screens.devicecard.DeviceCardScreen
-import se.hkr.andriod.ui.screens.devicecard.DeviceCardViewModel
-import se.hkr.andriod.ui.screens.devicecard.DeviceScreenUiState
 
 @Composable
 fun AppNavGraph() {
@@ -21,17 +17,15 @@ fun AppNavGraph() {
 
     NavHost(
         navController = navController,
-        startDestination = Routes.DEVICE_CARD // CHANGED
+        startDestination = Routes.LOGIN
     ) {
-        /* ! Disabled until making the DeviceCardScreen
         composable(Routes.LOGIN) {
             val loginViewModel: LoginViewModel = viewModel()
 
             LoginScreen(
                 viewModel = loginViewModel,
                 onNavigateToHome = {
-                    // Navigate to device overview after login
-                    navController.navigate(Routes.DEVICE_OVERVIEW) {
+                    navController.navigate(Routes.MAIN) {
                         popUpTo(Routes.LOGIN) { inclusive = true }
                     }
                 },
@@ -42,14 +36,12 @@ fun AppNavGraph() {
         }
 
         composable(Routes.SIGN_UP) {
-
             val registerViewModel: SignUpViewModel = viewModel()
 
             SignUpScreen(
                 viewModel = registerViewModel,
                 onNavigateToHome = {
-                    // Navigate to device overview after signup
-                    navController.navigate(Routes.DEVICE_OVERVIEW) {
+                    navController.navigate(Routes.MAIN) {
                         popUpTo(Routes.LOGIN) { inclusive = true }
                     }
                 },
@@ -59,21 +51,13 @@ fun AppNavGraph() {
             )
         }
 
-        composable(Routes.DEVICE_OVERVIEW) {
-            DeviceOverviewScreen { event ->
-                when (event) {
-                    DeviceOverviewEvent.LogOutClicked -> {
-                        navController.navigate(Routes.LOGIN) {
-                            popUpTo(Routes.DEVICE_OVERVIEW) { inclusive = true }
-                        }
+        composable(Routes.MAIN) {
+            MainScreen(
+                onLogout = {
+                    navController.navigate(Routes.LOGIN) {
+                        popUpTo(Routes.MAIN) { inclusive = true }
                     }
                 }
-            }
-        }*/
-
-        composable(Routes.DEVICE_CARD) {
-            DeviceCardScreen(
-                viewModel = DeviceCardViewModel()
             )
         }
     }

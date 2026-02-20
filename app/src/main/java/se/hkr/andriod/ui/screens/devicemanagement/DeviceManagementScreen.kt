@@ -1,4 +1,4 @@
-package se.hkr.andriod.ui.screens.deviceoverview
+package se.hkr.andriod.ui.screens.devicemanagement
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -18,7 +18,7 @@ import se.hkr.andriod.ui.components.AppHomeTopBar
 import se.hkr.andriod.ui.theme.lightBlue
 
 @Composable
-fun DeviceOverviewScreen() {
+fun DeviceManagementScreen() {
     var showAddSheet by remember { mutableStateOf(false) }
     // TODO: Get the real online and offline count fron devices
     val onlineCount = 3
@@ -30,7 +30,7 @@ fun DeviceOverviewScreen() {
             .background(MaterialTheme.colorScheme.lightBlue)
     ) {
         AppHomeTopBar(
-            title = stringResource(R.string.device_overview),
+            title = stringResource(R.string.device_management),
             onlineCount = onlineCount,
             offlineCount = offlineCount,
             onAddClick = { showAddSheet = true }

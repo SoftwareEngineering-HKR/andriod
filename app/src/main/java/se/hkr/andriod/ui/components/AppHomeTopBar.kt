@@ -16,6 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import se.hkr.andriod.R
+import se.hkr.andriod.data.mock.currentUser
 import se.hkr.andriod.ui.theme.AndriodTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -53,11 +54,13 @@ fun AppHomeTopBar(
             }
         },
         actions = {
-            IconButton(onClick = onAddClick) {
+            if (currentUser.canShowPlus()) {
+                IconButton(onClick = onAddClick) {
                 Icon(
                     imageVector = Icons.Default.AddCircleOutline,
                     contentDescription = stringResource(R.string.add_icon_description)
                 )
+                }
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(

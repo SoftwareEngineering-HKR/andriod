@@ -21,10 +21,6 @@ class DeviceCardViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(DeviceScreenUiState())
     val uiState: StateFlow<DeviceScreenUiState> = _uiState
 
-    // Device specific components list
-    private val _components = MutableStateFlow<List<DeviceComponent>>(emptyList())
-    val components: StateFlow<List<DeviceComponent>> = _components
-
     // Change template data to device specific data
     fun setTemplateState(state: DeviceScreenUiState) {
         _uiState.value = state

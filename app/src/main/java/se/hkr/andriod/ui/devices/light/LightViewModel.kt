@@ -14,6 +14,12 @@ class LightViewModel(
     private val deviceCardViewModel: DeviceCardViewModel
 ) : ViewModel() {
 
+    // Light specific UI states
+    data class LightUiState(
+        val brightness: Float = 0.5f,
+        val color: Color = Color.Blue
+    )
+
     private val _lightState = MutableStateFlow(LightUiState())
     val lightState: StateFlow<LightUiState> = _lightState
 
@@ -29,9 +35,6 @@ class LightViewModel(
                 lastUpdatedText = "Last updated 1 minute ago"
             )
         )
-
-        // Initial component build
-        buildComponents()
     }
 
     // Updates brightness state
@@ -42,14 +45,5 @@ class LightViewModel(
     // Updates color state
     fun setColor(color: Color) {
         _lightState.update { it.copy(color = color) }
-    }
-
-    // Builds light specific UI components
-    fun buildComponents(): List<LightComponent> {
-        val state = _lightState.value
-        return listOf(
-            LightComponent.Brightness(state.brightness),
-            LightComponent.ColorPicker(state.color)
-        )
     }
 }

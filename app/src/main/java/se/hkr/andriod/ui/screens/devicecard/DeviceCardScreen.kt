@@ -40,12 +40,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import se.hkr.andriod.ui.devices.light.LightDeviceRenderer
 import se.hkr.andriod.ui.theme.cardBackground
 
 
 @Composable
 fun DeviceCardScreen(
     viewModel: DeviceCardViewModel,
+    deviceComponent: @Composable () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -150,6 +152,8 @@ fun DeviceCardScreen(
             }
 
             Spacer(modifier = Modifier.height(16.dp))
+
+            deviceComponent()
 
             Card(
                 modifier = Modifier

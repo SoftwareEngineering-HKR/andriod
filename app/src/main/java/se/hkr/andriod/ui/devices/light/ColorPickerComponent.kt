@@ -41,7 +41,6 @@ fun ColorPickerComponent(
 
         Column(modifier = Modifier.padding(20.dp)) {
 
-            // Header
             Row(verticalAlignment = Alignment.CenterVertically) {
 
                 Icon(

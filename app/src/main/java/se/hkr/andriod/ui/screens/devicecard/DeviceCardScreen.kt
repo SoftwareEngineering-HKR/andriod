@@ -145,7 +145,7 @@ fun DeviceCardScreen(
                     }
 
                     Switch(
-                        checked = uiState.isEnabled,
+                        checked = uiState.isOnline,
                         onCheckedChange = { viewModel.toggleDevice(it) }
                     )
                 }

@@ -23,7 +23,6 @@ class LightViewModel(
                 deviceName = "Living Room Light",
                 roomName = "Living Room",
                 isOnline = true,
-                isEnabled = true,
                 icon = Icons.Rounded.Lightbulb,
                 scheduleExpanded = false,
                 lastUpdatedText = "Last updated 1 minute ago"

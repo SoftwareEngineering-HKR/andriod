@@ -14,7 +14,6 @@ data class DeviceScreenUiState(
     val deviceName: String = "Device Name",
     val roomName: String = "Room",
     val isOnline: Boolean = true,
-    val isEnabled: Boolean = true,
     val icon: ImageVector = Icons.Rounded.QuestionMark,
     val scheduleExpanded: Boolean = false,
     val lastUpdatedText: String = "Last updated 1 minute ago"
@@ -31,8 +30,8 @@ class DeviceCardViewModel : ViewModel() {
         _uiState.value = state
     }
 
-    fun toggleDevice(enabled: Boolean) {
-        _uiState.value = _uiState.value.copy(isEnabled = enabled)
+    fun toggleDevice(online: Boolean) {
+        _uiState.value = _uiState.value.copy(isOnline = online)
     }
 
     fun toggleSchedule() {

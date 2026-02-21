@@ -10,25 +10,14 @@ fun LightDeviceRenderer(
 ) {
     val state by viewModel.lightState.collectAsState()
 
-    val components = viewModel.buildComponents()
+    BrightnessComponent(
+        value = state.brightness,
+        onValueChange = viewModel::setBrightness
+    )
 
-
-    components.forEach { component ->
-        when (component) {
-            is LightComponent.Brightness -> {
-                BrightnessComponent(
-                    value = component.value,
-                    onValueChange = viewModel::setBrightness
-                )
-            }
-
-            is LightComponent.ColorPicker -> {
-                ColorPickerComponent(
-                    selectedColor = component.color,
-                    onColorSelected = viewModel::setColor
-                )
-            }
-        }
-    }
+    ColorPickerComponent(
+        selectedColor = state.color,
+        onColorSelected = viewModel::setColor
+    )
 
 }

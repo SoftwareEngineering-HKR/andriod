@@ -48,6 +48,8 @@
     <string name="device_online">Online</string>
     <string name="device_offline">Offline</string>
     <string name="device_last_updated">%1$s</string>
+    <string name="no_schedules_configured">No schedules configured</string>
+    <string name="add_new_schedule">+ Add new schedule</string>
 
     <!-- Mock Device -->
     <string name="brightness">Brightness</string>

@@ -33,7 +33,8 @@ class DeviceCardViewModel : ViewModel() {
 
     // Schedule
     fun toggleSchedule() {
-        // Will be implemented later
+        _uiState.value = _uiState.value.copy(scheduleExpanded = !_uiState.value.scheduleExpanded)
+
     }
 
 }

@@ -1,5 +1,12 @@
 package se.hkr.andriod.ui.screens.devicecard
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -18,6 +25,7 @@ import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.CalendarToday
 import androidx.compose.material.icons.rounded.ExpandLess
 import androidx.compose.material.icons.rounded.ExpandMore
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -201,9 +209,36 @@ fun DeviceCardScreen(
                         )
                     }
 
-                    if (uiState.scheduleExpanded) {
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Text("Placeholder")
+                    AnimatedVisibility(
+                        visible = uiState.scheduleExpanded,
+                        enter = expandVertically(
+                            animationSpec = tween(250)
+                        ) + fadeIn(animationSpec = tween(250)),
+                        exit = shrinkVertically(
+                            animationSpec = tween(250)
+                        ) + fadeOut(animationSpec = tween(250)
+                        )
+                    ) {
+                        Column {
+                            Spacer(modifier = Modifier.height(20.dp))
+
+                            Text(
+                                text = stringResource(R.string.no_schedules_configured),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier.fillMaxWidth(),
+                                textAlign = TextAlign.Center
+                            )
+
+                            Spacer(modifier = Modifier.height(20.dp))
+
+                            Button(
+                                onClick = { /*TODO*/ },
+                                modifier = Modifier.align(Alignment.CenterHorizontally)
+                            ) {
+                                Text(text = stringResource(R.string.add_new_schedule))
+                            }
+                        }
                     }
                 }
             }

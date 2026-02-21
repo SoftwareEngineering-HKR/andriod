@@ -18,8 +18,8 @@ fun LightDeviceRenderer(
 
     // Color control
     ColorPickerComponent(
-        selectedColor = state.color,
-        onColorSelected = viewModel::setColor
+        hue = state.hue,
+        onColorSelected = viewModel::setHue
     )
 
 }

@@ -113,7 +113,7 @@ fun DeviceCardScreen(
                     // Device icon container
                     Box(
                         modifier = Modifier
-                            .size(80.dp)
+                            .size(60.dp)
                             .clip(MaterialTheme.shapes.small)
                             .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)),
                         contentAlignment = Alignment.Center
@@ -122,7 +122,7 @@ fun DeviceCardScreen(
                             imageVector = uiState.icon,
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.size(40.dp)
+                            modifier = Modifier.size(50.dp)
                         )
                     }
 

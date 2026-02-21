@@ -27,6 +27,11 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -42,15 +47,16 @@ import se.hkr.andriod.ui.theme.cardBackground
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ColorPickerComponent(
-    selectedColor: Color,
-    onColorSelected: (Color) -> Unit
+    hue: Float,
+    onColorSelected: (Float) -> Unit
 ) {
+    val sliderValue = hue / 360f
 
-    val hue = FloatArray(3)
-    android.graphics.Color.colorToHSV(selectedColor.toArgb(), hue)
-    val sliderValue = hue[0] / 360f
-
-
+    val presets = listOf(
+        40f to "Warm",
+        55f to "Neutral",
+        200f to "Cool"
+    )
 
     Card(
         modifier = Modifier.fillMaxWidth(0.9f),
@@ -79,6 +85,42 @@ fun ColorPickerComponent(
             }
 
             Spacer(modifier = Modifier.height(16.dp))
+
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                presets.forEach { (presetHue, label) ->
+
+                    val isSelected = kotlin.math.abs(hue - presetHue) < 2f
+
+                    Box(
+                        modifier = Modifier
+                            .height(36.dp)
+                            .background(
+                                if (isSelected)
+                                    MaterialTheme.colorScheme.primary.copy(alpha = 0.15f)
+                                else
+                                    MaterialTheme.colorScheme.surface,
+                                RoundedCornerShape(50)
+                            )
+                            .border(
+                                1.dp,
+                                if (isSelected)
+                                    MaterialTheme.colorScheme.primary
+                                else
+                                    MaterialTheme.colorScheme.outline,
+                                RoundedCornerShape(50)
+                            )
+                            .clickable { onColorSelected(presetHue) }
+                            .padding(horizontal = 16.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(label)
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
 
             Box (
                 modifier = Modifier
@@ -110,16 +152,14 @@ fun ColorPickerComponent(
                 Slider(
                     value = sliderValue,
                     onValueChange = {
-                        val newHue = it * 360f
-                        val newColor = Color.hsv(newHue, 1f, 1f)
-                        onColorSelected(newColor)
+                        onColorSelected(it * 360f)
                     },
                     thumb = {
                         Box(
                             modifier = Modifier
                                 .size(22.dp)
                                 .background(Color.White, shape = CircleShape)
-                                .border(3.dp, Color.Black, CircleShape)
+                                .border(2.dp, Color.Black, CircleShape)
                         )
                     },
                     colors = SliderDefaults.colors(
@@ -142,7 +182,7 @@ fun ColorPickerComponent(
 private fun ColorPickerComponentPreview() {
     AndriodTheme {
         ColorPickerComponent(
-            Color.Blue,
+            45f,
             onColorSelected = {}
         )
     }

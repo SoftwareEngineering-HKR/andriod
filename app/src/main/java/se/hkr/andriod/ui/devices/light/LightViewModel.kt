@@ -17,7 +17,7 @@ class LightViewModel(
     // Light specific UI states
     data class LightUiState(
         val brightness: Float = 0.5f,
-        val color: Color = Color.Blue
+        val hue: Float = 45f
     )
 
     private val _lightState = MutableStateFlow(LightUiState())
@@ -43,7 +43,7 @@ class LightViewModel(
     }
 
     // Updates color state
-    fun setColor(color: Color) {
-        _lightState.update { it.copy(color = color) }
+    fun setHue(newHue: Float) {
+        _lightState.update { it.copy(hue = newHue) }
     }
 }

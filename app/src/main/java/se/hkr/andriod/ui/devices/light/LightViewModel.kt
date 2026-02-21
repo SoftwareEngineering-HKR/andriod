@@ -1,6 +1,5 @@
 package se.hkr.andriod.ui.devices.light
 
-import se.hkr.andriod.ui.screens.devicecard.DeviceScreenUiState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Lightbulb
 import androidx.compose.ui.graphics.Color
@@ -9,6 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import se.hkr.andriod.ui.screens.devicecard.DeviceCardViewModel
+import se.hkr.andriod.ui.screens.devicecard.DeviceScreenUiState
 
 class LightViewModel(
     private val deviceCardViewModel: DeviceCardViewModel
@@ -18,6 +18,7 @@ class LightViewModel(
     val lightState: StateFlow<LightUiState> = _lightState
 
     init {
+        // Adds template level data (name, icon, room, etc.)
         deviceCardViewModel.setTemplateState(
             DeviceScreenUiState(
                 deviceName = "Living Room Light",
@@ -29,17 +30,21 @@ class LightViewModel(
             )
         )
 
+        // Initial component build
         buildComponents()
     }
 
+    // Updates brightness state
     fun setBrightness(value: Float) {
         _lightState.update { it.copy(brightness = value) }
     }
 
+    // Updates color state
     fun setColor(color: Color) {
         _lightState.update { it.copy(color = color) }
     }
 
+    // Builds light specific UI components
     fun buildComponents(): List<LightComponent> {
         val state = _lightState.value
         return listOf(

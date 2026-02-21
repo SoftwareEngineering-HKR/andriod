@@ -1,6 +1,5 @@
 package se.hkr.andriod.ui.screens.devicecard
 
-import android.graphics.drawable.Icon
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -16,9 +15,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
-import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.CalendarToday
-import androidx.compose.material.icons.rounded.Devices
 import androidx.compose.material.icons.rounded.ExpandLess
 import androidx.compose.material.icons.rounded.ExpandMore
 import androidx.compose.material3.Card
@@ -29,7 +26,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import se.hkr.andriod.R
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -40,17 +36,20 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import se.hkr.andriod.ui.devices.light.LightDeviceRenderer
+import se.hkr.andriod.R
 import se.hkr.andriod.ui.theme.cardBackground
 
 
 @Composable
 fun DeviceCardScreen(
     viewModel: DeviceCardViewModel,
+
+    // Dynamic device specific content injected from device layer
     deviceComponent: @Composable () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
+    // Device online/offline text
     val onlineText = stringResource(
         if (uiState.isOnline) R.string.device_online else R.string.device_offline
     )
@@ -67,6 +66,7 @@ fun DeviceCardScreen(
                 .padding(vertical = 24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            // Top row: back button, device name
             Row(
                 modifier = Modifier
                     .fillMaxWidth(0.9f)
@@ -87,6 +87,7 @@ fun DeviceCardScreen(
                 Spacer(modifier = Modifier.size(48.dp))
             }
 
+            // Main info card: icon, name, room, switch
             Card(
                 modifier = Modifier
                     .fillMaxWidth(0.9f),
@@ -100,6 +101,7 @@ fun DeviceCardScreen(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.padding(20.dp)
                 ) {
+                    // Device icon container
                     Box(
                         modifier = Modifier
                             .size(80.dp)
@@ -125,6 +127,7 @@ fun DeviceCardScreen(
                             style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
                         )
 
+                        // Room + Online status
                         Row {
                             Text(
                                 text = uiState.roomName,
@@ -153,14 +156,16 @@ fun DeviceCardScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            // Dynamic components
             deviceComponent()
 
+            // Schedule selection TODO
             Card(
                 modifier = Modifier
                     .fillMaxWidth(0.9f)
                     .clickable {
-                    viewModel.toggleSchedule()
-                },
+                        viewModel.toggleSchedule()
+                    },
                 shape = RoundedCornerShape(16.dp),
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.cardBackground
@@ -175,7 +180,8 @@ fun DeviceCardScreen(
                         Icon(
                             Icons.Rounded.CalendarToday,
                             null,
-                            modifier = Modifier.size(36.dp))
+                            modifier = Modifier.size(36.dp)
+                        )
 
                         Spacer(modifier = Modifier.width(12.dp))
 
@@ -204,6 +210,7 @@ fun DeviceCardScreen(
 
             Spacer(modifier = Modifier.weight(1f))
 
+            // Footer
             Text(
                 text = uiState.lastUpdatedText,
                 style = MaterialTheme.typography.bodySmall
@@ -211,8 +218,6 @@ fun DeviceCardScreen(
 
         }
     }
-
-
 
 
 }

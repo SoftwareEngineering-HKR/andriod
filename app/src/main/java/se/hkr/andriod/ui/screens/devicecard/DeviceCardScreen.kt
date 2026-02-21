@@ -45,6 +45,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import se.hkr.andriod.R
+import se.hkr.andriod.ui.components.AppButton
 import se.hkr.andriod.ui.theme.cardBackground
 
 
@@ -232,12 +233,10 @@ fun DeviceCardScreen(
 
                             Spacer(modifier = Modifier.height(20.dp))
 
-                            Button(
-                                onClick = { /*TODO*/ },
-                                modifier = Modifier.align(Alignment.CenterHorizontally)
-                            ) {
-                                Text(text = stringResource(R.string.add_new_schedule))
-                            }
+                            AppButton(
+                                text = stringResource(R.string.add_new_schedule),
+                                onClick = { /*TODO*/ }
+                            )
                         }
                     }
                 }

@@ -21,8 +21,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import se.hkr.andriod.R
+import se.hkr.andriod.ui.components.AppButton
+import se.hkr.andriod.ui.theme.AndriodTheme
 import se.hkr.andriod.ui.theme.cardBackground
 
 @Composable
@@ -78,5 +81,15 @@ fun BrightnessComponent(
     }
 
     Spacer(modifier = Modifier.height(16.dp))
+}
 
+@Preview(name = "Brightness Component", showBackground = true)
+@Composable
+private fun BrightnessComponentPreview() {
+    AndriodTheme {
+        BrightnessComponent(
+            value = 0.5f,
+            onValueChange = {}
+        )
+    }
 }

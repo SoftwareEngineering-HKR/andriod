@@ -18,6 +18,12 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.*
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import se.hkr.andriod.navigation.BottomNavItem
+import se.hkr.andriod.ui.screens.settings.subscreens.AccountInfoScreen
+import se.hkr.andriod.ui.screens.settings.subscreens.DevicesScreen
+import se.hkr.andriod.ui.screens.settings.subscreens.LanguageScreen
+import se.hkr.andriod.ui.screens.settings.subscreens.RoomsScreen
+import se.hkr.andriod.ui.screens.settings.subscreens.SchedulesScreen
+import se.hkr.andriod.ui.screens.settings.subscreens.UsersScreen
 import se.hkr.andriod.ui.theme.cardBackground
 import se.hkr.andriod.ui.theme.lightBlue
 
@@ -93,10 +99,24 @@ fun MainScreen(
                 DeviceManagementScreen()
             }
 
-            composable(Routes.SETTINGS) {
-                SettingsScreen(
-                    onLogoutClicked = onLogout
-                )
+            navigation(
+                startDestination = Routes.SETTINGS,
+                route = "settings_graph"
+            ) {
+
+                composable(Routes.SETTINGS) {
+                    SettingsScreen(
+                        navController = navController,
+                        onLogoutClicked = onLogout
+                    )
+                }
+
+                composable(Routes.USERS) { UsersScreen() }
+                composable(Routes.DEVICES) { DevicesScreen() }
+                composable(Routes.ROOMS) { RoomsScreen() }
+                composable(Routes.SCHEDULES) { SchedulesScreen() }
+                composable(Routes.LANGUAGE) { LanguageScreen() }
+                composable(Routes.ACCOUNT) { AccountInfoScreen() }
             }
         }
     }

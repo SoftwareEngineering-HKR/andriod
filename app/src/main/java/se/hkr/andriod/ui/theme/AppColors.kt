@@ -84,3 +84,9 @@ val ColorScheme.cardBackground: Color
     @Composable
     @ReadOnlyComposable
     get() = if (isSystemInDarkTheme()) CardBackgroundDark else CardBackgroundLight
+
+// Add device list item
+val ColorScheme.ListItemBackground: Color
+    @Composable
+    @ReadOnlyComposable
+    get() = if (isSystemInDarkTheme()) ListItemBackgroundDark else ListItemBackgroundLight

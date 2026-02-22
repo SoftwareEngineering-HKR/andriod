@@ -41,4 +41,10 @@
     <!-- Home top bar -->
     <string name="device_status">%1$d online / %2$d offline</string>
     <string name="add_icon_description">Add</string>
+
+    <!-- Scan for devices -->
+    <string name="scan_devices_loading">Scanning for devices...</string>
+    <string name="no_new_devices_found">No new devices found</string>
+    <string name="found_new_devices">Found %1$d new device(s)</string>
+    <string name="close_button">Close</string>
 </resources>

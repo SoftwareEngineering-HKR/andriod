@@ -53,9 +53,9 @@ fun ColorPickerComponent(
     val sliderValue = hue / 360f
 
     val presets = listOf(
-        40f to "Warm",
-        55f to "Neutral",
-        200f to "Cool"
+        40f to R.string.preset_warm,
+        55f to R.string.preset_neutral,
+        200f to R.string.preset_cool
     )
 
     Card(
@@ -115,7 +115,7 @@ fun ColorPickerComponent(
                             .padding(horizontal = 16.dp),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(label)
+                        Text(stringResource(label))
                     }
                 }
             }

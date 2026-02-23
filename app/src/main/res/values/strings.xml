@@ -54,5 +54,8 @@
     <!-- Mock Device -->
     <string name="brightness">Brightness</string>
     <string name="color">Color</string>
+    <string name="preset_warm">Warm</string>
+    <string name="preset_neutral">Neutral</string>
+    <string name="preset_cool">Cool</string>
 
 </resources>

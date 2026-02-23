@@ -58,4 +58,9 @@
     <string name="preset_neutral">Neutral</string>
     <string name="preset_cool">Cool</string>
 
+    <string name="lock_state_locked">Locked</string>
+    <string name="lock_state_unlocked">Unlocked</string>
+    <string name="lock_swipe_to_unlock">Swipe to unlock</string>
+    <string name="lock_swipe_to_lock">Swipe to lock</string>
+
 </resources>

@@ -8,6 +8,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import se.hkr.andriod.ui.devices.light.LightDeviceRenderer
 import se.hkr.andriod.ui.devices.light.LightViewModel
+import se.hkr.andriod.ui.devices.lock.LockDeviceRenderer
+import se.hkr.andriod.ui.devices.lock.LockViewModel
 import se.hkr.andriod.ui.screens.devicecard.DeviceCardScreen
 import se.hkr.andriod.ui.screens.devicecard.DeviceCardViewModel
 import se.hkr.andriod.ui.screens.login.LoginScreen
@@ -70,11 +72,14 @@ fun AppNavGraph() {
         composable(Routes.DEVICE_CARD) {
             val deviceCardViewModel: DeviceCardViewModel = viewModel()
             val lightViewModel = remember { LightViewModel(deviceCardViewModel) }
+            val lockViewModel = remember { LockViewModel(deviceCardViewModel) }
+
 
             DeviceCardScreen(
                 viewModel = deviceCardViewModel
             ) {
-                LightDeviceRenderer(lightViewModel)
+                //LightDeviceRenderer(lightViewModel)
+                LockDeviceRenderer(lockViewModel)
             }
         }
     }

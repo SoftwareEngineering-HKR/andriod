@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import se.hkr.andriod.ui.devices.light.LightDeviceRenderer
 import se.hkr.andriod.ui.devices.light.LightViewModel
+import se.hkr.andriod.ui.devices.lock.BatteryHeaderComponent
 import se.hkr.andriod.ui.devices.lock.LockDeviceRenderer
 import se.hkr.andriod.ui.devices.lock.LockViewModel
 import se.hkr.andriod.ui.screens.devicecard.DeviceCardScreen

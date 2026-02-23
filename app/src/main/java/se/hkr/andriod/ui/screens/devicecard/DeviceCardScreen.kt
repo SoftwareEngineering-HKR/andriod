@@ -54,7 +54,7 @@ fun DeviceCardScreen(
     viewModel: DeviceCardViewModel,
 
     // Dynamic device specific content injected from device layer
-    deviceComponent: @Composable () -> Unit
+    deviceComponent: @Composable () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -66,7 +66,7 @@ fun DeviceCardScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFF4FC3F7)) // TEST COLOR
+            .background(Color(0xFFA2DED7)) // TEST COLOR
             .padding(top = 24.dp)
     ) {
         Column(

@@ -47,6 +47,15 @@ class LockViewModel(
         _lockState.value = _lockState.value.copy(isAutoLockExpanded = !_lockState.value.isAutoLockExpanded)
     }
 
+    fun setAutoLock(seconds: Int?) {
+        _lockState.update {
+            it.copy(
+                autoLockSeconds = seconds,
+                isAutoLockExpanded = false
+            )
+        }
+    }
+
     // Batter update (later)
     fun updateBattery(percent: Int) {
         _lockState.update { it.copy(batteryPercent = percent) }

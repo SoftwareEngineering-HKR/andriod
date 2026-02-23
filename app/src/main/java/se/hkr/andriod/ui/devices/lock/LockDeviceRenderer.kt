@@ -16,4 +16,11 @@ fun LockDeviceRenderer(
         isLocked = state.isLocked,
         onToggle = viewModel::toggleLock
     )
+
+    AutoLockComponent(
+        autoLockSeconds = state.autoLockSeconds,
+        isExpanded = state.isAutoLockExpanded,
+        onToggleExpand = viewModel::toggleAutoLockDropdown,
+        onSelect = viewModel::setAutoLock
+    )
 }

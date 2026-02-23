@@ -62,5 +62,7 @@
     <string name="lock_state_unlocked">Unlocked</string>
     <string name="lock_swipe_to_unlock">Swipe to unlock</string>
     <string name="lock_swipe_to_lock">Swipe to lock</string>
+    <string name="auto_lock">Auto Lock</string>
+    <string name="auto_lock_off">Off</string>
 
 </resources>

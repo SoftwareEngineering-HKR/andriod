@@ -17,10 +17,16 @@ fun LockDeviceRenderer(
         onToggle = viewModel::toggleLock
     )
 
+    // Auto Lock component
     AutoLockComponent(
         autoLockSeconds = state.autoLockSeconds,
         isExpanded = state.isAutoLockExpanded,
         onToggleExpand = viewModel::toggleAutoLockDropdown,
         onSelect = viewModel::setAutoLock
+    )
+
+    // Passcode Component
+    PasscodeComponent(
+        onClick = {}
     )
 }

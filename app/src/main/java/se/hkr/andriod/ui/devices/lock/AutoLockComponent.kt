@@ -91,7 +91,8 @@ fun AutoLockComponent(
                         Icons.Rounded.ExpandLess
                     else
                         Icons.Rounded.ExpandMore,
-                    contentDescription = null
+                    contentDescription = null,
+                    modifier = Modifier.size(36.dp)
                 )
             }
 

@@ -66,7 +66,7 @@ fun DeviceCardScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFA2DED7)) // TEST COLOR
+            .background(Color(0xFFBFBEBB)) // TEST COLOR
             .padding(top = 24.dp)
     ) {
         Column(

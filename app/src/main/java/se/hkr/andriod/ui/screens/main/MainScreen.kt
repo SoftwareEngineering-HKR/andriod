@@ -17,7 +17,11 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.*
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 import se.hkr.andriod.navigation.BottomNavItem
+import se.hkr.andriod.navigation.DeviceType
+import se.hkr.andriod.ui.screens.devicecard.DeviceHostScreen
 import se.hkr.andriod.ui.screens.settings.subscreens.AccountInfoScreen
 import se.hkr.andriod.ui.screens.settings.subscreens.DevicesScreen
 import se.hkr.andriod.ui.screens.settings.subscreens.LanguageScreen
@@ -92,12 +96,31 @@ fun MainScreen(
         ) {
 
             composable(Routes.DEVICE_OVERVIEW) {
-                DeviceOverviewScreen()
+                DeviceOverviewScreen(navController)
             }
 
             composable(Routes.DEVICE_MANAGEMENT) {
                 DeviceManagementScreen()
             }
+
+            composable(
+                route = Routes.DEVICE_CARD,
+                arguments = listOf(
+                    navArgument("type") {
+                        type = NavType.StringType
+                    }
+                )
+            ) { backStackEntry ->
+
+                val typeString =
+                    backStackEntry.arguments?.getString("type")
+                        ?: error("Missing device type")
+
+                val deviceType = DeviceType.valueOf(typeString)
+
+                DeviceHostScreen(deviceType)
+            }
+
 
             navigation(
                 startDestination = Routes.SETTINGS,

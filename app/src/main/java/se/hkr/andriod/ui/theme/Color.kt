@@ -38,3 +38,6 @@ val InputFieldPlaceholderDark = Color(0xFFB0B0B5)
 
 val CardBackgroundLight = Color(0xFFFFFFFF)
 val CardBackgroundDark = Color(0xFF1E1E1E)
+
+val ListItemBackgroundLight = Color(0xF2F8F8FA)
+val ListItemBackgroundDark = Color(0xFF2A2A2E)

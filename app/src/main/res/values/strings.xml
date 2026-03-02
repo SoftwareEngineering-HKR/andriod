@@ -42,29 +42,9 @@
     <string name="device_status">%1$d online / %2$d offline</string>
     <string name="add_icon_description">Add</string>
 
-    <!-- Device Card -->
-    <string name="device_control">Control</string>
-    <string name="device_schedule">Schedule</string>
-    <string name="device_online">Online</string>
-    <string name="device_offline">Offline</string>
-    <string name="device_last_updated">%1$s</string>
-    <string name="no_schedules_configured">No schedules configured</string>
-    <string name="add_new_schedule">+ Add new schedule</string>
-
-    <!-- Mock Device -->
-    <string name="brightness">Brightness</string>
-    <string name="color">Color</string>
-    <string name="preset_warm">Warm</string>
-    <string name="preset_neutral">Neutral</string>
-    <string name="preset_cool">Cool</string>
-
-    <string name="lock_state_locked">Locked</string>
-    <string name="lock_state_unlocked">Unlocked</string>
-    <string name="lock_swipe_to_unlock">Swipe to unlock</string>
-    <string name="lock_swipe_to_lock">Swipe to lock</string>
-    <string name="auto_lock">Auto Lock</string>
-    <string name="auto_lock_off">Off</string>
-    <string name="lock_passcode_title">Passcode</string>
-    <string name="lock_passcode_description">Manage access code</string>
-
+    <!-- Scan for devices -->
+    <string name="scan_devices_loading">Scanning for devices...</string>
+    <string name="no_new_devices_found">No new devices found</string>
+    <string name="found_new_devices">Found %1$d new device(s)</string>
+    <string name="close_button">Close</string>
 </resources>

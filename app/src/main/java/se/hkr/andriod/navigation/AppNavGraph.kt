@@ -3,9 +3,11 @@ package se.hkr.andriod.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import se.hkr.andriod.ui.devices.light.LightDeviceRenderer
 import se.hkr.andriod.ui.devices.light.LightViewModel
 import se.hkr.andriod.ui.devices.lock.BatteryHeaderComponent
@@ -13,6 +15,7 @@ import se.hkr.andriod.ui.devices.lock.LockDeviceRenderer
 import se.hkr.andriod.ui.devices.lock.LockViewModel
 import se.hkr.andriod.ui.screens.devicecard.DeviceCardScreen
 import se.hkr.andriod.ui.screens.devicecard.DeviceCardViewModel
+import se.hkr.andriod.ui.screens.devicecard.DeviceHostScreen
 import se.hkr.andriod.ui.screens.login.LoginScreen
 import se.hkr.andriod.ui.screens.login.LoginViewModel
 import se.hkr.andriod.ui.screens.main.MainScreen
@@ -25,7 +28,7 @@ fun AppNavGraph() {
 
     NavHost(
         navController = navController,
-        startDestination = Routes.DEVICE_CARD // CHANGED
+        startDestination = Routes.deviceCard(DeviceType.LOCK) // CHANGED
     ) {
         /* Disabled for testing Device Card
         composable(Routes.LOGIN) {
@@ -70,18 +73,20 @@ fun AppNavGraph() {
             )
         } */
 
-        composable(Routes.DEVICE_CARD) {
-            val deviceCardViewModel: DeviceCardViewModel = viewModel()
-            val lightViewModel = remember { LightViewModel(deviceCardViewModel) }
-            val lockViewModel = remember { LockViewModel(deviceCardViewModel) }
+        composable(
+            route = Routes.DEVICE_CARD,
+            arguments = listOf(navArgument("type") { type = NavType.StringType })
+        ) {
+            backStackEntry ->
+            val typeString = backStackEntry.arguments?.getString("type") ?: error("Missing device type")
 
-
-            DeviceCardScreen(
-                viewModel = deviceCardViewModel
-            ) {
-                //LightDeviceRenderer(lightViewModel)
-                LockDeviceRenderer(lockViewModel)
+            val deviceType = runCatching {
+                DeviceType.valueOf(typeString)
+            }.getOrElse {
+                error("Invalid device type")
             }
+
+            DeviceHostScreen(deviceType)
         }
     }
 }

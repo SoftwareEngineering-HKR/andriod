@@ -9,5 +9,9 @@ object Routes {
     const val DEVICE_OVERVIEW = "device_overview"
     const val DEVICE_MANAGEMENT = "device_management"
     const val SETTINGS = "settings"
-    const val DEVICE_CARD = "device_card"
+    const val DEVICE_CARD = "device_card/{type}"
+
+    fun deviceCard(type: DeviceType): String {
+        return "device_card/${type.name}"
+    }
 }

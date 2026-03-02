@@ -52,6 +52,7 @@ import se.hkr.andriod.ui.theme.cardBackground
 @Composable
 fun DeviceCardScreen(
     viewModel: DeviceCardViewModel,
+    onBackClick: () -> Unit,
 
     // Dynamic device specific content injected from device layer
     deviceComponent: @Composable () -> Unit,
@@ -82,7 +83,7 @@ fun DeviceCardScreen(
                     .padding(bottom = 16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(onClick = onBackClick) {
                     Icon(Icons.AutoMirrored.Rounded.ArrowBack, null)
                 }
 

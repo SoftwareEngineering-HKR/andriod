@@ -118,7 +118,10 @@ fun MainScreen(
 
                 val deviceType = DeviceType.valueOf(typeString)
 
-                DeviceHostScreen(deviceType)
+                DeviceHostScreen(
+                    deviceType,
+                    onBackClick = { navController.popBackStack() }
+                )
             }
 
 

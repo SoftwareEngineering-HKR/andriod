@@ -10,11 +10,17 @@ import se.hkr.andriod.ui.devices.lock.LockDeviceRenderer
 import se.hkr.andriod.ui.devices.lock.LockViewModel
 
 @Composable
-fun DeviceHostScreen(deviceType: DeviceType) {
+fun DeviceHostScreen(
+    deviceType: DeviceType,
+    onBackClick: () -> Unit
+) {
 
     val deviceCardViewModel: DeviceCardViewModel = viewModel()
 
-    DeviceCardScreen(viewModel = deviceCardViewModel) {
+    DeviceCardScreen(
+        viewModel = deviceCardViewModel,
+        onBackClick = onBackClick
+    ) {
 
         when (deviceType) {
 

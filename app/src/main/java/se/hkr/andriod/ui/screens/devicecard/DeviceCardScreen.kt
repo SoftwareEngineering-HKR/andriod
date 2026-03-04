@@ -47,6 +47,7 @@ import androidx.compose.ui.unit.dp
 import se.hkr.andriod.R
 import se.hkr.andriod.ui.components.AppButton
 import se.hkr.andriod.ui.theme.cardBackground
+import se.hkr.andriod.ui.theme.lightBlue
 
 
 @Composable
@@ -67,7 +68,7 @@ fun DeviceCardScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFBFBEBB)) // TEST COLOR
+            .background(MaterialTheme.colorScheme.lightBlue)
             .padding(top = 24.dp)
     ) {
         Column(

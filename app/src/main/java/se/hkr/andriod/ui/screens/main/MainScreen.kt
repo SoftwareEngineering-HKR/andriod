@@ -120,7 +120,7 @@ fun MainScreen(
 
                 DeviceHostScreen(
                     deviceType,
-                    onBackClick = { navController.popBackStack() }
+                    onBackClick = { navController.navigateUp() }
                 )
             }
 

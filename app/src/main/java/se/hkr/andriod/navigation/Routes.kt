@@ -16,4 +16,11 @@ object Routes {
     const val SCHEDULES = "schedules"
     const val LANGUAGE = "language"
     const val ACCOUNT = "account"
+
+    const val DEVICE_CARD = "device_card/{type}"
+
+    fun deviceCard(type: DeviceType): String {
+        return "device_card/${type.name}"
+    }
+
 }

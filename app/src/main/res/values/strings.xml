@@ -72,4 +72,8 @@
     <string name="auto_lock_off">Off</string>
     <string name="lock_passcode_title">Passcode</string>
     <string name="lock_passcode_description">Manage access code</string>
+
+    <!-- Add Device -->
+    <string name="add_device">Add Device</string>
+
 </resources>

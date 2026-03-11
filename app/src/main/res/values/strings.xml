@@ -78,5 +78,10 @@
     <string name="device_information">Device Information</string>
     <string name="device_type">Device Type</string>
     <string name="connection_type">Connection Type</string>
+    <string name="device_name">Device Name</string>
+
+    <!-- Devices -->
+    <string name="device_type_light">Light</string>
+    <string name="device_type_lock">Lock</string>
 
 </resources>

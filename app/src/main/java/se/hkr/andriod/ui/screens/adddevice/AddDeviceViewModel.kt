@@ -1,10 +1,16 @@
 package se.hkr.andriod.ui.screens.adddevice
 
+import androidx.annotation.StringRes
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import se.hkr.andriod.navigation.DeviceType
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Lightbulb
+import androidx.compose.material.icons.rounded.Lock
+import se.hkr.andriod.R
 
 data class AddDeviceUiState(
     val deviceName: String = "",
@@ -25,6 +31,12 @@ enum class ConnectionType {
     WIFI,
     BLUETOOTH
 }
+
+data class DeviceTypeItem(
+    val type: DeviceType,
+    val icon: ImageVector,
+    @StringRes val labelRes: Int
+)
 
 class AddDeviceViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(AddDeviceUiState())
@@ -78,4 +90,18 @@ class AddDeviceViewModel : ViewModel() {
 
         // TODO: Save Device and Room + set up connection with device
     }
+
+    // TODO: Add more devices
+    val deviceTypes = listOf(
+        DeviceTypeItem(
+            DeviceType.LIGHT,
+            Icons.Rounded.Lightbulb,
+            labelRes = R.string.device_type_light
+        ),
+        DeviceTypeItem(
+            DeviceType.LOCK,
+            Icons.Rounded.Lock,
+            labelRes = R.string.device_type_lock
+        )
+    )
 }

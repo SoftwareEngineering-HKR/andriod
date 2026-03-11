@@ -79,6 +79,10 @@
     <string name="device_type">Device Type</string>
     <string name="connection_type">Connection Type</string>
     <string name="device_name">Device Name</string>
+    <string name="connection_wifi">Wi-Fi</string>
+    <string name="connection_bluetooth">Bluetooth</string>
+    <string name="room">Room</string>
+    <string name="add_room">Add room</string>
 
     <!-- Devices -->
     <string name="device_type_light">Light</string>

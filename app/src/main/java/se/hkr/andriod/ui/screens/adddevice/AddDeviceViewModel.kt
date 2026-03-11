@@ -38,6 +38,12 @@ data class DeviceTypeItem(
     @StringRes val labelRes: Int
 )
 
+data class ConnectionTypeItem(
+    val type: ConnectionType,
+    @StringRes val labelRes: Int
+)
+
+
 class AddDeviceViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(AddDeviceUiState())
     val uiState: StateFlow<AddDeviceUiState> = _uiState
@@ -102,6 +108,17 @@ class AddDeviceViewModel : ViewModel() {
             DeviceType.LOCK,
             Icons.Rounded.Lock,
             labelRes = R.string.device_type_lock
+        )
+    )
+
+    val connectionTypes = listOf(
+        ConnectionTypeItem(
+            ConnectionType.WIFI,
+            labelRes = R.string.connection_wifi
+        ),
+        ConnectionTypeItem(
+            ConnectionType.BLUETOOTH,
+            labelRes = R.string.connection_bluetooth
         )
     )
 }

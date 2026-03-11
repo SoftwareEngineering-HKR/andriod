@@ -21,6 +21,8 @@ import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import se.hkr.andriod.navigation.BottomNavItem
 import se.hkr.andriod.navigation.DeviceType
+import se.hkr.andriod.ui.screens.adddevice.AddDeviceScreen
+import se.hkr.andriod.ui.screens.adddevice.AddDeviceViewModel
 import se.hkr.andriod.ui.screens.devicecard.DeviceHostScreen
 import se.hkr.andriod.ui.screens.settings.subscreens.AccountInfoScreen
 import se.hkr.andriod.ui.screens.settings.subscreens.DevicesScreen
@@ -120,6 +122,15 @@ fun MainScreen(
 
                 DeviceHostScreen(
                     deviceType,
+                    onBackClick = { navController.navigateUp() }
+                )
+            }
+
+            composable(
+                route = Routes.ADD_DEVICE
+            ) {
+                AddDeviceScreen(
+                    viewModel = AddDeviceViewModel(),
                     onBackClick = { navController.navigateUp() }
                 )
             }

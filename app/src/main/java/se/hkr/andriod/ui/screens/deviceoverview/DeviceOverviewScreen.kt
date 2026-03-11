@@ -81,6 +81,17 @@ fun DeviceOverviewScreen(navController: NavController) {
                 ) {
                     Text("Open Light")
                 }
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Button(
+                    onClick = {
+                        navController.navigate(
+                            Routes.ADD_DEVICE
+                        )
+                    }
+                ) {
+                    Text("Open Add Device")
+                }
             }
         }
 

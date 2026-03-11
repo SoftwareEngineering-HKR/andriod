@@ -75,5 +75,8 @@
 
     <!-- Add Device -->
     <string name="add_device">Add Device</string>
+    <string name="device_information">Device Information</string>
+    <string name="device_type">Device Type</string>
+    <string name="connection_type">Connection Type</string>
 
 </resources>

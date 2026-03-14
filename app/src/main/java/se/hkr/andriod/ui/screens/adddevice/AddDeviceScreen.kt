@@ -44,6 +44,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import se.hkr.andriod.R
 import se.hkr.andriod.ui.components.AppButton
+import se.hkr.andriod.ui.components.CustomScreenHeader
 import se.hkr.andriod.ui.theme.cardBackground
 import se.hkr.andriod.ui.theme.lightBlue
 
@@ -62,32 +63,16 @@ fun AddDeviceScreen(
             .background(MaterialTheme.colorScheme.lightBlue)
             .padding(top = 24.dp)
     ) {
-        // TODO: Make a component for top bar
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(vertical = 24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(0.9f)
-                    .padding(bottom = 16.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                IconButton(onClick = onBackClick) {
-                    Icon(Icons.AutoMirrored.Rounded.ArrowBack, null)
-                }
-
-                Text(
-                    text = stringResource(R.string.add_device),
-                    style = MaterialTheme.typography.headlineMedium,
-                    modifier = Modifier.weight(1f),
-                    textAlign = TextAlign.Center
-                )
-
-                Spacer(modifier = Modifier.size(48.dp))
-            }
+           CustomScreenHeader(
+                title = stringResource(R.string.add_device),
+                onBackClick = onBackClick
+            )
 
             // Device Info Section
             Card(

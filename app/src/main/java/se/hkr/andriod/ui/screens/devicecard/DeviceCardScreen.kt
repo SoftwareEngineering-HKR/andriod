@@ -46,6 +46,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import se.hkr.andriod.R
 import se.hkr.andriod.ui.components.AppButton
+import se.hkr.andriod.ui.components.CustomScreenHeader
 import se.hkr.andriod.ui.theme.cardBackground
 import se.hkr.andriod.ui.theme.lightBlue
 
@@ -77,26 +78,10 @@ fun DeviceCardScreen(
                 .padding(vertical = 24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Top row: back button, device name
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(0.9f)
-                    .padding(bottom = 16.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                IconButton(onClick = onBackClick) {
-                    Icon(Icons.AutoMirrored.Rounded.ArrowBack, null)
-                }
-
-                Text(
-                    text = uiState.deviceName,
-                    style = MaterialTheme.typography.headlineMedium,
-                    modifier = Modifier.weight(1f),
-                    textAlign = TextAlign.Center
-                )
-
-                Spacer(modifier = Modifier.size(48.dp))
-            }
+            CustomScreenHeader(
+                title = uiState.deviceName,
+                onBackClick = onBackClick
+            )
 
             // Main info card: icon, name, room, switch
             Card(

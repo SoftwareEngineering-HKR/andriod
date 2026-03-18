@@ -23,4 +23,6 @@ object Routes {
         return "device_card/${type.name}"
     }
 
+    const val ADD_DEVICE = "add_device"
+
 }

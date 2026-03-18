@@ -24,7 +24,7 @@ class ScanViewModel : ViewModel() {
                 it.copy(isRetrying = true)
             }
 
-            // Fake scan
+            // Fake retry
             delay(1500)
 
             _uiState.update {

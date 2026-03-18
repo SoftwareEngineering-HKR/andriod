@@ -17,7 +17,7 @@ class ScanViewModel : ViewModel() {
     val uiState: StateFlow<ScanUiState> = _uiState
 
     fun onRetryClick() {
-        if (!_uiState.value.isRetrying) return
+        if (_uiState.value.isRetrying) return
 
         viewModelScope.launch {
             _uiState.update {

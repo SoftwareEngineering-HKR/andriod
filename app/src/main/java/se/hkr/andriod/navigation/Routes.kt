@@ -27,4 +27,6 @@ object Routes {
 
     const val ADD_DEVICE = "add_device"
 
+    const val SCAN = "scan"
+
 }

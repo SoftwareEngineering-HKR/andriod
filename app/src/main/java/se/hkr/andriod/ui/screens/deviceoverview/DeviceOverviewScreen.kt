@@ -86,11 +86,11 @@ fun DeviceOverviewScreen(navController: NavController) {
                 Button(
                     onClick = {
                         navController.navigate(
-                            Routes.ADD_DEVICE
+                            Routes.SCAN
                         )
                     }
                 ) {
-                    Text("Open Add Device")
+                    Text("Open Scan")
                 }
             }
         }

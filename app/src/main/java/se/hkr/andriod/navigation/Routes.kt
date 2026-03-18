@@ -1,5 +1,7 @@
 package se.hkr.andriod.navigation
 
+import se.hkr.andriod.domain.model.device.DeviceType
+
 object Routes {
     const val LOGIN = "login"
     const val SIGN_UP = "sign_up"

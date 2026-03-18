@@ -20,7 +20,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import se.hkr.andriod.navigation.BottomNavItem
-import se.hkr.andriod.navigation.DeviceType
+import se.hkr.andriod.domain.model.device.DeviceType
 import se.hkr.andriod.ui.screens.adddevice.AddDeviceScreen
 import se.hkr.andriod.ui.screens.adddevice.AddDeviceViewModel
 import se.hkr.andriod.ui.screens.devicecard.DeviceHostScreen

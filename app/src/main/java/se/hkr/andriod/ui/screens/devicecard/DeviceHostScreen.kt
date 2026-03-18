@@ -3,7 +3,7 @@ package se.hkr.andriod.ui.screens.devicecard
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.lifecycle.viewmodel.compose.viewModel
-import se.hkr.andriod.navigation.DeviceType
+import se.hkr.andriod.domain.model.device.DeviceType
 import se.hkr.andriod.ui.devices.light.LightDeviceRenderer
 import se.hkr.andriod.ui.devices.light.LightViewModel
 import se.hkr.andriod.ui.devices.lock.LockDeviceRenderer
@@ -37,6 +37,8 @@ fun DeviceHostScreen(
                 }
                 LockDeviceRenderer(lockViewModel)
             }
+
+            else -> {}
         }
     }
 }

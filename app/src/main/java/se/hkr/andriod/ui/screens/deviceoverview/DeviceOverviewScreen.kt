@@ -25,7 +25,7 @@ import se.hkr.andriod.ui.components.AppHomeTopBar
 import se.hkr.andriod.ui.components.ScanDevicesModal
 import se.hkr.andriod.ui.theme.lightBlue
 import androidx.navigation.NavController
-import se.hkr.andriod.navigation.DeviceType
+import se.hkr.andriod.domain.model.device.DeviceType
 import se.hkr.andriod.navigation.Routes
 
 @Composable

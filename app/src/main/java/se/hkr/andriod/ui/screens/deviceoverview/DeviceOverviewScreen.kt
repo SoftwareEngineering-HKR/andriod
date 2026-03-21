@@ -1,5 +1,6 @@
 package se.hkr.andriod.ui.screens.deviceoverview
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -81,6 +82,25 @@ fun DeviceOverviewScreen(navController: NavController) {
 
                 // Temporary backend ip text. Used when the "discover backend" button is pressed.
                 Text(text = "Backend IP: $discoveredIp")
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                // Button to send test message to the server
+                Button(
+                    onClick = {
+                        val testMessage = """
+                            {
+                                "type": "create room",
+                                "payload": { "name": "room name" }
+                            }
+                        """.trimIndent()
+
+                        connectionManager.sendMessage(testMessage)
+                        Log.d("TEST_MESSAGE", "Sent test message: $testMessage")
+                    }
+                ) {
+                    Text("Send Test Message")
+                }
 
                 Spacer(modifier = Modifier.height(24.dp))
 

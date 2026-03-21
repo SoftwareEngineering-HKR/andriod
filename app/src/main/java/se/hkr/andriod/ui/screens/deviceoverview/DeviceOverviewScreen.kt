@@ -1,5 +1,6 @@
 package se.hkr.andriod.ui.screens.deviceoverview
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -27,13 +28,17 @@ import se.hkr.andriod.ui.theme.lightBlue
 import androidx.navigation.NavController
 import se.hkr.andriod.domain.model.device.DeviceType
 import se.hkr.andriod.navigation.Routes
+import se.hkr.andriod.data.network.ConnectionManager
 
 @Composable
 fun DeviceOverviewScreen(navController: NavController) {
     var showAddSheet by remember { mutableStateOf(false) }
     var showScanModal by remember { mutableStateOf(false) }
 
-    // TODO: Get the real online and offline count fron devices
+    // Backend states
+    var discoveredIp by remember { mutableStateOf("Not connected") }
+    val connectionManager = remember { ConnectionManager() }
+
     val onlineCount = 3
     val offlineCount = 1
 
@@ -59,6 +64,45 @@ fun DeviceOverviewScreen(navController: NavController) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
+
+                // Temporary discover backend button. Todo: Automatically discover and connect to the backend.
+                Button(
+                    onClick = {
+                        discoveredIp = "Searching..."
+
+                        connectionManager.startConnection { ip ->
+                            discoveredIp = ip
+                        }
+                    }
+                ) {
+                    Text("Discover Backend")
+                }
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                // Temporary backend ip text. Used when the "discover backend" button is pressed.
+                Text(text = "Backend IP: $discoveredIp")
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                // Button to send test message to the server
+                Button(
+                    onClick = {
+                        val testMessage = """
+                            {
+                                "type": "create room",
+                                "payload": { "name": "room name" }
+                            }
+                        """.trimIndent()
+
+                        connectionManager.sendMessage(testMessage)
+                        Log.d("TEST_MESSAGE", "Sent test message: $testMessage")
+                    }
+                ) {
+                    Text("Send Test Message")
+                }
+
+                Spacer(modifier = Modifier.height(24.dp))
 
                 Button(
                     onClick = {

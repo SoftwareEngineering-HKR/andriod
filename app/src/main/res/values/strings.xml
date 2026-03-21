@@ -47,6 +47,10 @@
     <string name="no_new_devices_found">No new devices found</string>
     <string name="found_new_devices">Found %1$d new device(s)</string>
     <string name="close_button">Close</string>
+    <string name="devices_hint">Make sure devices are nearby and powered on.</string>
+    <string name="retry">Retry</string>
+    <string name="retrying">Retrying...</string>
+    <string name="manual_add">Manual Add</string>
 
     <!-- Device Card -->
     <string name="device_control">Control</string>

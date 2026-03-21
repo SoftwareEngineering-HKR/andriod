@@ -14,16 +14,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.*
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import se.hkr.andriod.navigation.BottomNavItem
-import se.hkr.andriod.navigation.DeviceType
+import se.hkr.andriod.domain.model.device.DeviceType
 import se.hkr.andriod.ui.screens.adddevice.AddDeviceScreen
 import se.hkr.andriod.ui.screens.adddevice.AddDeviceViewModel
 import se.hkr.andriod.ui.screens.devicecard.DeviceHostScreen
+import se.hkr.andriod.ui.screens.scan.ScanScreen
 import se.hkr.andriod.ui.screens.settings.subscreens.AccountInfoScreen
 import se.hkr.andriod.ui.screens.settings.subscreens.DevicesScreen
 import se.hkr.andriod.ui.screens.settings.subscreens.LanguageScreen
@@ -127,10 +129,20 @@ fun MainScreen(
             }
 
             composable(
+                route = Routes.SCAN
+            ) {
+                ScanScreen(
+                    viewModel = viewModel(),
+                    navController = navController,
+                    onBackClick = { navController.navigateUp() }
+                )
+            }
+
+            composable(
                 route = Routes.ADD_DEVICE
             ) {
                 AddDeviceScreen(
-                    viewModel = AddDeviceViewModel(),
+                    viewModel = viewModel(),
                     onBackClick = { navController.navigateUp() }
                 )
             }

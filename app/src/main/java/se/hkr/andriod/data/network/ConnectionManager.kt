@@ -6,15 +6,20 @@ class ConnectionManager(private val udpPort: Int = 4444) {
     private val udpDiscovery = UdpDiscovery()
     private val webSocketManager = WebSocketManager()
 
-    fun startConnection(onResult: (String) -> Unit) {
+    fun startConnection(onResult: (String?) -> Unit) {
         udpDiscovery.discoverServer(port = udpPort) { ip ->
-            Log.d("CONNECTION", "Backend discovered at $ip")
+            if (ip != null) {
+                Log.d("CONNECTION", "Backend discovered at $ip")
 
-            // Connect WebSocket automatically
-            webSocketManager.connect(ip)
+                // Connect WebSocket automatically
+                webSocketManager.connect(ip)
 
-            // Notify caller that backend IP is found
-            onResult(ip)
+                // Notify caller that backend IP is found
+                onResult(ip)
+            } else {
+                Log.d("CONNECTION", "Backend discovery failed")
+                onResult(null)
+            }
         }
     }
 

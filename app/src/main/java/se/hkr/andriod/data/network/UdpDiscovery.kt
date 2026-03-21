@@ -7,7 +7,7 @@ import java.net.DatagramSocket
 import java.net.InetAddress
 
 class UdpDiscovery {
-    fun discoverServer(port: Int = 4444, onResult: (String) -> Unit) {
+    fun discoverServer(port: Int = 4444, onResult: (String?) -> Unit) {
         Thread {
             try {
                 if (DeviceUtils.isEmulator()) {
@@ -55,7 +55,7 @@ class UdpDiscovery {
 
             } catch (e: java.net.SocketTimeoutException) {
                 Log.d("UDP", "UDP discovery timed out")
-                onResult("Timeout: No server found")
+                onResult(null)
             } catch (e: Exception) {
                 e.printStackTrace()
                 onResult("Error: ${e.message}")

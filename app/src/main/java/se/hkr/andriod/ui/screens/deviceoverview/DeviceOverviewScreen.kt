@@ -36,7 +36,7 @@ fun DeviceOverviewScreen(navController: NavController) {
     var showScanModal by remember { mutableStateOf(false) }
 
     // Backend states
-    var discoveredIp by remember { mutableStateOf("Not connected") }
+    var discoveredIp: String? by remember { mutableStateOf("Not connected") }
     val connectionManager = remember { ConnectionManager() }
 
     val onlineCount = 3
@@ -71,7 +71,7 @@ fun DeviceOverviewScreen(navController: NavController) {
                         discoveredIp = "Searching..."
 
                         connectionManager.startConnection { ip ->
-                            discoveredIp = ip
+                            discoveredIp = ip ?: "No backend found"
                         }
                     }
                 ) {

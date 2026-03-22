@@ -3,10 +3,10 @@ package se.hkr.andriod.ui.screens.deviceoverview
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -49,47 +49,30 @@ fun DeviceOverviewScreen(navController: NavController) {
         )
 
         // Main content
+        // Temporary buttons for the lock and light
         Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 80.dp),
+            contentAlignment = Alignment.TopCenter
         ) {
-            // TEST -> to access test devices
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                // Navigation buttons
                 Button(
                     onClick = {
-                        navController.navigate(
-                            Routes.deviceCard(DeviceType.LOCK)
-                        )
+                        navController.navigate(Routes.deviceCard(DeviceType.LOCK))
                     }
                 ) {
                     Text("Open Lock")
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
-
                 Button(
                     onClick = {
-                        navController.navigate(
-                            Routes.deviceCard(DeviceType.LIGHT)
-                        )
+                        navController.navigate(Routes.deviceCard(DeviceType.LIGHT))
                     }
                 ) {
                     Text("Open Light")
-                }
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Button(
-                    onClick = {
-                        navController.navigate(
-                            Routes.SCAN
-                        )
-                    }
-                ) {
-                    Text("Open Scan")
                 }
             }
         }
@@ -102,7 +85,11 @@ fun DeviceOverviewScreen(navController: NavController) {
                     showAddSheet = false
                     showScanModal = true
                 },
-                onAddDeviceClick = { /* TODO: implement manual add */ },
+                // Todo: Fix the scan and add menus + navigate correctly
+                onAddDeviceClick = {
+                    showAddSheet = false
+                    navController.navigate(Routes.SCAN)
+                },
                 onCreateRoomClick = { /* TODO: implement create room */ }
             )
         }

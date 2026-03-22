@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -28,12 +30,16 @@ import se.hkr.andriod.ui.theme.lightBlue
 import androidx.navigation.NavController
 import se.hkr.andriod.domain.model.device.DeviceType
 import se.hkr.andriod.navigation.Routes
+import se.hkr.andriod.ui.components.AppTextField
 
 @Composable
 fun DeviceOverviewScreen(navController: NavController) {
     var showAddSheet by remember { mutableStateOf(false) }
     var showScanModal by remember { mutableStateOf(false) }
 
+    val search = remember { mutableStateOf("") }
+
+    // Todo: use the real offline/online count
     val onlineCount = 3
     val offlineCount = 1
 
@@ -77,6 +83,17 @@ fun DeviceOverviewScreen(navController: NavController) {
                 }
             }
         }
+
+        // Search bar Todo: Implement functionality
+        AppTextField(
+            value = search.value,
+            onValueChange = { search.value = it },
+            placeholder = "Search here...",
+            leadingIcon = Icons.Default.Search,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 12.dp)
+        )
 
         Box(modifier = Modifier.weight(1f)) {
             // Bottom sheet for add options

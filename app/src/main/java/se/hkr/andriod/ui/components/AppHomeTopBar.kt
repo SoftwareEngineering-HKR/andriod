@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
 import se.hkr.andriod.ui.theme.lightBlue
 import androidx.compose.material.icons.Icons
@@ -28,7 +29,7 @@ fun AppHomeTopBar(
     onAddClick: () -> Unit
 ) {
     TopAppBar(
-        windowInsets = WindowInsets(top = 40),
+        windowInsets = WindowInsets.statusBars,
         title = {
             Row(verticalAlignment = Alignment.CenterVertically) {
 

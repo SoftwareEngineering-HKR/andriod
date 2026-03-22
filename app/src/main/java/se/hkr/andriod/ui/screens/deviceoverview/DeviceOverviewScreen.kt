@@ -3,6 +3,7 @@ package se.hkr.andriod.ui.screens.deviceoverview
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -36,7 +37,7 @@ fun DeviceOverviewScreen(navController: NavController) {
     val onlineCount = 3
     val offlineCount = 1
 
-    Box(
+    Column(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.lightBlue)
@@ -53,7 +54,7 @@ fun DeviceOverviewScreen(navController: NavController) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 80.dp),
+                .padding(top = 8.dp),
             contentAlignment = Alignment.TopCenter
         ) {
             Row(
@@ -77,28 +78,30 @@ fun DeviceOverviewScreen(navController: NavController) {
             }
         }
 
-        // Bottom sheet for add options
-        if (showAddSheet) {
-            AddDeviceBottomSheet(
-                onDismiss = { showAddSheet = false },
-                onScanClick = {
-                    showAddSheet = false
-                    showScanModal = true
-                },
-                // Todo: Fix the scan and add menus + navigate correctly
-                onAddDeviceClick = {
-                    showAddSheet = false
-                    navController.navigate(Routes.SCAN)
-                },
-                onCreateRoomClick = { /* TODO: implement create room */ }
-            )
-        }
+        Box(modifier = Modifier.weight(1f)) {
+            // Bottom sheet for add options
+            if (showAddSheet) {
+                AddDeviceBottomSheet(
+                    onDismiss = { showAddSheet = false },
+                    onScanClick = {
+                        showAddSheet = false
+                        showScanModal = true
+                    },
+                    // Todo: Fix the scan and add menus + navigate correctly
+                    onAddDeviceClick = {
+                        showAddSheet = false
+                        navController.navigate(Routes.SCAN)
+                    },
+                    onCreateRoomClick = { /* TODO: implement create room */ }
+                )
+            }
 
-        // Scan modal overlay
-        if (showScanModal) {
-            ScanDevicesModal(
-                onDismiss = { showScanModal = false }
-            )
+            // Scan modal overlay
+            if (showScanModal) {
+                ScanDevicesModal(
+                    onDismiss = { showScanModal = false }
+                )
+            }
         }
     }
 }

@@ -1,15 +1,14 @@
 package se.hkr.andriod.ui.screens.deviceoverview
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Lightbulb
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Sensors
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -28,15 +27,19 @@ import se.hkr.andriod.ui.components.AppHomeTopBar
 import se.hkr.andriod.ui.components.ScanDevicesModal
 import se.hkr.andriod.ui.theme.lightBlue
 import androidx.navigation.NavController
+import se.hkr.andriod.data.mock.MockDevices
 import se.hkr.andriod.domain.model.device.DeviceType
 import se.hkr.andriod.navigation.Routes
 import se.hkr.andriod.ui.components.AppTextField
+import se.hkr.andriod.ui.components.DeviceCardItem
+import se.hkr.andriod.ui.components.DeviceItemModel
 
 @Composable
 fun DeviceOverviewScreen(navController: NavController) {
     var showAddSheet by remember { mutableStateOf(false) }
     var showScanModal by remember { mutableStateOf(false) }
 
+    val devices = MockDevices.allDevices
     val search = remember { mutableStateOf("") }
 
     // Todo: use the real offline/online count
@@ -92,11 +95,42 @@ fun DeviceOverviewScreen(navController: NavController) {
             leadingIcon = Icons.Default.Search,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 12.dp)
+                .padding(horizontal = 16.dp)
         )
 
-        Box(modifier = Modifier.weight(1f)) {
-            // Bottom sheet for add options
+        // Scrollable list of device cards
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            items(devices) { device ->
+                val icon = when (device.type) {
+                    DeviceType.LIGHT -> Icons.Default.Lightbulb
+                    DeviceType.LOCK -> Icons.Default.Lock
+                    DeviceType.SENSOR -> Icons.Default.Sensors
+                }
+
+                DeviceCardItem(
+                    device = DeviceItemModel(
+                        id = device.id.toString(),
+                        name = device.name,
+                        room = when (device.roomId) {
+                            MockDevices.livingRoom.id -> "Living Room"
+                            MockDevices.kitchen.id -> "Kitchen"
+                            else -> "Unknown Room"
+                        },
+                        isOnline = true, // Todo: Use real offline/online state
+                        icon = icon
+                    ),
+                    onClick = { /* Todo: Navigate to device card */ },
+                    onSwitchToggle = { /* Todo: Add functionality */ },
+                    elevation = 2.dp
+                )
+            }
+        }
+
+        // Bottom sheet for add options
+        Box {
             if (showAddSheet) {
                 AddDeviceBottomSheet(
                     onDismiss = { showAddSheet = false },

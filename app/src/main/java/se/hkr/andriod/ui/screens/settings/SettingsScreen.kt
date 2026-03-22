@@ -1,5 +1,6 @@
 package se.hkr.andriod.ui.screens.settings
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -13,11 +14,17 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import se.hkr.andriod.data.mock.currentUser
+import se.hkr.andriod.data.network.ConnectionManager
 import se.hkr.andriod.navigation.Routes
 import se.hkr.andriod.ui.components.AppButton
 import se.hkr.andriod.ui.screens.settings.components.SettingsItem
@@ -28,6 +35,9 @@ fun SettingsScreen(
     navController: NavController,
     onLogoutClicked: () -> Unit
 ) {
+    var discoveredIp: String? by remember { mutableStateOf("Not connected") }
+    val connectionManager = remember { ConnectionManager() }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -46,8 +56,8 @@ fun SettingsScreen(
                 )
             }
             item { SettingsItem(title = "Theme") { /* show popup */ } }
-            item { SettingsItem(title = "Language") {navController.navigate(Routes.LANGUAGE)} }
-            item { SettingsItem(title = "Account Info") {navController.navigate(Routes.ACCOUNT)} }
+            item { SettingsItem(title = "Language") { navController.navigate(Routes.LANGUAGE) } }
+            item { SettingsItem(title = "Account Info") { navController.navigate(Routes.ACCOUNT) } }
 
             // Household Settings
             if (currentUser.canShowHouseholdSettings()) {
@@ -62,20 +72,21 @@ fun SettingsScreen(
             }
 
             if (currentUser.canManageUsers()) {
-                item { SettingsItem(title = "Users & Permissions") {navController.navigate(Routes.USERS)} }
+                item { SettingsItem(title = "Users & Permissions") { navController.navigate(Routes.USERS) } }
             }
             if (currentUser.canViewDevices()) {
-                item { SettingsItem(title = "Devices") {navController.navigate(Routes.DEVICES)} }
+                item { SettingsItem(title = "Devices") { navController.navigate(Routes.DEVICES) } }
             }
             if (currentUser.canViewRooms()) {
-                item { SettingsItem(title = "Rooms") {navController.navigate(Routes.ROOMS)} }
+                item { SettingsItem(title = "Rooms") { navController.navigate(Routes.ROOMS) } }
             }
             if (currentUser.canManageSchedules()) {
-                item { SettingsItem(title = "Schedules") {navController.navigate(Routes.SCHEDULES)} }
+                item { SettingsItem(title = "Schedules") { navController.navigate(Routes.SCHEDULES) } }
             }
 
             item { Spacer(modifier = Modifier.height(16.dp)) }
 
+            // Logout button
             item {
                 Spacer(modifier = Modifier.height(24.dp))
                 Box(
@@ -85,6 +96,64 @@ fun SettingsScreen(
                     AppButton(
                         text = "Log Out",
                         onClick = onLogoutClicked,
+                        modifier = Modifier.width(160.dp)
+                    )
+                }
+            }
+
+            // Connect to Server
+            item {
+                Spacer(modifier = Modifier.height(24.dp))
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    AppButton(
+                        text = "Connect to Server",
+                        onClick = {
+                            discoveredIp = "Searching..."
+                            connectionManager.startConnection { ip ->
+                                discoveredIp = ip ?: "No backend found"
+                            }
+                        },
+                        modifier = Modifier.width(160.dp)
+                    )
+                }
+            }
+
+            // Backend IP display
+            item {
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(
+                    text = "Backend IP: $discoveredIp",
+                    style = MaterialTheme.typography.bodyMedium,
+                    textAlign = TextAlign.Center,
+                )
+            }
+
+            // Test Message button
+            item {
+                Spacer(modifier = Modifier.height(16.dp))
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    AppButton(
+                        text = "Test Message",
+                        onClick = {
+                            val testMessage = """
+                            {
+                                "type": "update value",
+                                "payload": {
+                                    "id": "deviceTest2",
+                                    "value": 1000
+                                }
+                            }
+                        """.trimIndent()
+
+                            connectionManager.sendMessage(testMessage)
+                            Log.d("TEST_MESSAGE", "Sent test message: $testMessage")
+                        },
                         modifier = Modifier.width(160.dp)
                     )
                 }

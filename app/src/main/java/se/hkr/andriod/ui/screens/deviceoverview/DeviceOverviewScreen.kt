@@ -104,7 +104,7 @@ fun DeviceOverviewScreen(navController: NavController) {
                 .fillMaxSize()
         ) {
             items(devices) { device ->
-                val icon = when (device.type) {
+                val icon = when (device.deviceTypeEnum) {
                     DeviceType.LIGHT -> Icons.Default.Lightbulb
                     DeviceType.LOCK -> Icons.Default.Lock
                     DeviceType.SENSOR -> Icons.Default.Sensors
@@ -113,8 +113,8 @@ fun DeviceOverviewScreen(navController: NavController) {
                 DeviceCardItem(
                     device = DeviceItemModel(
                         id = device.id.toString(),
-                        name = device.name,
-                        room = when (device.roomId) {
+                        name = device.name ?: "Unknown Device",
+                        room = when (device.room) {
                             MockDevices.livingRoom.id -> "Living Room"
                             MockDevices.kitchen.id -> "Kitchen"
                             else -> "Unknown Room"

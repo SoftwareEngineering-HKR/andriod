@@ -1,5 +1,7 @@
 package se.hkr.andriod.ui.components
 
+import android.R.attr.maxLines
+import android.R.attr.text
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Lightbulb
@@ -30,7 +32,7 @@ fun ScanDeviceCard(device: Device) {
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             // Temporary until the icons come from the backend
-            val icon = when (device.type) {
+            val icon = when (device.deviceTypeEnum) {
                 DeviceType.LIGHT -> Icons.Outlined.Lightbulb
                 DeviceType.LOCK -> Icons.Outlined.Lock
                 DeviceType.SENSOR -> Icons.Outlined.Sensors
@@ -39,7 +41,7 @@ fun ScanDeviceCard(device: Device) {
             Icon(icon, contentDescription = null)
 
             Text(
-                text = device.name,
+                text = device.name ?: "Unknown Device",
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.weight(1f)

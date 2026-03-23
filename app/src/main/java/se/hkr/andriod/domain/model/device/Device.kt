@@ -24,8 +24,13 @@ data class Device(
             else -> DeviceType.SENSOR // fallback
         }
 
+    // Clean display name: ignore null, blank, or "null" strings
     val displayName: String
-        get() = name ?: "Unknown Device"
+        get() = name?.takeIf { it.isNotBlank() && it.lowercase() != "null" } ?: "Unknown Device"
+
+    // Clean display room: null if no room assigned
+    val displayRoom: String?
+        get() = room?.takeIf { it.isNotBlank() && it.lowercase() != "null" }
 
     companion object {
         fun fromBackendJson(json: JSONObject): Device {

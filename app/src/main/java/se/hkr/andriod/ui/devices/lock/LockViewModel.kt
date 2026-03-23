@@ -8,9 +8,11 @@ import kotlinx.coroutines.flow.update
 import se.hkr.andriod.ui.screens.devicecard.DeviceCardViewModel
 import se.hkr.andriod.ui.screens.devicecard.DeviceScreenUiState
 import androidx.lifecycle.ViewModel
+import se.hkr.andriod.domain.model.device.Device
 
 class LockViewModel(
-    private val deviceCardViewModel: DeviceCardViewModel
+    private val deviceCardViewModel: DeviceCardViewModel,
+    device: Device,
 ) : ViewModel() {
 
     // Lock specific UI state

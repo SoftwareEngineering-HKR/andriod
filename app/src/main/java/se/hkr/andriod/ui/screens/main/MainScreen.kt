@@ -10,6 +10,7 @@ import se.hkr.andriod.ui.screens.deviceoverview.DeviceOverviewScreen
 import se.hkr.andriod.ui.screens.settings.SettingsScreen
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -20,10 +21,10 @@ import androidx.navigation.compose.*
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
+import se.hkr.andriod.data.network.DeviceStore
+import se.hkr.andriod.data.network.WebSocketManager
 import se.hkr.andriod.navigation.BottomNavItem
-import se.hkr.andriod.domain.model.device.DeviceType
 import se.hkr.andriod.ui.screens.adddevice.AddDeviceScreen
-import se.hkr.andriod.ui.screens.adddevice.AddDeviceViewModel
 import se.hkr.andriod.ui.screens.devicecard.DeviceHostScreen
 import se.hkr.andriod.ui.screens.scan.ScanScreen
 import se.hkr.andriod.ui.screens.settings.subscreens.AccountInfoScreen
@@ -40,6 +41,9 @@ fun MainScreen(
     onLogout: () -> Unit
 ) {
     val navController = rememberNavController()
+
+    val webSocketManager = remember { WebSocketManager() }
+    val deviceStore = remember { DeviceStore(webSocketManager) }
 
     val items = listOf(
         BottomNavItem.Overview,
@@ -110,20 +114,17 @@ fun MainScreen(
             composable(
                 route = Routes.DEVICE_CARD,
                 arguments = listOf(
-                    navArgument("type") {
-                        type = NavType.StringType
-                    }
+                    navArgument("type") { type = NavType.StringType },
+                    navArgument("id") { type = NavType.StringType }
                 )
             ) { backStackEntry ->
+                val deviceId = backStackEntry.arguments?.getString("id") ?: error("Missing device ID")
 
-                val typeString =
-                    backStackEntry.arguments?.getString("type")
-                        ?: error("Missing device type")
-
-                val deviceType = DeviceType.valueOf(typeString)
+                val device = deviceStore.getDeviceById(deviceId)
+                    ?: error("Device not found: $deviceId")
 
                 DeviceHostScreen(
-                    deviceType,
+                    device = device,
                     onBackClick = { navController.navigateUp() }
                 )
             }

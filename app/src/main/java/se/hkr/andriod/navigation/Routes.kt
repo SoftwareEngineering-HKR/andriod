@@ -1,6 +1,6 @@
 package se.hkr.andriod.navigation
 
-import se.hkr.andriod.domain.model.device.DeviceType
+import se.hkr.andriod.domain.model.device.Device
 
 object Routes {
     const val LOGIN = "login"
@@ -19,10 +19,10 @@ object Routes {
     const val LANGUAGE = "language"
     const val ACCOUNT = "account"
 
-    const val DEVICE_CARD = "device_card/{type}"
+    const val DEVICE_CARD = "device_card/{type}/{id}"
 
-    fun deviceCard(type: DeviceType): String {
-        return "device_card/${type.name}"
+    fun deviceCard(device: Device): String {
+        return "device_card/${device.deviceTypeEnum.name}/${device.id}"
     }
 
     const val ADD_DEVICE = "add_device"

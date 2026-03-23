@@ -2,16 +2,17 @@ package se.hkr.andriod.ui.devices.light
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Lightbulb
-import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import se.hkr.andriod.domain.model.device.Device
 import se.hkr.andriod.ui.screens.devicecard.DeviceCardViewModel
 import se.hkr.andriod.ui.screens.devicecard.DeviceScreenUiState
 
 class LightViewModel(
-    private val deviceCardViewModel: DeviceCardViewModel
+    private val deviceCardViewModel: DeviceCardViewModel,
+    device: Device,
 ) : ViewModel() {
 
     // Light specific UI states

@@ -9,15 +9,12 @@ import androidx.compose.material.icons.filled.Lightbulb
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Sensors
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -59,34 +56,6 @@ fun DeviceOverviewScreen(navController: NavController) {
         )
 
         // Main content
-        // Temporary buttons for the lock and light
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 8.dp),
-            contentAlignment = Alignment.TopCenter
-        ) {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                Button(
-                    onClick = {
-                        navController.navigate(Routes.deviceCard(DeviceType.LOCK))
-                    }
-                ) {
-                    Text("Open Lock")
-                }
-
-                Button(
-                    onClick = {
-                        navController.navigate(Routes.deviceCard(DeviceType.LIGHT))
-                    }
-                ) {
-                    Text("Open Light")
-                }
-            }
-        }
-
         // Search bar Todo: Implement functionality
         AppTextField(
             value = search.value,
@@ -119,10 +88,16 @@ fun DeviceOverviewScreen(navController: NavController) {
                             MockDevices.kitchen.id -> "Kitchen"
                             else -> "Unknown Room"
                         },
-                        isOnline = true, // Todo: Use real offline/online state
-                        icon = icon
+                        isOnline = device.online,
+                        icon = when (device.deviceTypeEnum) {
+                            DeviceType.LIGHT -> Icons.Default.Lightbulb
+                            DeviceType.LOCK -> Icons.Default.Lock
+                            DeviceType.SENSOR -> Icons.Default.Sensors
+                        }
                     ),
-                    onClick = { /* Todo: Navigate to device card */ },
+                    onClick = {
+                        navController.navigate(Routes.deviceCard(device))
+                    },
                     onSwitchToggle = { /* Todo: Add functionality */ },
                     elevation = 2.dp
                 )

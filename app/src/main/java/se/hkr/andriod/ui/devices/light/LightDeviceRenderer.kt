@@ -13,7 +13,8 @@ fun LightDeviceRenderer(
     // Brightness control
     BrightnessComponent(
         value = state.brightness,
-        onValueChange = viewModel::setBrightness
+        onValueChange = viewModel::setBrightness,
+        onValueChangeFinished = { viewModel.commitBrightness() }
     )
 
     // Color control
@@ -21,5 +22,4 @@ fun LightDeviceRenderer(
         hue = state.hue,
         onColorSelected = viewModel::setHue
     )
-
 }

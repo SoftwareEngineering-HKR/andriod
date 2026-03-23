@@ -67,17 +67,23 @@ fun DeviceCardItem(
             Spacer(modifier = Modifier.width(16.dp))
 
             Column(modifier = Modifier.weight(1f)) {
+                // Display name
                 Text(
                     text = device.displayName,
                     style = MaterialTheme.typography.titleMedium
                 )
 
+                // Room + online status
                 Row {
-                    Text(
-                        text = device.room ?: "Unknown Room",
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                    Text(" - ", style = MaterialTheme.typography.bodyMedium)
+                    device.displayRoom?.let { roomText ->
+                        Text(
+                            text = roomText,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                        Text(" - ", style = MaterialTheme.typography.bodyMedium)
+                    }
+
+                    // Always show online/offline status
                     Text(
                         text = stringResource(
                             if (device.online) R.string.device_online else R.string.device_offline

@@ -5,19 +5,14 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Lightbulb
-import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Sensors
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -27,19 +22,21 @@ import se.hkr.andriod.ui.components.AppHomeTopBar
 import se.hkr.andriod.ui.components.ScanDevicesModal
 import se.hkr.andriod.ui.theme.lightBlue
 import androidx.navigation.NavController
-import se.hkr.andriod.data.mock.MockDevices
-import se.hkr.andriod.domain.model.device.DeviceType
+import se.hkr.andriod.data.network.ConnectionManager
 import se.hkr.andriod.navigation.Routes
 import se.hkr.andriod.ui.components.AppTextField
 import se.hkr.andriod.ui.components.DeviceCardItem
-import se.hkr.andriod.ui.components.DeviceItemModel
 
 @Composable
-fun DeviceOverviewScreen(navController: NavController) {
+fun DeviceOverviewScreen(
+    navController: NavController,
+    connectionManager: ConnectionManager
+) {
     var showAddSheet by remember { mutableStateOf(false) }
     var showScanModal by remember { mutableStateOf(false) }
 
-    val devices = MockDevices.allDevices
+    val devices by connectionManager.deviceStore.devices.collectAsState()
+
     val search = remember { mutableStateOf("") }
 
     // Todo: use the real offline/online count
@@ -59,34 +56,6 @@ fun DeviceOverviewScreen(navController: NavController) {
         )
 
         // Main content
-        // Temporary buttons for the lock and light
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 8.dp),
-            contentAlignment = Alignment.TopCenter
-        ) {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                Button(
-                    onClick = {
-                        navController.navigate(Routes.deviceCard(DeviceType.LOCK))
-                    }
-                ) {
-                    Text("Open Lock")
-                }
-
-                Button(
-                    onClick = {
-                        navController.navigate(Routes.deviceCard(DeviceType.LIGHT))
-                    }
-                ) {
-                    Text("Open Light")
-                }
-            }
-        }
-
         // Search bar Todo: Implement functionality
         AppTextField(
             value = search.value,
@@ -100,30 +69,16 @@ fun DeviceOverviewScreen(navController: NavController) {
 
         // Scrollable list of device cards
         LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
+            modifier = Modifier.fillMaxSize()
         ) {
-            items(devices) { device ->
-                val icon = when (device.type) {
-                    DeviceType.LIGHT -> Icons.Default.Lightbulb
-                    DeviceType.LOCK -> Icons.Default.Lock
-                    DeviceType.SENSOR -> Icons.Default.Sensors
-                }
-
+            items(devices.filter { it.displayName.contains(search.value, ignoreCase = true) }) { device ->
                 DeviceCardItem(
-                    device = DeviceItemModel(
-                        id = device.id.toString(),
-                        name = device.name,
-                        room = when (device.roomId) {
-                            MockDevices.livingRoom.id -> "Living Room"
-                            MockDevices.kitchen.id -> "Kitchen"
-                            else -> "Unknown Room"
-                        },
-                        isOnline = true, // Todo: Use real offline/online state
-                        icon = icon
-                    ),
-                    onClick = { /* Todo: Navigate to device card */ },
-                    onSwitchToggle = { /* Todo: Add functionality */ },
+                    device = device,
+                    onClick = { navController.navigate(Routes.deviceCard(device)) },
+                    onSwitchToggle = { isOn ->
+                        val value = if (isOn) device.maxValue else device.minValue
+                        connectionManager.updateDeviceValue(device.id, value)
+                    },
                     elevation = 2.dp
                 )
             }

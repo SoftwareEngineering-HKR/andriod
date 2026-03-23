@@ -14,6 +14,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,10 +35,16 @@ import se.hkr.andriod.ui.theme.lightBlue
 @Composable
 fun SettingsScreen(
     navController: NavController,
+    connectionManager: ConnectionManager,
     onLogoutClicked: () -> Unit
 ) {
     var discoveredIp: String? by remember { mutableStateOf("Not connected") }
-    val connectionManager = remember { ConnectionManager() }
+
+    val devices by connectionManager.deviceStore.devices.collectAsState()
+
+    LaunchedEffect(devices) {
+        Log.d("DEVICE_STORE", "Current devices: $devices")
+    }
 
     Box(
         modifier = Modifier
@@ -129,34 +137,6 @@ fun SettingsScreen(
                     style = MaterialTheme.typography.bodyMedium,
                     textAlign = TextAlign.Center,
                 )
-            }
-
-            // Test Message button
-            item {
-                Spacer(modifier = Modifier.height(16.dp))
-                Box(
-                    modifier = Modifier.fillMaxWidth(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    AppButton(
-                        text = "Test Message",
-                        onClick = {
-                            val testMessage = """
-                            {
-                                "type": "update value",
-                                "payload": {
-                                    "id": "deviceTest2",
-                                    "value": 1000
-                                }
-                            }
-                        """.trimIndent()
-
-                            connectionManager.sendMessage(testMessage)
-                            Log.d("TEST_MESSAGE", "Sent test message: $testMessage")
-                        },
-                        modifier = Modifier.width(160.dp)
-                    )
-                }
             }
         }
     }

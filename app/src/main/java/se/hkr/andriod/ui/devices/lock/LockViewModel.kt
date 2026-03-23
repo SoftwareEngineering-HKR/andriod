@@ -1,16 +1,15 @@
 package se.hkr.andriod.ui.devices.lock
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Lock
+import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import se.hkr.andriod.domain.model.device.Device
 import se.hkr.andriod.ui.screens.devicecard.DeviceCardViewModel
-import se.hkr.andriod.ui.screens.devicecard.DeviceScreenUiState
-import androidx.lifecycle.ViewModel
 
 class LockViewModel(
-    private val deviceCardViewModel: DeviceCardViewModel
+    private val deviceCardViewModel: DeviceCardViewModel,
+    device: Device
 ) : ViewModel() {
 
     // Lock specific UI state
@@ -25,16 +24,8 @@ class LockViewModel(
     val lockState: StateFlow<LockUiState> = _lockState
 
     init {
-        deviceCardViewModel.setTemplateState(
-            DeviceScreenUiState(
-                deviceName = "Front Door Lock",
-                roomName = "Entrance",
-                isOnline = true,
-                icon = Icons.Rounded.Lock,
-                scheduleExpanded = false,
-                lastUpdatedText = "Last updated 1 minute ago"
-            )
-        )
+        // Connect the actual device to the DeviceCardViewModel
+        deviceCardViewModel.setDevice(device)
     }
 
     // Toggle locked / unlocked
@@ -56,9 +47,8 @@ class LockViewModel(
         }
     }
 
-    // Batter update (later)
+    // Battery update (later)
     fun updateBattery(percent: Int) {
         _lockState.update { it.copy(batteryPercent = percent) }
     }
-
 }

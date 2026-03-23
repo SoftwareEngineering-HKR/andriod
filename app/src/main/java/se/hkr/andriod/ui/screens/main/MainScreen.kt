@@ -10,6 +10,7 @@ import se.hkr.andriod.ui.screens.deviceoverview.DeviceOverviewScreen
 import se.hkr.andriod.ui.screens.settings.SettingsScreen
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -20,10 +21,9 @@ import androidx.navigation.compose.*
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
+import se.hkr.andriod.data.network.ConnectionManager
 import se.hkr.andriod.navigation.BottomNavItem
-import se.hkr.andriod.domain.model.device.DeviceType
 import se.hkr.andriod.ui.screens.adddevice.AddDeviceScreen
-import se.hkr.andriod.ui.screens.adddevice.AddDeviceViewModel
 import se.hkr.andriod.ui.screens.devicecard.DeviceHostScreen
 import se.hkr.andriod.ui.screens.scan.ScanScreen
 import se.hkr.andriod.ui.screens.settings.subscreens.AccountInfoScreen
@@ -40,6 +40,8 @@ fun MainScreen(
     onLogout: () -> Unit
 ) {
     val navController = rememberNavController()
+
+    val connectionManager = remember { ConnectionManager() }
 
     val items = listOf(
         BottomNavItem.Overview,
@@ -100,7 +102,10 @@ fun MainScreen(
         ) {
 
             composable(Routes.DEVICE_OVERVIEW) {
-                DeviceOverviewScreen(navController)
+                DeviceOverviewScreen(
+                    navController = navController,
+                    connectionManager = connectionManager
+                )
             }
 
             composable(Routes.DEVICE_MANAGEMENT) {
@@ -110,27 +115,22 @@ fun MainScreen(
             composable(
                 route = Routes.DEVICE_CARD,
                 arguments = listOf(
-                    navArgument("type") {
-                        type = NavType.StringType
-                    }
+                    navArgument("type") { type = NavType.StringType },
+                    navArgument("id") { type = NavType.StringType }
                 )
             ) { backStackEntry ->
-
-                val typeString =
-                    backStackEntry.arguments?.getString("type")
-                        ?: error("Missing device type")
-
-                val deviceType = DeviceType.valueOf(typeString)
+                val deviceId = backStackEntry.arguments?.getString("id") ?: error("Missing device ID")
+                val device = connectionManager.deviceStore.getDeviceById(deviceId)
+                    ?: error("Device not found: $deviceId")
 
                 DeviceHostScreen(
-                    deviceType,
+                    device = device,
+                    connectionManager = connectionManager,
                     onBackClick = { navController.navigateUp() }
                 )
             }
 
-            composable(
-                route = Routes.SCAN
-            ) {
+            composable(Routes.SCAN) {
                 ScanScreen(
                     viewModel = viewModel(),
                     navController = navController,
@@ -138,9 +138,7 @@ fun MainScreen(
                 )
             }
 
-            composable(
-                route = Routes.ADD_DEVICE
-            ) {
+            composable(Routes.ADD_DEVICE) {
                 AddDeviceScreen(
                     viewModel = viewModel(),
                     onBackClick = { navController.navigateUp() }
@@ -156,6 +154,7 @@ fun MainScreen(
                 composable(Routes.SETTINGS) {
                     SettingsScreen(
                         navController = navController,
+                        connectionManager = connectionManager,
                         onLogoutClicked = onLogout
                     )
                 }

@@ -8,14 +8,13 @@ class WebSocketManager {
     private val client = OkHttpClient()
     private var webSocket: WebSocket? = null
 
+    private val messageListeners = mutableListOf<(String) -> Unit>()
 
     fun connect(ip: String, port: Int = 8080) {
         val url = "ws://$ip:$port"
         Log.d("WEBSOCKET", "Connecting to $url")
 
-        val request = Request.Builder()
-            .url(url)
-            .build()
+        val request = Request.Builder().url(url).build()
 
         webSocket = client.newWebSocket(request, object : WebSocketListener() {
 
@@ -25,6 +24,7 @@ class WebSocketManager {
 
             override fun onMessage(webSocket: WebSocket, text: String) {
                 Log.d("WEBSOCKET", "Received: $text")
+                messageListeners.forEach { it(text) }
             }
 
             override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
@@ -53,5 +53,14 @@ class WebSocketManager {
     fun disconnect() {
         webSocket?.close(1000, "App closed")
         webSocket = null
+    }
+
+    // Allow external classes to listen for messages
+    fun addMessageListener(listener: (String) -> Unit) {
+        messageListeners.add(listener)
+    }
+
+    fun removeMessageListener(listener: (String) -> Unit) {
+        messageListeners.remove(listener)
     }
 }

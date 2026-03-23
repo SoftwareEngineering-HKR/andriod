@@ -6,23 +6,20 @@ enum class UserRole(
 
     BASE(
         setOf(
-        )
-    ),
-
-    DEVICE_MANAGER(
-        setOf(
-            Permission.ADD_ROOM,
-            Permission.REMOVE_ROOM,
-            Permission.RENAME_ROOM,
-            Permission.ADD_DEVICE,
-            Permission.REMOVE_DEVICE,
-            Permission.RENAME_DEVICE,
-            Permission.MOVE_DEVICE,
-            Permission.MANAGE_SCHEDULES,
+            // minimal permissions for normal users
         )
     ),
 
     ADMIN(
-        Permission.entries.toSet()
-    )
+        Permission.entries.toSet() // all permissions
+    );
+
+    companion object {
+        fun fromBackendType(type: String): UserRole {
+            return when (type.lowercase()) {
+                "admin" -> ADMIN
+                else -> BASE
+            }
+        }
+    }
 }

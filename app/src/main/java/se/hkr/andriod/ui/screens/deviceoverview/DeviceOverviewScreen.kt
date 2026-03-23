@@ -82,18 +82,14 @@ fun DeviceOverviewScreen(navController: NavController) {
                 DeviceCardItem(
                     device = DeviceItemModel(
                         id = device.id.toString(),
-                        name = device.name ?: "Unknown Device",
-                        room = when (device.room) {
+                        name = device.displayName,
+                        room = when (device.room) { // Temporary hard coding until RoomStore is implemented.
                             MockDevices.livingRoom.id -> "Living Room"
                             MockDevices.kitchen.id -> "Kitchen"
                             else -> "Unknown Room"
                         },
                         isOnline = device.online,
-                        icon = when (device.deviceTypeEnum) {
-                            DeviceType.LIGHT -> Icons.Default.Lightbulb
-                            DeviceType.LOCK -> Icons.Default.Lock
-                            DeviceType.SENSOR -> Icons.Default.Sensors
-                        }
+                        icon = icon,
                     ),
                     onClick = {
                         navController.navigate(Routes.deviceCard(device))

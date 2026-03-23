@@ -29,9 +29,9 @@ class LockViewModel(
     init {
         deviceCardViewModel.setTemplateState(
             DeviceScreenUiState(
-                deviceName = "Front Door Lock",
-                roomName = "Entrance",
-                isOnline = true,
+                deviceName = device.displayName,
+                roomName = device.room ?: "Unknown Room", // Showing roomId instead of name for now. Will display real name once RoomStore is implemented.
+                isOnline = device.online,
                 icon = Icons.Rounded.Lock,
                 scheduleExpanded = false,
                 lastUpdatedText = "Last updated 1 minute ago"

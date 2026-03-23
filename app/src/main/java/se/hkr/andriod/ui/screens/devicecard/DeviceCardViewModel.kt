@@ -10,8 +10,8 @@ import kotlinx.coroutines.flow.StateFlow
 // Template data
 data class DeviceScreenUiState(
     val deviceId: String = "",
-    val deviceName: String = "Device Name",
-    val roomName: String = "Room",
+    val deviceName: String = "Unknown Device",
+    val roomName: String = "Unknown Room",
     val isOnline: Boolean = true,
     val icon: ImageVector = Icons.Rounded.QuestionMark,
     val scheduleExpanded: Boolean = false,

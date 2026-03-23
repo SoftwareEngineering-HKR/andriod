@@ -31,7 +31,7 @@ fun DeviceHostScreen(
 
             DeviceType.LIGHT -> {
                 val lightViewModel = remember(deviceCardViewModel) {
-                    LightViewModel(deviceCardViewModel, device)
+                    LightViewModel(deviceCardViewModel, device, connectionManager)
                 }
                 LightDeviceRenderer(lightViewModel)
             }

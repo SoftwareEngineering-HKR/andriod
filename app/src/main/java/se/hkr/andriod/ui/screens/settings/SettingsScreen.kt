@@ -35,13 +35,13 @@ import se.hkr.andriod.ui.theme.lightBlue
 @Composable
 fun SettingsScreen(
     navController: NavController,
+    connectionManager: ConnectionManager,
     onLogoutClicked: () -> Unit
 ) {
     var discoveredIp: String? by remember { mutableStateOf("Not connected") }
-    val connectionManager = remember { ConnectionManager() }
 
-    // Temporary for testing of the deviceStore
     val devices by connectionManager.deviceStore.devices.collectAsState()
+
     LaunchedEffect(devices) {
         Log.d("DEVICE_STORE", "Current devices: $devices")
     }
@@ -137,31 +137,6 @@ fun SettingsScreen(
                     style = MaterialTheme.typography.bodyMedium,
                     textAlign = TextAlign.Center,
                 )
-            }
-
-            // Test Message button
-            item {
-                Spacer(modifier = Modifier.height(16.dp))
-                Box(
-                    modifier = Modifier.fillMaxWidth(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    AppButton(
-                        text = "Test Message",
-                        onClick = {
-                            val testDeviceId = "deviceTest2"
-                            val testValue = 250
-
-                            connectionManager.updateDeviceValue(testDeviceId, testValue)
-
-                            Log.d(
-                                "TEST_MESSAGE",
-                                "Sent test update for device $testDeviceId : value $testValue"
-                            )
-                        },
-                        modifier = Modifier.width(160.dp)
-                    )
-                }
             }
         }
     }

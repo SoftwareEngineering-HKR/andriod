@@ -34,8 +34,8 @@ fun DeviceOverviewScreen(
 ) {
     var showAddSheet by remember { mutableStateOf(false) }
     var showScanModal by remember { mutableStateOf(false) }
-    val deviceStore = remember { connectionManager.deviceStore }
-    val devices by deviceStore.devices.collectAsState()
+
+    val devices by connectionManager.deviceStore.devices.collectAsState()
 
     val search = remember { mutableStateOf("") }
 
@@ -69,18 +69,15 @@ fun DeviceOverviewScreen(
 
         // Scrollable list of device cards
         LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
+            modifier = Modifier.fillMaxSize()
         ) {
             items(devices.filter { it.displayName.contains(search.value, ignoreCase = true) }) { device ->
                 DeviceCardItem(
                     device = device,
-                    onClick = {
-                        navController.navigate(Routes.deviceCard(device))
-                    },
+                    onClick = { navController.navigate(Routes.deviceCard(device)) },
                     onSwitchToggle = { isOn ->
                         val value = if (isOn) device.maxValue else device.minValue
-                        deviceStore.updateDeviceValue(device.id, value)
+                        connectionManager.updateDeviceValue(device.id, value)
                     },
                     elevation = 2.dp
                 )

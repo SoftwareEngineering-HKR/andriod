@@ -22,8 +22,6 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import se.hkr.andriod.data.network.ConnectionManager
-import se.hkr.andriod.data.network.DeviceStore
-import se.hkr.andriod.data.network.WebSocketManager
 import se.hkr.andriod.navigation.BottomNavItem
 import se.hkr.andriod.ui.screens.adddevice.AddDeviceScreen
 import se.hkr.andriod.ui.screens.devicecard.DeviceHostScreen
@@ -43,8 +41,6 @@ fun MainScreen(
 ) {
     val navController = rememberNavController()
 
-    val webSocketManager = remember { WebSocketManager() }
-    val deviceStore = remember { DeviceStore(webSocketManager) }
     val connectionManager = remember { ConnectionManager() }
 
     val items = listOf(
@@ -124,19 +120,17 @@ fun MainScreen(
                 )
             ) { backStackEntry ->
                 val deviceId = backStackEntry.arguments?.getString("id") ?: error("Missing device ID")
-
-                val device = deviceStore.getDeviceById(deviceId)
+                val device = connectionManager.deviceStore.getDeviceById(deviceId)
                     ?: error("Device not found: $deviceId")
 
                 DeviceHostScreen(
                     device = device,
+                    connectionManager = connectionManager,
                     onBackClick = { navController.navigateUp() }
                 )
             }
 
-            composable(
-                route = Routes.SCAN
-            ) {
+            composable(Routes.SCAN) {
                 ScanScreen(
                     viewModel = viewModel(),
                     navController = navController,
@@ -144,9 +138,7 @@ fun MainScreen(
                 )
             }
 
-            composable(
-                route = Routes.ADD_DEVICE
-            ) {
+            composable(Routes.ADD_DEVICE) {
                 AddDeviceScreen(
                     viewModel = viewModel(),
                     onBackClick = { navController.navigateUp() }
@@ -162,6 +154,7 @@ fun MainScreen(
                 composable(Routes.SETTINGS) {
                     SettingsScreen(
                         navController = navController,
+                        connectionManager = connectionManager,
                         onLogoutClicked = onLogout
                     )
                 }

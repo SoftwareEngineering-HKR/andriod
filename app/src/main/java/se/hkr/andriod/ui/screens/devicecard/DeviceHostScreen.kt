@@ -9,10 +9,12 @@ import se.hkr.andriod.ui.devices.light.LightDeviceRenderer
 import se.hkr.andriod.ui.devices.light.LightViewModel
 import se.hkr.andriod.ui.devices.lock.LockDeviceRenderer
 import se.hkr.andriod.ui.devices.lock.LockViewModel
+import se.hkr.andriod.data.network.ConnectionManager
 
 @Composable
 fun DeviceHostScreen(
     device: Device,
+    connectionManager: ConnectionManager,
     onBackClick: () -> Unit
 ) {
 
@@ -21,6 +23,7 @@ fun DeviceHostScreen(
     DeviceCardScreen(
         device = device,
         viewModel = deviceCardViewModel,
+        connectionManager = connectionManager,
         onBackClick = onBackClick
     ) {
 

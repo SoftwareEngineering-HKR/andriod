@@ -6,14 +6,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import se.hkr.andriod.domain.model.device.Device
 import org.json.JSONObject
-import se.hkr.andriod.data.mock.MockDevices
+import se.hkr.andriod.domain.model.device.Device
 
 class DeviceStore(private val webSocketManager: WebSocketManager) {
 
-    // TEMPORARY Start with mock devices
-    private val _devices = MutableStateFlow<List<Device>>(MockDevices.allDevices)
+    // Start with empty list
+    private val _devices = MutableStateFlow<List<Device>>(emptyList())
     val devices: StateFlow<List<Device>> get() = _devices
 
     // Coroutine scope for updates
@@ -56,7 +55,7 @@ class DeviceStore(private val webSocketManager: WebSocketManager) {
         if (deviceId.isEmpty() || newValue == -1) return
 
         val updatedList = _devices.value.map { device ->
-            if (device.id.toString() == deviceId) device.copy(value = newValue) else device
+            if (device.id == deviceId) device.copy(value = newValue) else device
         }
 
         scope.launch { _devices.value = updatedList }
@@ -83,5 +82,5 @@ class DeviceStore(private val webSocketManager: WebSocketManager) {
     }
 
     // Get a device by ID
-    fun getDeviceById(id: String): Device? = _devices.value.find { it.id.toString() == id }
+    fun getDeviceById(id: String): Device? = _devices.value.find { it.id == id }
 }

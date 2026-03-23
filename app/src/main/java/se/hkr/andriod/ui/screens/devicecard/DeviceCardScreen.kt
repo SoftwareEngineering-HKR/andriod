@@ -14,11 +14,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.CalendarToday
 import androidx.compose.material.icons.rounded.ExpandLess
 import androidx.compose.material.icons.rounded.ExpandMore
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -29,6 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import se.hkr.andriod.R
 import se.hkr.andriod.domain.model.device.Device
+import se.hkr.andriod.data.network.ConnectionManager
 import se.hkr.andriod.ui.components.DeviceCardItem
 import se.hkr.andriod.ui.components.AppButton
 import se.hkr.andriod.ui.components.CustomScreenHeader
@@ -39,12 +36,17 @@ import se.hkr.andriod.ui.theme.lightBlue
 fun DeviceCardScreen(
     device: Device,
     viewModel: DeviceCardViewModel,
+    connectionManager: ConnectionManager,
     onBackClick: () -> Unit,
 
     // Dynamic device specific content injected from device layer
     deviceComponent: @Composable () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
+
+    // Collect live device from the device store for instant UI updates
+    val devices by connectionManager.deviceStore.devices.collectAsState()
+    val liveDevice = devices.firstOrNull { it.id == device.id } ?: device
 
     Box(
         modifier = Modifier
@@ -60,7 +62,7 @@ fun DeviceCardScreen(
         ) {
             // Screen header with back button
             CustomScreenHeader(
-                title = device.displayName,
+                title = liveDevice.displayName,
                 onBackClick = onBackClick
             )
 
@@ -68,9 +70,10 @@ fun DeviceCardScreen(
 
             // Top device card (icon, name, room, switch)
             DeviceCardItem(
-                device = device,
+                device = liveDevice,
                 onSwitchToggle = { isOn ->
-                    viewModel.updateDeviceValue(device, isOn)
+                    val value = if (isOn) liveDevice.maxValue else liveDevice.minValue
+                    connectionManager.deviceStore.updateDeviceValue(liveDevice.id, value)
                 }
             )
 

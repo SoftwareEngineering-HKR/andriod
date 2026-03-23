@@ -21,6 +21,7 @@ import androidx.navigation.compose.*
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
+import se.hkr.andriod.data.network.ConnectionManager
 import se.hkr.andriod.data.network.DeviceStore
 import se.hkr.andriod.data.network.WebSocketManager
 import se.hkr.andriod.navigation.BottomNavItem
@@ -44,6 +45,7 @@ fun MainScreen(
 
     val webSocketManager = remember { WebSocketManager() }
     val deviceStore = remember { DeviceStore(webSocketManager) }
+    val connectionManager = remember { ConnectionManager() }
 
     val items = listOf(
         BottomNavItem.Overview,
@@ -104,7 +106,10 @@ fun MainScreen(
         ) {
 
             composable(Routes.DEVICE_OVERVIEW) {
-                DeviceOverviewScreen(navController)
+                DeviceOverviewScreen(
+                    navController = navController,
+                    connectionManager = connectionManager
+                )
             }
 
             composable(Routes.DEVICE_MANAGEMENT) {

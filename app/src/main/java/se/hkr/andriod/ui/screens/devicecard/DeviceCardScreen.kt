@@ -28,16 +28,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import se.hkr.andriod.R
+import se.hkr.andriod.domain.model.device.Device
 import se.hkr.andriod.ui.components.DeviceCardItem
-import se.hkr.andriod.ui.components.DeviceItemModel
 import se.hkr.andriod.ui.components.AppButton
 import se.hkr.andriod.ui.components.CustomScreenHeader
 import se.hkr.andriod.ui.theme.cardBackground
 import se.hkr.andriod.ui.theme.lightBlue
 
-
 @Composable
 fun DeviceCardScreen(
+    device: Device,
     viewModel: DeviceCardViewModel,
     onBackClick: () -> Unit,
 
@@ -45,11 +45,6 @@ fun DeviceCardScreen(
     deviceComponent: @Composable () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
-
-    // Device online/offline text
-    val onlineText = stringResource(
-        if (uiState.isOnline) R.string.device_online else R.string.device_offline
-    )
 
     Box(
         modifier = Modifier
@@ -65,7 +60,7 @@ fun DeviceCardScreen(
         ) {
             // Screen header with back button
             CustomScreenHeader(
-                title = uiState.deviceName,
+                title = device.displayName,
                 onBackClick = onBackClick
             )
 
@@ -73,14 +68,10 @@ fun DeviceCardScreen(
 
             // Top device card (icon, name, room, switch)
             DeviceCardItem(
-                device = DeviceItemModel(
-                    id = uiState.deviceId,
-                    name = uiState.deviceName,
-                    room = uiState.roomName,
-                    isOnline = uiState.isOnline,
-                    icon = uiState.icon
-                ),
-                onSwitchToggle = { viewModel.toggleDevice(it) }
+                device = device,
+                onSwitchToggle = { isOn ->
+                    viewModel.updateDeviceValue(device, isOn)
+                }
             )
 
             Spacer(modifier = Modifier.height(16.dp))

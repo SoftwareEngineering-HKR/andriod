@@ -19,6 +19,7 @@ fun DeviceHostScreen(
     val deviceCardViewModel: DeviceCardViewModel = viewModel()
 
     DeviceCardScreen(
+        device = device,
         viewModel = deviceCardViewModel,
         onBackClick = onBackClick
     ) {

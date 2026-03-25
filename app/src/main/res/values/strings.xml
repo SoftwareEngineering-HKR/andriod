@@ -97,5 +97,6 @@
     <string name="devices_in_room">Devices in room</string>
     <string name="remove">Remove</string>
     <string name="add_device_to_room">Add device to room</string>
+    <string name="cancel">Cancel</string>
 
 </resources>

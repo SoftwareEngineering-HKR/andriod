@@ -161,7 +161,12 @@ fun MainScreen(
 
                 composable(Routes.USERS) { UsersScreen() }
                 composable(Routes.DEVICES) { DevicesScreen() }
-                composable(Routes.ROOMS) { RoomsScreen() }
+                composable(Routes.ROOMS) {
+                    RoomsScreen(
+                        viewModel = viewModel(),
+                        onBackClick = { navController.navigateUp() }
+                    )
+                }
                 composable(Routes.SCHEDULES) { SchedulesScreen() }
                 composable(Routes.LANGUAGE) { LanguageScreen() }
                 composable(Routes.ACCOUNT) { AccountInfoScreen() }

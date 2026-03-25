@@ -92,4 +92,10 @@
     <string name="device_type_light">Light</string>
     <string name="device_type_lock">Lock</string>
 
+    <!-- Settings -->
+    <string name="rooms">Rooms</string>
+    <string name="devices_in_room">Devices in room</string>
+    <string name="remove">Remove</string>
+    <string name="add_device_to_room">Add device to room</string>
+
 </resources>

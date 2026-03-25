@@ -92,4 +92,20 @@
     <string name="device_type_light">Light</string>
     <string name="device_type_lock">Lock</string>
 
+    <!-- Settings -->
+    <string name="rooms">Rooms</string>
+    <string name="devices_in_room">Devices in room</string>
+    <string name="remove">Remove</string>
+    <string name="add_device_to_room">Add device to room</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete">Delete</string>
+    <string name="delete_room">Delete room</string>
+    <string name="delete_room_confirmation">Are you sure you want to delete this room?</string>
+    <string name="create_room">Create room</string>
+    <string name="create">Create</string>
+    <string name="room_name">Room name</string>
+    <string name="rename_room">Rename room</string>
+    <string name="rename">Rename</string>
+    <string name="new_name">New name</string>
+
 </resources>

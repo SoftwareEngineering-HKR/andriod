@@ -49,7 +49,12 @@ class RoomsViewModel : ViewModel() {
     }
 
     fun showRenameDialog() {
-        _uiState.value = _uiState.value.copy(showRenameDialog = true, inputText = "")
+        _uiState.update {
+            it.copy(
+                showRenameDialog = true,
+                inputText = it.selectedRoom ?: ""
+            )
+        }
     }
 
     fun showDeleteDialog() {

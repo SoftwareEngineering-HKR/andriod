@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- TODO Check translation whether it's correct -->
+
+    <string name="app_name">Interaktivt Hem</string>
+
+    <!-- Log in -->
+    <string name="home_icon_description">Hemikon</string>
+    <string name="login_subtitle">Logga in för att styra dina enheter</string>
+    <string name="email_label">E-post</string>
+    <string name="password_label">Lösenord</string>
+    <string name="email_placeholder">exempel@email.com</string>
+    <string name="password_placeholder">••••••••</string>
+    <string name="sign_in_button">Logga in</string>
+    <string name="sign_up_button">Registrera</string>
+    <string name="dont_have_account_text">Har du inget konto?</string>
+    <string name="error_email_empty">E-post får inte vara tom</string>
+    <string name="error_password_short">Lösenordet måste vara minst 8 tecken</string>
+    <string name="signing_in">Loggar in...</string>
+
+    <!-- Sign up -->
+    <string name="sign_up_subtitle">Gå med i Interaktivt Hem</string>
+    <string name="name_label">Fullständigt namn</string>
+    <string name="name_placeholder">Erik Andersson</string>
+    <string name="password_helper_text">Minst 8 tecken</string>
+    <string name="confirm_password_label">Bekräfta lösenord</string>
+    <string name="signing_up">Skapar konto...</string>
+    <string name="already_have_account_text">Har du redan ett konto?</string>
+    <string name="error_name_empty">Namnet får inte vara tomt</string>
+    <string name="error_passwords_do_not_match">Lösenorden matchar inte</string>
+
+    <!-- Device overview -->
+    <string name="device_overview">Enhetsöversikt</string>
+
+    <!-- Device management -->
+    <string name="device_management">Enhetshantering</string>
+
+    <!-- Add device bottom sheet -->
+    <string name="would_you_like_to">Vad vill du göra?</string>
+    <string name="scan_for_devices">Sök efter enheter</string>
+    <string name="add_a_device">Lägg till enhet</string>
+    <string name="create_a_room">Skapa rum</string>
+
+    <!-- Home top bar -->
+    <string name="device_status">%1$d online / %2$d offline</string>
+    <string name="add_icon_description">Lägg till</string>
+
+    <!-- Scan for devices -->
+    <string name="scan_devices_loading">Söker efter enheter...</string>
+    <string name="no_new_devices_found">Inga nya enheter hittades</string>
+    <string name="found_new_devices">Hittade %1$d nya enhet(er)</string>
+    <string name="close_button">Stäng</string>
+    <string name="devices_hint">Se till att enheterna är nära och påslagna.</string>
+    <string name="retry">Försök igen</string>
+    <string name="retrying">Försöker igen...</string>
+    <string name="manual_add">Lägg till manuellt</string>
+
+    <!-- Device Card -->
+    <string name="device_control">Kontroll</string>
+    <string name="device_schedule">Schema</string>
+    <string name="device_online">Online</string>
+    <string name="device_offline">Offline</string>
+    <string name="device_last_updated">%1$s</string>
+    <string name="no_schedules_configured">Inga scheman inställda</string>
+    <string name="add_new_schedule">+ Lägg till schema</string>
+
+    <!-- Mock Device -->
+    <string name="brightness">Ljusstyrka</string>
+    <string name="color">Färg</string>
+    <string name="preset_warm">Varm</string>
+    <string name="preset_neutral">Neutral</string>
+    <string name="preset_cool">Kall</string>
+
+    <string name="lock_state_locked">Låst</string>
+    <string name="lock_state_unlocked">Upplåst</string>
+    <string name="lock_swipe_to_unlock">Svep för att låsa upp</string>
+    <string name="lock_swipe_to_lock">Svep för att låsa</string>
+    <string name="auto_lock">Automatisk låsning</string>
+    <string name="auto_lock_off">Av</string>
+    <string name="lock_passcode_title">Kod</string>
+    <string name="lock_passcode_description">Hantera åtkomstkod</string>
+
+    <!-- Add Device -->
+    <string name="add_device">Lägg till enhet</string>
+    <string name="device_information">Enhetsinformation</string>
+    <string name="device_type">Enhetstyp</string>
+    <string name="connection_type">Anslutningstyp</string>
+    <string name="device_name">Enhetsnamn</string>
+    <string name="connection_wifi">Wi-Fi</string>
+    <string name="connection_bluetooth">Bluetooth</string>
+    <string name="room">Rum</string>
+    <string name="add_room">Lägg till rum</string>
+
+    <!-- Devices -->
+    <string name="device_type_light">Lampa</string>
+    <string name="device_type_lock">Lås</string>
+
+    <!-- Settings - Rooms -->
+    <string name="rooms">Rum</string>
+    <string name="devices_in_room">Enheter i rummet</string>
+    <string name="remove">Ta bort</string>
+    <string name="add_device_to_room">Lägg till enhet i rum</string>
+    <string name="cancel">Avbryt</string>
+    <string name="delete">Ta bort</string>
+    <string name="delete_room">Ta bort rum</string>
+    <string name="delete_room_confirmation">Är du säker på att du vill ta bort detta rum?</string>
+    <string name="create_room">Skapa rum</string>
+    <string name="create">Skapa</string>
+    <string name="room_name">Rumsnamn</string>
+    <string name="rename_room">Byt namn på rum</string>
+    <string name="rename">Byt namn</string>
+    <string name="new_name">Nytt namn</string>
+
+    <!-- Settings - Language -->
+    <string name="language">Språk</string>
+    <string name="choose_language">Välj språk</string>
+    <string name="save">Spara</string>
+    <string name="saving">Sparar...</string>
+    <string name="language_swedish_native">Svenska</string>
+    <string name="language_swedish_display">Svenska</string>
+    <string name="language_english_native">English</string>
+    <string name="language_english_display">Engelska</string>
+    <string name="language_hungarian_native">Magyar</string>
+    <string name="language_hungarian_display">Ungerska</string>
+
+</resources>

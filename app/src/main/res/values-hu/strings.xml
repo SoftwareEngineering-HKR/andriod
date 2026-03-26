@@ -1,16 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">Interaktív Otthon</string>
+
+    <!-- Log in -->
+    <string name="home_icon_description">Főoldal ikon</string>
+    <string name="login_subtitle">Jelentkezz be az eszközeid vezérléséhez</string>
+    <string name="email_label">Email</string>
+    <string name="password_label">Jelszó</string>
+    <string name="email_placeholder">pelda@email.com</string>
+    <string name="password_placeholder">••••••••</string>
+    <string name="sign_in_button">Bejelentkezés</string>
+    <string name="sign_up_button">Regisztráció</string>
+    <string name="dont_have_account_text">Nincs még fiókod?</string>
+    <string name="error_email_empty">Az email nem lehet üres</string>
+    <string name="error_password_short">A jelszónak legalább 8 karakter hosszúnak kell lennie</string>
+    <string name="signing_in">Bejelentkezés...</string>
+
+    <!-- Sign up -->
+    <string name="sign_up_subtitle">Csatlakozz az Interaktív Otthonhoz</string>
+    <string name="name_label">Teljes név</string>
+    <string name="name_placeholder">Teszt Elek</string>
+    <string name="password_helper_text">Legalább 8 karakter</string>
+    <string name="confirm_password_label">Jelszó megerősítése</string>
+    <string name="signing_up">Fiók létrehozása...</string>
+    <string name="already_have_account_text">Már van fiókod?</string>
+    <string name="error_name_empty">A név nem lehet üres</string>
+    <string name="error_passwords_do_not_match">A jelszavak nem egyeznek</string>
+
+    <!-- Device overview -->
+    <string name="device_overview">Eszközök áttekintése</string>
+
+    <!-- Device management -->
+    <string name="device_management">Eszközkezelés</string>
+
+    <!-- Add device bottom sheet -->
+    <string name="would_you_like_to">Mit szeretnél tenni?</string>
+    <string name="scan_for_devices">Eszközök keresése</string>
+    <string name="add_a_device">Eszköz hozzáadása</string>
+    <string name="create_a_room">Szoba létrehozása</string>
+
+    <!-- Home top bar -->
+    <string name="device_status">%1$d online / %2$d offline</string>
+    <string name="add_icon_description">Hozzáadás</string>
+
+    <!-- Scan for devices -->
+    <string name="scan_devices_loading">Eszközök keresése...</string>
+    <string name="no_new_devices_found">Nem található új eszköz</string>
+    <string name="found_new_devices">%1$d új eszköz található</string>
+    <string name="close_button">Bezárás</string>
+    <string name="devices_hint">Győződj meg róla, hogy az eszközök a közelben vannak és be vannak kapcsolva.</string>
+    <string name="retry">Újrapróbálás</string>
+    <string name="retrying">Újrapróbálás...</string>
+    <string name="manual_add">Kézi hozzáadás</string>
+
+    <!-- Device Card -->
+    <string name="device_control">Vezérlés</string>
+    <string name="device_schedule">Időzítés</string>
+    <string name="device_online">Online</string>
+    <string name="device_offline">Offline</string>
+    <string name="device_last_updated">%1$s</string>
+    <string name="no_schedules_configured">Nincs beállított időzítés</string>
+    <string name="add_new_schedule">+ Új időzítés hozzáadása</string>
+
+    <!-- Mock Device -->
+    <string name="brightness">Fényerő</string>
+    <string name="color">Szín</string>
+    <string name="preset_warm">Meleg</string>
+    <string name="preset_neutral">Semleges</string>
+    <string name="preset_cool">Hideg</string>
+
+    <string name="lock_state_locked">Zárolva</string>
+    <string name="lock_state_unlocked">Feloldva</string>
+    <string name="lock_swipe_to_unlock">Húzd el a feloldáshoz</string>
+    <string name="lock_swipe_to_lock">Húzd el a zároláshoz</string>
+    <string name="auto_lock">Automatikus zárolás</string>
+    <string name="auto_lock_off">Kikapcsolva</string>
+    <string name="lock_passcode_title">Kód</string>
+    <string name="lock_passcode_description">Hozzáférési kód kezelése</string>
+
+    <!-- Add Device -->
+    <string name="add_device">Eszköz hozzáadása</string>
+    <string name="device_information">Eszköz adatai</string>
+    <string name="device_type">Eszköz típusa</string>
+    <string name="connection_type">Kapcsolat típusa</string>
+    <string name="device_name">Eszköz neve</string>
+    <string name="connection_wifi">Wi-Fi</string>
+    <string name="connection_bluetooth">Bluetooth</string>
+    <string name="room">Szoba</string>
+    <string name="add_room">Szoba hozzáadása</string>
+
+    <!-- Devices -->
+    <string name="device_type_light">Lámpa</string>
+    <string name="device_type_lock">Zár</string>
+
+    <!-- Settings - Rooms -->
+    <string name="rooms">Szobák</string>
+    <string name="devices_in_room">Szobában lévő eszközök</string>
+    <string name="remove">Eltávolítás</string>
+    <string name="add_device_to_room">Eszköz hozzáadása a szobához</string>
+    <string name="cancel">Mégse</string>
+    <string name="delete">Törlés</string>
+    <string name="delete_room">Szoba törlése</string>
+    <string name="delete_room_confirmation">Biztosan törölni szeretnéd ezt a szobát?</string>
+    <string name="create_room">Szoba létrehozása</string>
+    <string name="create">Létrehozás</string>
+    <string name="room_name">Szoba neve</string>
+    <string name="rename_room">Szoba átnevezése</string>
+    <string name="rename">Átnevezés</string>
+    <string name="new_name">Új név</string>
+
+    <!-- Settings - Language -->
     <string name="language">Nyelv</string>
-    <string name="choose_language">Válaszd ki a kívánt nyelvet</string>
+    <string name="choose_language">Nyelv kiválasztása</string>
     <string name="save">Mentés</string>
     <string name="saving">Mentés...</string>
-
+    <string name="language_swedish_native">Svenska</string>
+    <string name="language_swedish_display">Svéd</string>
     <string name="language_english_native">English</string>
     <string name="language_english_display">Angol</string>
-
     <string name="language_hungarian_native">Magyar</string>
     <string name="language_hungarian_display">Magyar</string>
 
-    <string name="language_swedish_native">Svenska</string>
-    <string name="language_swedish_display">Svéd</string>
 </resources>

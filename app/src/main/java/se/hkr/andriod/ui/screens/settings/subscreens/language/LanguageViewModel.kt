@@ -1,5 +1,7 @@
 package se.hkr.andriod.ui.screens.settings.subscreens.language
 
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -54,7 +56,13 @@ class LanguageViewModel(
                 it.copy(isSaving = true)
             }
 
+            val selectedLanguage = state.selectedLanguage
+
             languageStorage.saveLanguage(state.selectedLanguage)
+
+            AppCompatDelegate.setApplicationLocales(
+                LocaleListCompat.forLanguageTags(selectedLanguage.languageTag)
+            )
 
             _uiState.update {
                 it.copy(appliedLanguage = it.selectedLanguage, isSaving = false)

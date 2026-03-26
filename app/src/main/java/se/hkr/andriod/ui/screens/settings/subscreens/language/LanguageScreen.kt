@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import se.hkr.andriod.R
 import se.hkr.andriod.ui.components.AppButton
 import se.hkr.andriod.ui.components.CustomScreenHeader
+import se.hkr.andriod.ui.screens.settings.subscreens.language.components.LanguageOptionItem
 import se.hkr.andriod.ui.theme.cardBackground
 import se.hkr.andriod.ui.theme.lightBlue
 
@@ -69,8 +70,15 @@ fun LanguageScreen(
                     Spacer(modifier = Modifier.height(16.dp))
 
                     uiState.availableLanguages.forEach { language ->
-
-                        }
+                        LanguageOptionItem(
+                            title = stringResource(language.displayNameRes),
+                            subtitle = stringResource(language.nativeNameRes),
+                            selected = uiState.selectedLanguage == language,
+                            onClick = {
+                                viewModel.onLanguageSelected(language)
+                            }
+                        )
+                    }
 
                     Spacer(modifier = Modifier.height(8.dp))
 

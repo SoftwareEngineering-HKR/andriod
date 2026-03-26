@@ -9,7 +9,8 @@ import se.hkr.andriod.data.language.AppLanguage
 data class LanguageUiState(
     val availableLanguages: List<AppLanguage> = listOf(
         AppLanguage.ENGLISH,
-        AppLanguage.HUNGARIAN
+        AppLanguage.HUNGARIAN,
+        AppLanguage.SWEDISH
     ),
     val selectedLanguage: AppLanguage = AppLanguage.ENGLISH,
     val appliedLanguage: AppLanguage = AppLanguage.ENGLISH,

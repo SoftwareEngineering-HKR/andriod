@@ -113,5 +113,11 @@
     <string name="choose_language">Choose language</string>
     <string name="save">Save</string>
     <string name="saving">Saving...</string>
+    <string name="language_swedish_native">Svenska</string>
+    <string name="language_swedish_display">Swedish</string>
+    <string name="language_english_native">English</string>
+    <string name="language_english_display">English</string>
+    <string name="language_hungarian_native">Magyar</string>
+    <string name="language_hungarian_display">Hungarian</string>
 
 </resources>

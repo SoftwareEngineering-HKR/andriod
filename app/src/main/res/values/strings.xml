@@ -92,7 +92,7 @@
     <string name="device_type_light">Light</string>
     <string name="device_type_lock">Lock</string>
 
-    <!-- Settings -->
+    <!-- Settings - Rooms -->
     <string name="rooms">Rooms</string>
     <string name="devices_in_room">Devices in room</string>
     <string name="remove">Remove</string>
@@ -107,5 +107,11 @@
     <string name="rename_room">Rename room</string>
     <string name="rename">Rename</string>
     <string name="new_name">New name</string>
+
+    <!-- Settings - Language -->
+    <string name="language">Language</string>
+    <string name="choose_language">Choose language</string>
+    <string name="save">Save</string>
+    <string name="saving">Saving...</string>
 
 </resources>

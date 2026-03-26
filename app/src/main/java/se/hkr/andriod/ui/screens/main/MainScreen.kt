@@ -168,7 +168,10 @@ fun MainScreen(
                     )
                 }
                 composable(Routes.SCHEDULES) { SchedulesScreen() }
-                composable(Routes.LANGUAGE) { LanguageScreen() }
+                composable(Routes.LANGUAGE) { LanguageScreen(
+                    viewModel = viewModel(),
+                    onBackClick = { navController.navigateUp() }
+                ) }
                 composable(Routes.ACCOUNT) { AccountInfoScreen() }
             }
         }

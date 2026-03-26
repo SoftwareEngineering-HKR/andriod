@@ -7,11 +7,6 @@ import kotlinx.coroutines.flow.update
 import se.hkr.andriod.data.language.AppLanguage
 
 data class LanguageUiState(
-    val availableLanguages: List<AppLanguage> = listOf(
-        AppLanguage.ENGLISH,
-        AppLanguage.HUNGARIAN,
-        AppLanguage.SWEDISH
-    ),
     val selectedLanguage: AppLanguage = AppLanguage.ENGLISH,
     val appliedLanguage: AppLanguage = AppLanguage.ENGLISH,
     val isSaving: Boolean = false
@@ -21,6 +16,8 @@ data class LanguageUiState(
 }
 
 class LanguageViewModel : ViewModel() {
+
+    val availableLanguages = AppLanguage.supportedLanguages
     private val _uiState = MutableStateFlow(LanguageUiState())
     val uiState: StateFlow<LanguageUiState> = _uiState
 
@@ -41,7 +38,7 @@ class LanguageViewModel : ViewModel() {
         }
 
         _uiState.update {
-            it.copy(isSaving = false, appliedLanguage = it.selectedLanguage)
+            it.copy(appliedLanguage = it.selectedLanguage, isSaving = false,)
         }
     }
 }

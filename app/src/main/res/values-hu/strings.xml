@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="language">Nyelv</string>
+    <string name="choose_language">Válaszd ki a kívánt nyelvet</string>
+    <string name="save">Mentés</string>
+    <string name="saving">Mentés...</string>
+
+    <string name="language_english_native">English</string>
+    <string name="language_english_display">Angol</string>
+
+    <string name="language_hungarian_native">Magyar</string>
+    <string name="language_hungarian_display">Magyar</string>
+
+    <string name="language_swedish_native">Svenska</string>
+    <string name="language_swedish_display">Svéd</string>
+</resources>

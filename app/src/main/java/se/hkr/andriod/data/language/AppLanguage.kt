@@ -22,5 +22,17 @@ enum class AppLanguage(
         languageTag = "hu",
         nativeNameRes = R.string.language_hungarian_native,
         displayNameRes = R.string.language_hungarian_display
-    )
+    );
+
+    companion object{
+        val supportedLanguages = listOf(
+            SWEDISH,
+            ENGLISH,
+            HUNGARIAN
+        )
+
+        fun fromLanguageTag(tag: String): AppLanguage {
+            return supportedLanguages.find { it.languageTag == tag } ?: ENGLISH
+        }
+    }
 }

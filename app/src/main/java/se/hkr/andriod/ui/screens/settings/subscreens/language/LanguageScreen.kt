@@ -69,7 +69,7 @@ fun LanguageScreen(
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    uiState.availableLanguages.forEach { language ->
+                    viewModel.availableLanguages.forEach { language ->
                         LanguageOptionItem(
                             title = stringResource(language.displayNameRes),
                             subtitle = stringResource(language.nativeNameRes),
@@ -78,6 +78,8 @@ fun LanguageScreen(
                                 viewModel.onLanguageSelected(language)
                             }
                         )
+
+                        Spacer(modifier = Modifier.height(12.dp))
                     }
 
                     Spacer(modifier = Modifier.height(8.dp))

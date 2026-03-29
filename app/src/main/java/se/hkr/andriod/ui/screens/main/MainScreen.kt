@@ -160,7 +160,12 @@ fun MainScreen(
                 }
 
                 composable(Routes.USERS) { UsersScreen() }
-                composable(Routes.DEVICES) { DevicesScreen() }
+                composable(Routes.DEVICES) {
+                    DevicesScreen(
+                        viewModel = viewModel(),
+                        onBackClick = { navController.navigateUp() }
+                    )
+                }
                 composable(Routes.ROOMS) {
                     RoomsScreen(
                         viewModel = viewModel(),

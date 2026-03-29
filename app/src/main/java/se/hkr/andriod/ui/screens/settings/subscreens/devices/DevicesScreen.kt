@@ -11,14 +11,9 @@ import androidx.compose.ui.Modifier
 import se.hkr.andriod.ui.theme.lightBlue
 
 @Composable
-fun DevicesScreen() {
-    Box(
-        modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.lightBlue),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = "Devices",
-            style = MaterialTheme.typography.titleLarge
-        )
-    }
+fun DevicesScreen(
+    viewModel: DevicesViewModel,
+    onBackClick: () -> Unit
+) {
+
 }

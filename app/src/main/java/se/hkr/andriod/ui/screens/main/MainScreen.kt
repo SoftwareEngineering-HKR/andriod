@@ -27,7 +27,7 @@ import se.hkr.andriod.ui.screens.adddevice.AddDeviceScreen
 import se.hkr.andriod.ui.screens.devicecard.DeviceHostScreen
 import se.hkr.andriod.ui.screens.scan.ScanScreen
 import se.hkr.andriod.ui.screens.settings.subscreens.AccountInfoScreen
-import se.hkr.andriod.ui.screens.settings.subscreens.DevicesScreen
+import se.hkr.andriod.ui.screens.settings.subscreens.devices.DevicesScreen
 import se.hkr.andriod.ui.screens.settings.subscreens.LanguageScreen
 import se.hkr.andriod.ui.screens.settings.subscreens.rooms.RoomsScreen
 import se.hkr.andriod.ui.screens.settings.subscreens.SchedulesScreen

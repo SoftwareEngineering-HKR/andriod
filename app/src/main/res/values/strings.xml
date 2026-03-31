@@ -26,8 +26,14 @@
     <string name="error_name_empty">Name cannot be empty</string>
     <string name="error_passwords_do_not_match">Passwords do not match</string>
 
+    <!-- Bottom Navigation -->
+    <string name="nav_devices">Devices</string>
+    <string name="nav_manage_devices">Manage Devices</string>
+    <string name="nav_settings">Settings</string>
+
     <!-- Device overview -->
     <string name="device_overview">Device Overview</string>
+    <string name="search_placeholder">Search here...</string>
 
     <!-- Device management -->
     <string name="device_management">Device Management</string>
@@ -93,6 +99,16 @@
     <string name="device_type_lock">Lock</string>
 
     <!-- Settings -->
+    <string name="settings_general">General Settings</string>
+    <string name="settings_theme">Theme</string>
+    <string name="settings_account_info">Account Info</string>
+    <string name="settings_household">Household Settings</string>
+    <string name="settings_users_permissions">Users &amp; Permissions</string>
+    <string name="settings_devices">Devices</string>
+    <string name="settings_schedules">Schedules</string>
+    <string name="logout">Log Out</string>
+
+    <!-- Settings - Rooms -->
     <string name="rooms">Rooms</string>
     <string name="devices_in_room">Devices in room</string>
     <string name="remove">Remove</string>
@@ -107,5 +123,17 @@
     <string name="rename_room">Rename room</string>
     <string name="rename">Rename</string>
     <string name="new_name">New name</string>
+
+    <!-- Settings - Language -->
+    <string name="language">Language</string>
+    <string name="choose_language">Choose language</string>
+    <string name="save">Save</string>
+    <string name="saving">Saving...</string>
+    <string name="language_swedish_native">Svenska</string>
+    <string name="language_swedish_display">Swedish</string>
+    <string name="language_english_native">English</string>
+    <string name="language_english_display">English</string>
+    <string name="language_hungarian_native">Magyar</string>
+    <string name="language_hungarian_display">Hungarian</string>
 
 </resources>

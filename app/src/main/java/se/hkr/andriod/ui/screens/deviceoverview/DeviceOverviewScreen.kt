@@ -60,7 +60,7 @@ fun DeviceOverviewScreen(
         AppTextField(
             value = search.value,
             onValueChange = { search.value = it },
-            placeholder = "Search here...",
+            placeholder = stringResource(R.string.search_placeholder),
             leadingIcon = Icons.Default.Search,
             modifier = Modifier
                 .fillMaxWidth()

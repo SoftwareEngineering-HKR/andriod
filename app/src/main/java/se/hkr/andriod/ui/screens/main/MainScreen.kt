@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -76,10 +77,10 @@ fun MainScreen(
                         icon = {
                             Icon(
                                 imageVector = screen.icon,
-                                contentDescription = screen.label
+                                contentDescription = stringResource(screen.labelRes)
                             )
                         },
-                        label = { Text(screen.label) },
+                        label = { Text(stringResource(screen.labelRes)) },
                         selected = currentDestination?.hierarchy?.any {
                             it.route == screen.route
                         } == true,

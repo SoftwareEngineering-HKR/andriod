@@ -27,8 +27,14 @@
     <string name="error_name_empty">A név nem lehet üres</string>
     <string name="error_passwords_do_not_match">A jelszavak nem egyeznek</string>
 
+    <!-- Bottom Navigation -->
+    <string name="nav_devices">Eszközök</string>
+    <string name="nav_manage_devices">Eszközök kezelése</string>
+    <string name="nav_settings">Beállítások</string>
+
     <!-- Device overview -->
     <string name="device_overview">Eszközök áttekintése</string>
+    <string name="search_placeholder">Keresés itt...</string>
 
     <!-- Device management -->
     <string name="device_management">Eszközkezelés</string>
@@ -92,6 +98,16 @@
     <!-- Devices -->
     <string name="device_type_light">Lámpa</string>
     <string name="device_type_lock">Zár</string>
+
+    <!-- Settings -->
+    <string name="settings_general">Általános beállítások</string>
+    <string name="settings_theme">Téma</string>
+    <string name="settings_account_info">Fiókinformáció</string>
+    <string name="settings_household">Háztartási beállítások</string>
+    <string name="settings_users_permissions">Felhasználók és jogosultságok</string>
+    <string name="settings_devices">Eszközök</string>
+    <string name="settings_schedules">Időzítések</string>
+    <string name="logout">Kijelentkezés</string>
 
     <!-- Settings - Rooms -->
     <string name="rooms">Szobák</string>

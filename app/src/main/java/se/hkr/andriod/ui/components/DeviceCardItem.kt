@@ -4,15 +4,18 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lightbulb
 import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Sensors
+import androidx.compose.material.icons.filled.QuestionMark
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -29,6 +32,23 @@ fun DeviceCardItem(
     onSwitchToggle: ((Boolean) -> Unit)? = null,
     elevation: Dp = 0.dp
 ) {
+    val isSensor = device.deviceTypeEnum in listOf(
+        DeviceType.GAS,
+        DeviceType.STEAM,
+        DeviceType.HUMIDITY,
+        DeviceType.SENSOR
+    )
+
+    val isSwitchDevice = device.deviceTypeEnum in listOf(
+        DeviceType.LIGHT,
+        DeviceType.LOCK,
+        DeviceType.BUZZ,
+        DeviceType.FAN,
+        DeviceType.SERVO,
+        DeviceType.DOOR,
+        DeviceType.WINDOW,
+    )
+
     Card(
         modifier = modifier
             .fillMaxWidth()
@@ -42,7 +62,22 @@ fun DeviceCardItem(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(16.dp)
         ) {
-            // Icon box
+            // ICON
+            val icon = when (device.deviceTypeEnum) {
+                DeviceType.LIGHT -> rememberVectorPainter(Icons.Default.Lightbulb)
+                DeviceType.LOCK -> rememberVectorPainter(Icons.Default.Lock)
+                DeviceType.BUZZ -> painterResource(R.drawable.brand_awareness_24px)
+                DeviceType.FAN -> painterResource(R.drawable.mode_fan_24px)
+                DeviceType.SERVO -> painterResource(R.drawable.door_front_24px)
+                DeviceType.DOOR -> painterResource(R.drawable.door_front_24px)
+                DeviceType.WINDOW -> painterResource(R.drawable.window_24px)
+                DeviceType.GAS -> painterResource(R.drawable.detector_co_24px)
+                DeviceType.STEAM -> painterResource(R.drawable.heat_24px)
+                DeviceType.HUMIDITY -> painterResource(R.drawable.humidity_percentage_24px)
+                DeviceType.DISPLAY -> painterResource(R.drawable.assistant_on_hub_24px)
+                else -> rememberVectorPainter(Icons.Default.QuestionMark)
+            }
+
             Box(
                 modifier = Modifier
                     .size(60.dp)
@@ -50,14 +85,8 @@ fun DeviceCardItem(
                     .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)),
                 contentAlignment = Alignment.Center
             ) {
-                val icon = when (device.deviceTypeEnum) {
-                    DeviceType.LIGHT -> androidx.compose.material.icons.Icons.Default.Lightbulb
-                    DeviceType.LOCK -> androidx.compose.material.icons.Icons.Default.Lock
-                    DeviceType.SENSOR -> androidx.compose.material.icons.Icons.Default.Sensors
-                }
-
                 Icon(
-                    imageVector = icon,
+                    painter = icon,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(40.dp)
@@ -94,13 +123,28 @@ fun DeviceCardItem(
                 }
             }
 
-            if (onSwitchToggle != null) {
-                // For initial state, treat device value > minValue as "on"
+            if (isSwitchDevice && onSwitchToggle != null) {
                 val checked = device.value > device.minValue
                 Switch(
                     checked = checked,
                     onCheckedChange = onSwitchToggle
                 )
+            } else if (isSensor) {
+
+                val valueText = when (device.deviceTypeEnum) {
+                    DeviceType.HUMIDITY -> "${device.value}%"
+                    else -> device.value.toString()
+                }
+
+                Box(
+                    modifier = Modifier.padding(end = 12.dp)
+                ) {
+                    Text(
+                        text = valueText,
+                        style = MaterialTheme.typography.headlineSmall,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
             }
         }
     }

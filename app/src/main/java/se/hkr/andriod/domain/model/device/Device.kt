@@ -20,8 +20,16 @@ data class Device(
         get() = when(type.lowercase()) {
             "light" -> DeviceType.LIGHT
             "lock" -> DeviceType.LOCK
-            "sensor" -> DeviceType.SENSOR
-            else -> DeviceType.SENSOR // fallback
+            "gas" -> DeviceType.GAS
+            "steam" -> DeviceType.STEAM
+            "humidity" -> DeviceType.HUMIDITY
+            "buzz" -> DeviceType.BUZZ
+            "fan" -> DeviceType.FAN
+            "servo" -> DeviceType.SERVO
+            "window" -> DeviceType.WINDOW
+            "door" -> DeviceType.DOOR
+            "display" -> DeviceType.DISPLAY
+            else -> DeviceType.UNKNOWN // Fallback
         }
 
     // Clean display name: ignore null, blank, or "null" strings

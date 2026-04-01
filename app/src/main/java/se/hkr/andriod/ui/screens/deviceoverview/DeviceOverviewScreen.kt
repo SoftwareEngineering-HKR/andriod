@@ -84,7 +84,13 @@ fun DeviceOverviewScreen(
 
         // Group devices by room, using "No Room" for unassigned
         val devicesByRoom = devices
-            .filter { it.displayName.contains(search.value, ignoreCase = true) }
+            .filter { device ->
+                val query = search.value.trim()
+
+                device.displayName.contains(query, ignoreCase = true) ||
+                        (device.room?.contains(query, ignoreCase = true) == true) ||
+                        device.deviceTypeEnum.name.contains(query, ignoreCase = true)
+            }
             .groupBy { device ->
                 val room = device.room
                 if (room.isNullOrBlank() || room == "null") "No Room" else room

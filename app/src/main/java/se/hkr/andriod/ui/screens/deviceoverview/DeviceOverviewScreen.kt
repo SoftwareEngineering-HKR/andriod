@@ -6,6 +6,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,6 +29,7 @@ import se.hkr.andriod.data.network.ConnectionManager
 import se.hkr.andriod.navigation.Routes
 import se.hkr.andriod.ui.components.AppTextField
 import se.hkr.andriod.ui.components.DeviceCardItem
+import se.hkr.andriod.ui.theme.cardBackground
 
 @Composable
 fun DeviceOverviewScreen(
@@ -50,23 +53,34 @@ fun DeviceOverviewScreen(
             .background(MaterialTheme.colorScheme.lightBlue)
     ) {
         AppHomeTopBar(
-            title = stringResource(R.string.device_overview),
+            title = stringResource(R.string.nav_devices),
             onlineCount = onlineCount,
             offlineCount = offlineCount,
             onAddClick = { showAddSheet = true }
         )
 
         // Main content
-        // Search bar Todo: Implement functionality
-        AppTextField(
+
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 10.dp),
+            shape = MaterialTheme.shapes.medium,
+            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.cardBackground)
+        ) {
+            // Search bar Todo: Implement functionality
+            AppTextField(
             value = search.value,
             onValueChange = { search.value = it },
             placeholder = stringResource(R.string.search_placeholder),
             leadingIcon = Icons.Default.Search,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-        )
+                .padding(horizontal = 10.dp)
+                .offset(y = 10.dp)
+            )
+        }
 
         // Group devices by room, using "No Room" for unassigned
         val devicesByRoom = devices

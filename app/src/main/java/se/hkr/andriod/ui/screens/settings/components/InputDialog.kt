@@ -1,28 +1,25 @@
-package se.hkr.andriod.ui.screens.settings.subscreens.rooms.components
+package se.hkr.andriod.ui.screens.settings.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import se.hkr.andriod.R
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RoomInputDialog(
+fun InputDialog(
     title: String,
-    confirmText: String,
     value: String,
     onValueChange: (String) -> Unit,
+    label: String,
+    confirmText: String,
+    dismissText: String,
     onConfirm: () -> Unit,
-    onDismiss: () -> Unit,
-    label: String
+    onDismiss: () -> Unit
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -33,11 +30,11 @@ fun RoomInputDialog(
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.cancel))
+                Text(dismissText)
             }
         },
         title = {
-            Text(title)
+            Text(text = title)
         },
         text = {
             OutlinedTextField(
@@ -49,6 +46,5 @@ fun RoomInputDialog(
                 modifier = Modifier.fillMaxWidth()
             )
         }
-
     )
 }

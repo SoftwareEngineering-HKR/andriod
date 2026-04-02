@@ -101,6 +101,7 @@
     <!-- Devices -->
     <string name="device_type_light">Lampa</string>
     <string name="device_type_lock">Lås</string>
+    <string name="device_type_sensor">Sensor</string>
 
     <!-- Settings -->
     <string name="settings_general">Allmänna inställningar</string>
@@ -120,13 +121,33 @@
     <string name="cancel">Avbryt</string>
     <string name="delete">Ta bort</string>
     <string name="delete_room">Ta bort rum</string>
-    <string name="delete_room_confirmation">Är du säker på att du vill ta bort detta rum?</string>
     <string name="create_room">Skapa rum</string>
     <string name="create">Skapa</string>
     <string name="room_name">Rumsnamn</string>
     <string name="rename_room">Byt namn på rum</string>
     <string name="rename">Byt namn</string>
     <string name="new_name">Nytt namn</string>
+    <string name="devices">Enheter</string>
+    <string name="device">Enhet</string>
+    <string name="device_value">Värde</string>
+    <string name="device_value_with_scale">%1$d %2$s</string>
+    <string name="device_id">Enhets-ID</string>
+    <string name="rename_device">Byt namn på enhet</string>
+    <string name="delete_device">Ta bort enhet</string>
+    <string name="delete_confirmation_with_name">Är du säker på att du vill ta bort %1$s?</string>
+    <string name="change_room">Byt rum</string>
+    <string name="description">Beskrivning</string>
+    <string name="online">Online</string>
+    <string name="offline">Offline</string>
+    <string name="ip_address">IP-adress</string>
+    <string name="not_available">Inte tillgänglig</string>
+    <string name="no_description">Ingen beskrivning</string>
+    <string name="no_room_assigned">Inget rum tilldelat</string>
+    <string name="device_state_on">På</string>
+    <string name="device_state_off">Av</string>
+    <string name="device_state_locked">Låst</string>
+    <string name="device_state_unlocked">Upplåst</string>
+    <string name="current_value">Nuvarande värde</string>
 
     <!-- Settings - Language -->
     <string name="language">Språk</string>

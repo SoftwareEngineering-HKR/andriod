@@ -97,6 +97,7 @@
     <!-- Devices -->
     <string name="device_type_light">Light</string>
     <string name="device_type_lock">Lock</string>
+    <string name="device_type_sensor">Sensor</string>
 
     <!-- Settings -->
     <string name="settings_general">General Settings</string>
@@ -116,13 +117,33 @@
     <string name="cancel">Cancel</string>
     <string name="delete">Delete</string>
     <string name="delete_room">Delete room</string>
-    <string name="delete_room_confirmation">Are you sure you want to delete this room?</string>
     <string name="create_room">Create room</string>
     <string name="create">Create</string>
     <string name="room_name">Room name</string>
     <string name="rename_room">Rename room</string>
     <string name="rename">Rename</string>
     <string name="new_name">New name</string>
+    <string name="devices">Devices</string>
+    <string name="device">Device</string>
+    <string name="device_value">Value</string>
+    <string name="device_value_with_scale">%1$d %2$s</string>
+    <string name="device_id">Device ID</string>
+    <string name="rename_device">Rename device</string>
+    <string name="delete_device">Delete device</string>
+    <string name="delete_confirmation_with_name">Are you sure you want to delete %1$s?</string>
+    <string name="change_room">Change room</string>
+    <string name="description">Description</string>
+    <string name="online">Online</string>
+    <string name="offline">Offline</string>
+    <string name="ip_address">IP address</string>
+    <string name="not_available">Not available</string>
+    <string name="no_description">No description</string>
+    <string name="no_room_assigned">No room assigned</string>
+    <string name="device_state_on">On</string>
+    <string name="device_state_off">Off</string>
+    <string name="device_state_locked">Locked</string>
+    <string name="device_state_unlocked">Unlocked</string>
+    <string name="current_value">Current value</string>
 
     <!-- Settings - Language -->
     <string name="language">Language</string>

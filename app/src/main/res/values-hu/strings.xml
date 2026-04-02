@@ -98,6 +98,7 @@
     <!-- Devices -->
     <string name="device_type_light">Lámpa</string>
     <string name="device_type_lock">Zár</string>
+    <string name="device_type_sensor">Szenzor</string>
 
     <!-- Settings -->
     <string name="settings_general">Általános beállítások</string>
@@ -117,13 +118,33 @@
     <string name="cancel">Mégse</string>
     <string name="delete">Törlés</string>
     <string name="delete_room">Szoba törlése</string>
-    <string name="delete_room_confirmation">Biztosan törölni szeretnéd ezt a szobát?</string>
     <string name="create_room">Szoba létrehozása</string>
     <string name="create">Létrehozás</string>
     <string name="room_name">Szoba neve</string>
     <string name="rename_room">Szoba átnevezése</string>
     <string name="rename">Átnevezés</string>
     <string name="new_name">Új név</string>
+    <string name="devices">Eszközök</string>
+    <string name="device">Eszköz</string>
+    <string name="device_value">Érték</string>
+    <string name="device_value_with_scale">%1$d %2$s</string>
+    <string name="device_id">Eszközazonosító</string>
+    <string name="rename_device">Eszköz átnevezése</string>
+    <string name="delete_device">Eszköz törlése</string>
+    <string name="delete_confirmation_with_name">Biztosan törölni szeretnéd: %1$s?</string>
+    <string name="change_room">Szoba módosítása</string>
+    <string name="description">Leírás</string>
+    <string name="online">Online</string>
+    <string name="offline">Offline</string>
+    <string name="ip_address">IP-cím</string>
+    <string name="not_available">Nem elérhető</string>
+    <string name="no_description">Nincs leírás</string>
+    <string name="no_room_assigned">Nincs szobához rendelve</string>
+    <string name="device_state_on">Bekapcsolva</string>
+    <string name="device_state_off">Kikapcsolva</string>
+    <string name="device_state_locked">Zárolva</string>
+    <string name="device_state_unlocked">Feloldva</string>
+    <string name="current_value">Jelenlegi érték</string>
 
     <!-- Settings - Language -->
     <string name="language">Nyelv</string>
@@ -136,5 +157,4 @@
     <string name="language_english_display">Angol</string>
     <string name="language_hungarian_native">Magyar</string>
     <string name="language_hungarian_display">Magyar</string>
-
 </resources>

@@ -39,11 +39,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import se.hkr.andriod.R
 import se.hkr.andriod.ui.components.CustomScreenHeader
-import se.hkr.andriod.ui.screens.settings.subscreens.rooms.components.RoomDeleteDialog
-import se.hkr.andriod.ui.screens.settings.subscreens.rooms.components.RoomInputDialog
+import se.hkr.andriod.ui.screens.settings.components.ConfirmDialog
+import se.hkr.andriod.ui.screens.settings.components.InputDialog
 import se.hkr.andriod.ui.theme.cardBackground
 import se.hkr.andriod.ui.theme.lightBlue
 
@@ -173,7 +172,7 @@ fun RoomsScreen(
                             ) {
                                 Text(device)
 
-                                TextButton(onClick = { /* Remove Device from room */}) {
+                                TextButton(onClick = { /* Remove Device from room */ }) {
                                     Text(stringResource(R.string.remove))
                                 }
                             }
@@ -211,7 +210,7 @@ fun RoomsScreen(
                         ) {
                             Text(device)
 
-                            TextButton(onClick = { /* Add Device to room */}) {
+                            TextButton(onClick = { /* Add Device to room */ }) {
                                 Text(stringResource(R.string.add_device_to_room))
                             }
                         }
@@ -220,54 +219,48 @@ fun RoomsScreen(
             }
         }
         if (uiState.showCreateDialog) {
-            RoomInputDialog(
+            InputDialog(
                 title = stringResource(R.string.create_room),
-                confirmText = stringResource(R.string.create),
-
                 value = uiState.inputText,
                 onValueChange = viewModel::onInputChanged,
+                label = stringResource(R.string.room_name),
+                confirmText = stringResource(R.string.create),
+                dismissText = stringResource(R.string.cancel),
                 onConfirm = {
                     viewModel.dismissDialogs()
                     // create room
                 },
-                onDismiss = {
-                    viewModel.dismissDialogs()
-
-                },
-                label = stringResource(R.string.room_name)
-
+                onDismiss = viewModel::dismissDialogs
             )
         }
 
         if (uiState.showRenameDialog) {
-            RoomInputDialog(
+            InputDialog(
                 title = stringResource(R.string.rename_room),
-                confirmText = stringResource(R.string.rename),
-
                 value = uiState.inputText,
                 onValueChange = viewModel::onInputChanged,
+                label = stringResource(R.string.new_name),
+                confirmText = stringResource(R.string.rename),
+                dismissText = stringResource(R.string.cancel),
                 onConfirm = {
                     viewModel.dismissDialogs()
                     // rename room
                 },
-                onDismiss = {
-                    viewModel.dismissDialogs()
-
-                },
-                label = stringResource(R.string.new_name)
-
+                onDismiss = viewModel::dismissDialogs
             )
         }
 
-        if(uiState.showDeleteDialog) {
-            RoomDeleteDialog(
+        if (uiState.showDeleteDialog) {
+            ConfirmDialog(
+                title = stringResource(R.string.delete_room),
+                message = stringResource(R.string.delete_confirmation_with_name),
+                confirmText = stringResource(R.string.delete),
+                dismissText = stringResource(R.string.cancel),
                 onConfirm = {
-                viewModel.dismissDialogs()
-                // delete room
-                },
-                onDismiss = {
                     viewModel.dismissDialogs()
-                }
+                    // delete room
+                },
+                onDismiss = viewModel::dismissDialogs
             )
         }
 

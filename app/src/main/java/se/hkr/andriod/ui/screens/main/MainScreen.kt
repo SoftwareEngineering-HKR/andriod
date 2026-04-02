@@ -35,6 +35,8 @@ import se.hkr.andriod.ui.screens.settings.subscreens.rooms.RoomsScreen
 import se.hkr.andriod.ui.screens.settings.subscreens.SchedulesScreen
 import se.hkr.andriod.ui.screens.settings.subscreens.UsersScreen
 import se.hkr.andriod.ui.screens.settings.subscreens.devices.DevicesScreen
+import se.hkr.andriod.ui.screens.settings.subscreens.devices.DevicesViewModel
+import se.hkr.andriod.ui.screens.settings.subscreens.devices.DevicesViewModelFactory
 import se.hkr.andriod.ui.screens.settings.subscreens.language.LanguageViewModel
 import se.hkr.andriod.ui.theme.cardBackground
 import se.hkr.andriod.ui.theme.lightBlue
@@ -165,8 +167,13 @@ fun MainScreen(
 
                 composable(Routes.USERS) { UsersScreen() }
                 composable(Routes.DEVICES) {
+
+                    val viewModel: DevicesViewModel = viewModel(
+                        factory = DevicesViewModelFactory(connectionManager.deviceStore)
+                    )
+
                     DevicesScreen(
-                        viewModel = viewModel(),
+                        viewModel = viewModel,
                         onBackClick = { navController.navigateUp() }
                     )
                 }

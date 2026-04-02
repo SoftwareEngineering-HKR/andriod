@@ -263,7 +263,7 @@ fun DevicesScreen(
                 confirmText = stringResource(R.string.rename),
                 dismissText = stringResource(R.string.cancel),
                 onConfirm = {
-                    viewModel.dismissDialogs()
+                    viewModel.renameSelectedDevice()
                 },
                 onDismiss = viewModel::dismissDialogs
             )

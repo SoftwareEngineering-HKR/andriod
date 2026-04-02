@@ -86,6 +86,31 @@ class DeviceStore(private val webSocketManager: WebSocketManager) {
         webSocketManager.sendMessage(message.toString())
     }
 
+    // Update a device name and description
+    fun updateDevice(deviceId: String, name: String, description: String) {
+        _devices.update { currentList ->
+            currentList.map { device ->
+                if (device.id == deviceId) {
+                    device.copy(
+                        name = name,
+                        description = description
+                    )
+                } else device
+            }
+        }
+
+        val message = JSONObject().apply {
+            put("type", "update device")
+            put("payload", JSONObject().apply {
+                put("id", deviceId)
+                put("name", name)
+                put("description", description)
+            })
+        }
+
+        webSocketManager.sendMessage(message.toString())
+    }
+
     // Get a device by ID
     fun getDeviceById(id: String): Device? = _devices.value.find { it.id == id }
 }

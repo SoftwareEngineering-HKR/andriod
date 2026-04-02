@@ -110,6 +110,23 @@ class DevicesViewModel(
         }
     }
 
+    fun renameSelectedDevice() {
+        val selectedDevice = _uiState.value.selectedDevice ?: return
+        val newName = _uiState.value.inputText.trim()
+        if (newName.isEmpty() || newName == selectedDevice.displayName) return
+
+        // Use current description to avoid overwriting it
+        val currentDescription = selectedDevice.description ?: ""
+
+        deviceStore.updateDevice(
+            deviceId = selectedDevice.id,
+            name = newName,
+            description = currentDescription
+        )
+
+        dismissDialogs()
+    }
+
     fun dismissDialogs() {
         _uiState.update {
             it.copy(

@@ -107,5 +107,22 @@
     <string name="rename_room">Rename room</string>
     <string name="rename">Rename</string>
     <string name="new_name">New name</string>
+    <string name="devices">Devices</string>
+    <string name="device">Device</string>
+    <string name="device_value">Value</string>
+    <string name="device_value_with_scale">%1$d %2$s</string>
+    <string name="device_id">Device ID</string>
+    <string name="rename_device">Rename device</string>
+    <string name="delete_device">Delete device</string>
+    <string name="delete_device_confirmation_with_name">Are you sure you want to delete %1$s?</string>
+    <string name="change_room">Change room</string>
+    <string name="save">Save</string>
+    <string name="description">Description</string>
+    <string name="online">Online</string>
+    <string name="offline">Offline</string>
+    <string name="ip_address">IP address</string>
+    <string name="not_available">Not available</string>
+    <string name="no_description">No description</string>
+    <string name="no_room_assigned">No room assigned</string>
 
 </resources>

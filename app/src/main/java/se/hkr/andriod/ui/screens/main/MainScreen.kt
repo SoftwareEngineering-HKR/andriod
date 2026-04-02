@@ -30,11 +30,11 @@ import se.hkr.andriod.ui.screens.adddevice.AddDeviceScreen
 import se.hkr.andriod.ui.screens.devicecard.DeviceHostScreen
 import se.hkr.andriod.ui.screens.scan.ScanScreen
 import se.hkr.andriod.ui.screens.settings.subscreens.AccountInfoScreen
-import se.hkr.andriod.ui.screens.settings.subscreens.DevicesScreen
 import se.hkr.andriod.ui.screens.settings.subscreens.language.LanguageScreen
 import se.hkr.andriod.ui.screens.settings.subscreens.rooms.RoomsScreen
 import se.hkr.andriod.ui.screens.settings.subscreens.SchedulesScreen
 import se.hkr.andriod.ui.screens.settings.subscreens.UsersScreen
+import se.hkr.andriod.ui.screens.settings.subscreens.devices.DevicesScreen
 import se.hkr.andriod.ui.screens.settings.subscreens.language.LanguageViewModel
 import se.hkr.andriod.ui.theme.cardBackground
 import se.hkr.andriod.ui.theme.lightBlue
@@ -164,7 +164,12 @@ fun MainScreen(
                 }
 
                 composable(Routes.USERS) { UsersScreen() }
-                composable(Routes.DEVICES) { DevicesScreen() }
+                composable(Routes.DEVICES) {
+                    DevicesScreen(
+                        viewModel = viewModel(),
+                        onBackClick = { navController.navigateUp() }
+                    )
+                }
                 composable(Routes.ROOMS) {
                     RoomsScreen(
                         viewModel = viewModel(),

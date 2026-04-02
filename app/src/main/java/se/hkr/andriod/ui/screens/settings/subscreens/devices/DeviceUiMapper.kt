@@ -33,6 +33,7 @@ fun mapDeviceToInfoUi(
         DeviceType.LOCK -> stringResource(R.string.device_type_lock)
         DeviceType.SENSOR -> stringResource(R.string.device_type_sensor)
         null -> notAvailable
+        else -> notAvailable // TODO Change for remaining device types (Gas, Fan, Window, Humidity)
     }
 
     val deviceStatus = when(device?.online) {
@@ -42,6 +43,7 @@ fun mapDeviceToInfoUi(
     }
 
     val deviceValue = when (device?.deviceTypeEnum) {
+
         DeviceType.LIGHT -> {
             if (device.maxValue <= 1) {
                 if (device.value > 0) {
@@ -70,11 +72,23 @@ fun mapDeviceToInfoUi(
             if (!device.scaleName.isNullOrBlank()) {
                 stringResource(R.string.device_value_with_scale, device.value, device.scaleName ?: "")
             } else {
-                device?.value?.toString() ?: notAvailable
+                device.value.toString()
             }
         }
 
         null -> notAvailable
+        // TODO Change for remaining device types (Gas, Fan, Window, Humidity)
+        else -> {
+            if (!device.scaleName.isNullOrBlank()) {
+                stringResource(
+                    R.string.device_value_with_scale,
+                    device.value,
+                    device.scaleName ?: ""
+                )
+            } else {
+                device.value.toString()
+            }
+        }
     }
 
     return DeviceInfoUi(

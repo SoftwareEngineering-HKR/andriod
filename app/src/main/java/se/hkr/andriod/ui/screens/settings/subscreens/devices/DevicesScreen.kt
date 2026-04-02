@@ -273,7 +273,7 @@ fun DevicesScreen(
             ConfirmDialog(
                 title = stringResource(R.string.delete_device),
                 message = stringResource(
-                    R.string.delete_device_confirmation_with_name,
+                    R.string.delete_confirmation_with_name,
                     selectedDevice.displayName
                 ),
                 confirmText = stringResource(R.string.delete),

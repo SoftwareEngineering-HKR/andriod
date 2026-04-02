@@ -253,7 +253,7 @@ fun RoomsScreen(
         if (uiState.showDeleteDialog) {
             ConfirmDialog(
                 title = stringResource(R.string.delete_room),
-                message = stringResource(R.string.delete_room_confirmation),
+                message = stringResource(R.string.delete_confirmation_with_name),
                 confirmText = stringResource(R.string.delete),
                 dismissText = stringResource(R.string.cancel),
                 onConfirm = {

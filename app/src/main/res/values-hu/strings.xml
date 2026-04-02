@@ -95,11 +95,6 @@
     <string name="room">Szoba</string>
     <string name="add_room">Szoba hozzáadása</string>
 
-    <!-- Devices -->
-    <string name="device_type_light">Lámpa</string>
-    <string name="device_type_lock">Zár</string>
-    <string name="device_type_sensor">Szenzor</string>
-
     <!-- Settings -->
     <string name="settings_general">Általános beállítások</string>
     <string name="settings_theme">Téma</string>
@@ -109,6 +104,21 @@
     <string name="settings_devices">Eszközök</string>
     <string name="settings_schedules">Időzítések</string>
     <string name="logout">Kijelentkezés</string>
+
+    <!-- Settings - Devices -->
+    <string name="device_type_light">Lámpa</string>
+    <string name="device_type_lock">Zár</string>
+    <string name="device_type_sensor">Érzékelő</string>
+    <string name="device_type_gas">Gáz</string>
+    <string name="device_type_humidity">Páratartalom</string>
+    <string name="device_type_steam">Gőz</string>
+    <string name="device_type_buzz">Búgó</string>
+    <string name="device_type_fan">Ventilátor</string>
+    <string name="device_type_servo">Szervo</string>
+    <string name="device_type_window">Ablak</string>
+    <string name="device_type_door">Ajtó</string>
+    <string name="device_type_display">Kijelző</string>
+    <string name="device_value_percent">%d%%</string>
 
     <!-- Settings - Rooms -->
     <string name="rooms">Szobák</string>

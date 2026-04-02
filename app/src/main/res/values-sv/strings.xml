@@ -98,11 +98,6 @@
     <string name="room">Rum</string>
     <string name="add_room">Lägg till rum</string>
 
-    <!-- Devices -->
-    <string name="device_type_light">Lampa</string>
-    <string name="device_type_lock">Lås</string>
-    <string name="device_type_sensor">Sensor</string>
-
     <!-- Settings -->
     <string name="settings_general">Allmänna inställningar</string>
     <string name="settings_theme">Tema</string>
@@ -112,6 +107,21 @@
     <string name="settings_devices">Enheter</string>
     <string name="settings_schedules">Scheman</string>
     <string name="logout">Logga ut</string>
+
+    <!-- Settings - Devices -->
+    <string name="device_type_light">Lampa</string>
+    <string name="device_type_lock">Lås</string>
+    <string name="device_type_sensor">Sensor</string>
+    <string name="device_type_gas">Gas</string>
+    <string name="device_type_humidity">Fukt</string>
+    <string name="device_type_steam">Ånga</string>
+    <string name="device_type_buzz">Summer</string>
+    <string name="device_type_fan">Fläkt</string>
+    <string name="device_type_servo">Servo</string>
+    <string name="device_type_window">Fönster</string>
+    <string name="device_type_door">Dörr</string>
+    <string name="device_type_display">Display</string>
+    <string name="device_value_percent">%d%%</string>
 
     <!-- Settings - Rooms -->
     <string name="rooms">Rum</string>

@@ -21,74 +21,65 @@ data class DeviceInfoUi(
 fun mapDeviceToInfoUi(
     device: Device?,
     rooms: List<Room>
-) : DeviceInfoUi {
+): DeviceInfoUi {
     val notAvailable = stringResource(R.string.not_available)
     val noRoomAssigned = stringResource(R.string.no_room_assigned)
     val noDescription = stringResource(R.string.no_description)
 
-    val roomName = rooms.firstOrNull { it.id == device?.room }?.name ?: noRoomAssigned
+    val roomName = device?.room?.takeIf { it.isNotBlank() } ?: noRoomAssigned
 
     val deviceType = when (device?.deviceTypeEnum) {
         DeviceType.LIGHT -> stringResource(R.string.device_type_light)
         DeviceType.LOCK -> stringResource(R.string.device_type_lock)
         DeviceType.SENSOR -> stringResource(R.string.device_type_sensor)
-        null -> notAvailable
-        else -> notAvailable // TODO Change for remaining device types (Gas, Fan, Window, Humidity)
+        DeviceType.GAS -> stringResource(R.string.device_type_gas)
+        DeviceType.HUMIDITY -> stringResource(R.string.device_type_humidity)
+        DeviceType.STEAM -> stringResource(R.string.device_type_steam)
+        DeviceType.BUZZ -> stringResource(R.string.device_type_buzz)
+        DeviceType.FAN -> stringResource(R.string.device_type_fan)
+        DeviceType.SERVO -> stringResource(R.string.device_type_servo)
+        DeviceType.WINDOW -> stringResource(R.string.device_type_window)
+        DeviceType.DOOR -> stringResource(R.string.device_type_door)
+        DeviceType.DISPLAY -> stringResource(R.string.device_type_display)
+        DeviceType.UNKNOWN, null -> notAvailable
     }
 
-    val deviceStatus = when(device?.online) {
-        true -> stringResource(R.string.online)
-        false -> stringResource(R.string.offline)
-        null -> notAvailable
-    }
+    val deviceValue = device?.let { d ->
+        when (d.deviceTypeEnum) {
+            DeviceType.LIGHT -> {
+                if (d.maxValue > 0) {
+                    val brightnessPercent = (d.value.toFloat() / d.maxValue.toFloat() * 100).toInt()
+                    stringResource(R.string.device_value_percent, brightnessPercent)
+                } else {
+                    stringResource(R.string.device_state_off)
+                }
+            }
 
-    val deviceValue = when (device?.deviceTypeEnum) {
+            DeviceType.SENSOR,
+            DeviceType.GAS,
+            DeviceType.HUMIDITY,
+            DeviceType.STEAM -> {
+                if (!d.scaleName.isNullOrBlank()) {
+                    stringResource(R.string.device_value_with_scale, d.value, d.scaleName!!)
+                } else {
+                    d.value.toString()
+                }
+            }
 
-        DeviceType.LIGHT -> {
-            if (device.maxValue <= 1) {
-                if (device.value > 0) {
+            else -> { // On/Off devices
+                if (d.value > d.minValue) {
                     stringResource(R.string.device_state_on)
                 } else {
                     stringResource(R.string.device_state_off)
                 }
-            } else {
-                if (!device.scaleName.isNullOrBlank()) {
-                    stringResource(R.string.device_value_with_scale, device.value, device.scaleName ?: "")
-                } else {
-                    device.value.toString()
-                }
             }
         }
+    } ?: notAvailable
 
-        DeviceType.LOCK -> {
-            if (device.value > 0) {
-                stringResource(R.string.device_state_unlocked)
-            } else {
-                stringResource(R.string.device_state_locked)
-            }
-        }
-
-        DeviceType.SENSOR -> {
-            if (!device.scaleName.isNullOrBlank()) {
-                stringResource(R.string.device_value_with_scale, device.value, device.scaleName ?: "")
-            } else {
-                device.value.toString()
-            }
-        }
-
+    val deviceStatus = when (device?.online) {
+        true -> stringResource(R.string.online)
+        false -> stringResource(R.string.offline)
         null -> notAvailable
-        // TODO Change for remaining device types (Gas, Fan, Window, Humidity)
-        else -> {
-            if (!device.scaleName.isNullOrBlank()) {
-                stringResource(
-                    R.string.device_value_with_scale,
-                    device.value,
-                    device.scaleName ?: ""
-                )
-            } else {
-                device.value.toString()
-            }
-        }
     }
 
     return DeviceInfoUi(
@@ -96,9 +87,7 @@ fun mapDeviceToInfoUi(
         type = deviceType,
         room = roomName,
         status = deviceStatus,
-        description = device?.description?.takeIf {
-            it.isNotBlank() && it.lowercase() != "null"
-        } ?: noDescription,
+        description = device?.description?.takeIf { it.isNotBlank() && it.lowercase() != "null" } ?: noDescription,
         value = deviceValue,
         isOnline = device?.online == true
     )

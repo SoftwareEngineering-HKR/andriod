@@ -127,6 +127,14 @@ class DevicesViewModel(
         dismissDialogs()
     }
 
+    fun deleteSelectedDevice() {
+        val selectedDevice = _uiState.value.selectedDevice ?: return
+
+        deviceStore.deleteDevice(selectedDevice.id)
+
+        dismissDialogs()
+    }
+
     fun dismissDialogs() {
         _uiState.update {
             it.copy(

@@ -111,6 +111,22 @@ class DeviceStore(private val webSocketManager: WebSocketManager) {
         webSocketManager.sendMessage(message.toString())
     }
 
+    // Delete a device
+    fun deleteDevice(deviceId: String) {
+        _devices.update { currentList ->
+            currentList.filter { it.id != deviceId }
+        }
+
+        val message = JSONObject().apply {
+            put("type", "delete device")
+            put("payload", JSONObject().apply {
+                put("id", deviceId)
+            })
+        }
+
+        webSocketManager.sendMessage(message.toString())
+    }
+
     // Get a device by ID
     fun getDeviceById(id: String): Device? = _devices.value.find { it.id == id }
 }

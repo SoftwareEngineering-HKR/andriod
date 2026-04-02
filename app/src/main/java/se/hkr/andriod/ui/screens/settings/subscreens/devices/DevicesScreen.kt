@@ -279,7 +279,7 @@ fun DevicesScreen(
                 confirmText = stringResource(R.string.delete),
                 dismissText = stringResource(R.string.cancel),
                 onConfirm = {
-                    viewModel.dismissDialogs()
+                    viewModel.deleteSelectedDevice()
                 },
                 onDismiss = viewModel::dismissDialogs
             )

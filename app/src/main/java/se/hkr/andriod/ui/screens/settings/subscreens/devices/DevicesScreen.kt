@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Delete
@@ -34,10 +36,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import se.hkr.andriod.R
 import se.hkr.andriod.ui.components.CustomScreenHeader
+import se.hkr.andriod.ui.screens.settings.components.ActionRow
 import se.hkr.andriod.ui.screens.settings.components.ConfirmDialog
 import se.hkr.andriod.ui.screens.settings.components.DialogOption
 import se.hkr.andriod.ui.screens.settings.components.InfoRow
@@ -79,7 +83,7 @@ fun DevicesScreen(
 
             Card(
                 modifier = Modifier.fillMaxWidth(0.9f),
-                shape = RoundedCornerShape(16.dp),
+                shape = RoundedCornerShape(20.dp),
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.cardBackground
                 )
@@ -88,7 +92,7 @@ fun DevicesScreen(
                     modifier = Modifier.padding(20.dp)
                 ) {
                     Text(
-                        stringResource(R.string.device),
+                        text = stringResource(R.string.device),
                         style = MaterialTheme.typography.titleMedium
                     )
 
@@ -108,7 +112,7 @@ fun DevicesScreen(
                             trailingIcon = {
                                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
                             },
-                            shape = RoundedCornerShape(12.dp),
+                            shape = RoundedCornerShape(14.dp),
                             singleLine = true
                         )
 
@@ -118,7 +122,7 @@ fun DevicesScreen(
                         ) {
                             uiState.devices.forEach { device ->
                                 DropdownMenuItem(
-                                    text = { Text(device.displayName)},
+                                    text = { Text(device.displayName) },
                                     onClick = {
                                         viewModel.onDeviceSelected(device.id)
                                         expanded = false
@@ -126,166 +130,179 @@ fun DevicesScreen(
                                 )
                             }
                         }
+                    }
+                }
+            }
 
-                        Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-                        Row(
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
-                        ) {
-                            IconButton(
-                                onClick = viewModel::showRenameDialog
-                            ) {
-                                Icon(
-                                    Icons.Rounded.Edit,
-                                    contentDescription = stringResource(R.string.rename)
+            Card(
+                modifier = Modifier.fillMaxWidth(0.9f),
+                shape = RoundedCornerShape(20.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.cardBackground
+                )
+            ) {
+                Column(
+                    modifier = Modifier.padding(20.dp)
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(14.dp)
+                                .clip(CircleShape)
+                                .background(
+                                    if (deviceInfo.isOnline) {
+                                        MaterialTheme.colorScheme.primary
+                                    } else {
+                                        MaterialTheme.colorScheme.outline
+                                    }
                                 )
-                            }
+                        )
 
-                            IconButton(
-                                onClick = viewModel::showChangeRoomDialog
-                            ) {
-                                Icon(
-                                    Icons.Rounded.Home,
-                                    contentDescription = stringResource(R.string.change_room)
-                                )
-                            }
+                        Column {
+                            Text(
+                                text = deviceInfo.name,
+                                style = MaterialTheme.typography.headlineSmall
+                            )
 
-                            IconButton(
-                                onClick = viewModel::showDeleteDialog
-                            ) {
-                                Icon(
-                                    Icons.Rounded.Delete,
-                                    contentDescription = stringResource(R.string.delete)
-                                )
-                            }
+                            Spacer(modifier = Modifier.height(4.dp))
+
+                            Text(
+                                text = deviceInfo.description,
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
                         }
                     }
-                }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(16.dp))
 
-                Card(
-                    modifier = Modifier.fillMaxWidth(0.9f),
-                    shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.cardBackground
-                    )
-                ) {
-                    Column(
-                        modifier = Modifier.padding(20.dp)
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        Text(
-                            stringResource(R.string.device_information),
-                            style = MaterialTheme.typography.titleMedium
-                        )
-
-                        Spacer(modifier = Modifier.height(12.dp))
-
-                        InfoRow(
-                            label = stringResource(R.string.device_name),
-                            value = deviceInfo.name
-
-                        )
-
-                        Spacer(modifier = Modifier.height(12.dp))
-
-                        InfoRow(
-                            label = stringResource(R.string.device_type),
-                            value = deviceInfo.type
-                        )
-
-                        Spacer(modifier = Modifier.height(12.dp))
-
-                        InfoRow(
-                            label = stringResource(R.string.room),
-                            value = deviceInfo.room
-                        )
-
-                        Spacer(modifier = Modifier.height(12.dp))
-
-                        InfoRow(
-                            label = stringResource(R.string.device_status),
-                            value = deviceInfo.status
-                        )
-
-                        Spacer(modifier = Modifier.height(12.dp))
-
-                        InfoRow(
-                            label = stringResource(R.string.ip_address),
-                            value = deviceInfo.ip
-                        )
-
-                        Spacer(modifier = Modifier.height(12.dp))
-
-                        InfoRow(
-                            label = stringResource(R.string.description),
-                            value = deviceInfo.description
-                        )
-
-                        Spacer(modifier = Modifier.height(12.dp))
-
-                        InfoRow(
-                            label = stringResource(R.string.device_value),
-                            value = deviceInfo.value
-                        )
+                        InfoRow(text = deviceInfo.type)
+                        InfoRow(text = deviceInfo.room)
+                        InfoRow(text = deviceInfo.status)
                     }
+
+                    Spacer(modifier = Modifier.height(20.dp))
+
+                    Text(
+                        text = stringResource(R.string.current_value),
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Text(
+                        text = deviceInfo.value,
+                        style = MaterialTheme.typography.displaySmall
+                    )
                 }
             }
 
-            if (uiState.showRenameDialog && selectedDevice != null) {
-                InputDialog(
-                    title = stringResource(R.string.rename_device),
-                    value = uiState.inputText,
-                    onValueChange = viewModel::onInputChanged,
-                    label = stringResource(R.string.new_name),
-                    confirmText = stringResource(R.string.rename),
-                    dismissText = stringResource(R.string.cancel),
-                    onConfirm = {
-                        viewModel.dismissDialogs()
-                        // rename device
-                    },
-                    onDismiss = viewModel::dismissDialogs
-                )
-            }
+            Spacer(modifier = Modifier.height(16.dp))
 
-            if (uiState.showDeleteDialog && selectedDevice != null) {
-                ConfirmDialog(
-                    title = stringResource(R.string.delete_device),
-                    message = stringResource(
-                        R.string.delete_device_confirmation_with_name,
-                        selectedDevice.displayName
-                    ),
-                    confirmText = stringResource(R.string.delete),
-                    dismissText = stringResource(R.string.cancel),
-                    onConfirm = {
-                        viewModel.dismissDialogs()
-                        // delete device
-                    },
-                    onDismiss = viewModel::dismissDialogs
+            Card(
+                modifier = Modifier.fillMaxWidth(0.9f),
+                shape = RoundedCornerShape(20.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.cardBackground
                 )
-            }
+            ) {
+                Column(
+                    modifier = Modifier.padding(vertical = 8.dp)
+                ) {
+                    ActionRow(
+                        title = stringResource(R.string.rename_device),
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Rounded.Edit,
+                                contentDescription = null
+                            )
+                        },
+                        onClick = viewModel::showRenameDialog
+                    )
 
-            if (uiState.showChangeRoomDialog && selectedDevice != null) {
-                SingleChoiceDialog(
-                    title = stringResource(R.string.change_room),
-                    options = uiState.availableRooms.map { room ->
-                        DialogOption(
-                            id = room.id,
-                            title = room.name
-                        )
-                    },
-                    selectedOptionId = uiState.selectedRoomIdForDialog,
-                    confirmText = stringResource(R.string.save),
-                    dismissText = stringResource(R.string.cancel),
-                    onOptionSelected = viewModel::onRoomSelectedForDialog,
-                    onConfirm = {
-                        viewModel.dismissDialogs()
-                        // change room
-                    },
-                    onDismiss = viewModel::dismissDialogs
-                )
+                    ActionRow(
+                        title = stringResource(R.string.change_room),
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Rounded.Home,
+                                contentDescription = null
+                            )
+                        },
+                        onClick = viewModel::showChangeRoomDialog
+                    )
+
+                    ActionRow(
+                        title = stringResource(R.string.delete_device),
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Rounded.Delete,
+                                contentDescription = null
+                            )
+                        },
+                        onClick = viewModel::showDeleteDialog
+                    )
+                }
             }
         }
-    }
 
+        if (uiState.showRenameDialog && selectedDevice != null) {
+            InputDialog(
+                title = stringResource(R.string.rename_device),
+                value = uiState.inputText,
+                onValueChange = viewModel::onInputChanged,
+                label = stringResource(R.string.new_name),
+                confirmText = stringResource(R.string.rename),
+                dismissText = stringResource(R.string.cancel),
+                onConfirm = {
+                    viewModel.dismissDialogs()
+                },
+                onDismiss = viewModel::dismissDialogs
+            )
+        }
+
+        if (uiState.showDeleteDialog && selectedDevice != null) {
+            ConfirmDialog(
+                title = stringResource(R.string.delete_device),
+                message = stringResource(
+                    R.string.delete_device_confirmation_with_name,
+                    selectedDevice.displayName
+                ),
+                confirmText = stringResource(R.string.delete),
+                dismissText = stringResource(R.string.cancel),
+                onConfirm = {
+                    viewModel.dismissDialogs()
+                },
+                onDismiss = viewModel::dismissDialogs
+            )
+        }
+
+        if (uiState.showChangeRoomDialog && selectedDevice != null) {
+            SingleChoiceDialog(
+                title = stringResource(R.string.change_room),
+                options = uiState.availableRooms.map { room ->
+                    DialogOption(
+                        id = room.id,
+                        title = room.name
+                    )
+                },
+                selectedOptionId = uiState.selectedRoomIdForDialog,
+                confirmText = stringResource(R.string.save),
+                dismissText = stringResource(R.string.cancel),
+                onOptionSelected = viewModel::onRoomSelectedForDialog,
+                onConfirm = {
+                    viewModel.dismissDialogs()
+                },
+                onDismiss = viewModel::dismissDialogs
+            )
+        }
+    }
 }

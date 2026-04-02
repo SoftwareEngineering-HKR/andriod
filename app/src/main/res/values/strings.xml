@@ -91,6 +91,7 @@
     <!-- Devices -->
     <string name="device_type_light">Light</string>
     <string name="device_type_lock">Lock</string>
+    <string name="device_type_sensor">Sensor</string>
 
     <!-- Settings -->
     <string name="rooms">Rooms</string>
@@ -124,5 +125,10 @@
     <string name="not_available">Not available</string>
     <string name="no_description">No description</string>
     <string name="no_room_assigned">No room assigned</string>
+    <string name="device_state_on">On</string>
+    <string name="device_state_off">Off</string>
+    <string name="device_state_locked">Locked</string>
+    <string name="device_state_unlocked">Unlocked</string>
+    <string name="current_value">Current value</string>
 
 </resources>

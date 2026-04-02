@@ -14,6 +14,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -21,17 +23,19 @@ import androidx.navigation.compose.*
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
+import se.hkr.andriod.data.language.LanguageStorage
 import se.hkr.andriod.data.network.ConnectionManager
 import se.hkr.andriod.navigation.BottomNavItem
 import se.hkr.andriod.ui.screens.adddevice.AddDeviceScreen
 import se.hkr.andriod.ui.screens.devicecard.DeviceHostScreen
 import se.hkr.andriod.ui.screens.scan.ScanScreen
 import se.hkr.andriod.ui.screens.settings.subscreens.AccountInfoScreen
-import se.hkr.andriod.ui.screens.settings.subscreens.devices.DevicesScreen
-import se.hkr.andriod.ui.screens.settings.subscreens.LanguageScreen
+import se.hkr.andriod.ui.screens.settings.subscreens.DevicesScreen
+import se.hkr.andriod.ui.screens.settings.subscreens.language.LanguageScreen
 import se.hkr.andriod.ui.screens.settings.subscreens.rooms.RoomsScreen
 import se.hkr.andriod.ui.screens.settings.subscreens.SchedulesScreen
 import se.hkr.andriod.ui.screens.settings.subscreens.UsersScreen
+import se.hkr.andriod.ui.screens.settings.subscreens.language.LanguageViewModel
 import se.hkr.andriod.ui.theme.cardBackground
 import se.hkr.andriod.ui.theme.lightBlue
 
@@ -73,10 +77,10 @@ fun MainScreen(
                         icon = {
                             Icon(
                                 imageVector = screen.icon,
-                                contentDescription = screen.label
+                                contentDescription = stringResource(screen.labelRes)
                             )
                         },
-                        label = { Text(screen.label) },
+                        label = { Text(stringResource(screen.labelRes)) },
                         selected = currentDestination?.hierarchy?.any {
                             it.route == screen.route
                         } == true,
@@ -160,12 +164,7 @@ fun MainScreen(
                 }
 
                 composable(Routes.USERS) { UsersScreen() }
-                composable(Routes.DEVICES) {
-                    DevicesScreen(
-                        viewModel = viewModel(),
-                        onBackClick = { navController.navigateUp() }
-                    )
-                }
+                composable(Routes.DEVICES) { DevicesScreen() }
                 composable(Routes.ROOMS) {
                     RoomsScreen(
                         viewModel = viewModel(),
@@ -173,7 +172,20 @@ fun MainScreen(
                     )
                 }
                 composable(Routes.SCHEDULES) { SchedulesScreen() }
-                composable(Routes.LANGUAGE) { LanguageScreen() }
+                composable(Routes.LANGUAGE) {
+                    val context = LocalContext.current.applicationContext
+
+                    val languageViewModel = remember {
+                        LanguageViewModel(
+                            languageStorage = LanguageStorage(context)
+                        )
+                    }
+
+                    LanguageScreen(
+                        viewModel = languageViewModel,
+                        onBackClick = { navController.navigateUp() }
+                    )
+                }
                 composable(Routes.ACCOUNT) { AccountInfoScreen() }
             }
         }

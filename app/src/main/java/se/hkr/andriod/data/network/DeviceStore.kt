@@ -5,6 +5,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 import se.hkr.andriod.domain.model.device.Device
@@ -54,11 +55,15 @@ class DeviceStore(private val webSocketManager: WebSocketManager) {
         val newValue = payload.optInt("content", -1)
         if (deviceId.isEmpty() || newValue == -1) return
 
-        val updatedList = _devices.value.map { device ->
-            if (device.id == deviceId) device.copy(value = newValue) else device
+        scope.launch {
+            _devices.update { currentList ->
+                currentList.map { device ->
+                    if (device.id == deviceId) device.copy(value = newValue)
+                    else device
+                }
+            }
         }
 
-        scope.launch { _devices.value = updatedList }
         Log.d("DEVICESTORE", "Device updated: $deviceId : $newValue")
     }
 

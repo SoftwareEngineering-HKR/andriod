@@ -6,7 +6,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -26,6 +29,7 @@ import se.hkr.andriod.data.network.ConnectionManager
 import se.hkr.andriod.navigation.Routes
 import se.hkr.andriod.ui.components.AppTextField
 import se.hkr.andriod.ui.components.DeviceCardItem
+import se.hkr.andriod.ui.theme.cardBackground
 
 @Composable
 fun DeviceOverviewScreen(
@@ -49,38 +53,87 @@ fun DeviceOverviewScreen(
             .background(MaterialTheme.colorScheme.lightBlue)
     ) {
         AppHomeTopBar(
-            title = stringResource(R.string.device_overview),
+            title = stringResource(R.string.nav_devices),
             onlineCount = onlineCount,
             offlineCount = offlineCount,
             onAddClick = { showAddSheet = true }
         )
 
         // Main content
-        // Search bar Todo: Implement functionality
-        AppTextField(
+
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 10.dp),
+            shape = MaterialTheme.shapes.medium,
+            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.cardBackground)
+        ) {
+            // Search bar Todo: Implement functionality
+            AppTextField(
             value = search.value,
             onValueChange = { search.value = it },
-            placeholder = "Search here...",
+            placeholder = stringResource(R.string.search_placeholder),
             leadingIcon = Icons.Default.Search,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-        )
+                .padding(horizontal = 10.dp)
+                .offset(y = 10.dp)
+            )
+        }
 
-        // Scrollable list of device cards
+        // Group devices by room, using "No Room" for unassigned
+        val devicesByRoom = devices
+            .filter { device ->
+                val query = search.value.trim()
+
+                device.displayName.contains(query, ignoreCase = true) ||
+                        (device.room?.contains(query, ignoreCase = true) == true) ||
+                        device.deviceTypeEnum.name.contains(query, ignoreCase = true)
+            }
+            .groupBy { device ->
+                val room = device.room
+                if (room.isNullOrBlank() || room == "null") "No Room" else room
+            }
+
+        // Sort rooms alphabetically, but put "No Room" last
+        val sortedRooms = devicesByRoom.keys
+            .filter { it != "No Room" }.sorted() +
+                devicesByRoom.keys.filter { it == "No Room" }
+
         LazyColumn(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(vertical = 16.dp)
         ) {
-            items(devices.filter { it.displayName.contains(search.value, ignoreCase = true) }) { device ->
-                DeviceCardItem(
-                    device = device,
-                    onClick = { navController.navigate(Routes.deviceCard(device)) },
-                    onSwitchToggle = { isOn ->
-                        val value = if (isOn) device.maxValue else device.minValue
-                        connectionManager.updateDeviceValue(device.id, value)
-                    },
-                    elevation = 2.dp
-                )
+            sortedRooms.forEach { room ->
+                // Room header
+                item {
+                    Text(
+                        text = room,
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 8.dp)
+                    )
+                }
+
+                // Devices in this room
+                items(devicesByRoom[room]!!) { device ->
+                    DeviceCardItem(
+                        device = device,
+                        onClick = { navController.navigate(Routes.deviceCard(device)) },
+                        onSwitchToggle = { isOn ->
+                            val value = if (isOn) device.maxValue else device.minValue
+                            connectionManager.updateDeviceValue(device.id, value)
+                        },
+                        elevation = 2.dp
+                    )
+                }
+
+                // Space after each room section
+                item {
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
             }
         }
 

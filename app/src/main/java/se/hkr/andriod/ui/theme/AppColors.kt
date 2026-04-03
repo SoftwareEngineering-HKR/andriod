@@ -3,90 +3,85 @@ package se.hkr.andriod.ui.theme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.material3.ColorScheme
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.ui.graphics.Color
 
 // Blue
 val ColorScheme.darkBlue: Color
     @Composable
     @ReadOnlyComposable
-    get() = if (isSystemInDarkTheme()) DarkBlueDark else DarkBlueLight
+    get() = if (LocalIsDarkTheme.current) DarkBlueDark else DarkBlueLight
 
 val ColorScheme.disabledButtonBlue: Color
     @Composable
     @ReadOnlyComposable
-    get() = if (isSystemInDarkTheme()) DisabledButtonBlueDark else DisabledButtonBlueLight
+    get() = if (LocalIsDarkTheme.current) DisabledButtonBlueDark else DisabledButtonBlueLight
 
 val ColorScheme.middleBlue: Color
     @Composable
     @ReadOnlyComposable
-    get() = if (isSystemInDarkTheme()) MiddleBlueDark else MiddleBlueLight
+    get() = if (LocalIsDarkTheme.current) MiddleBlueDark else MiddleBlueLight
 
 val ColorScheme.lightBlue: Color
     @Composable
     @ReadOnlyComposable
-    get() = if (isSystemInDarkTheme()) LightBlueDark else LightBlueLight
-
+    get() = if (LocalIsDarkTheme.current) LightBlueDark else LightBlueLight
 
 // Green
 val ColorScheme.darkGreen: Color
     @Composable
     @ReadOnlyComposable
-    get() = if (isSystemInDarkTheme()) DarkGreenDark else DarkGreenLight
+    get() = if (LocalIsDarkTheme.current) DarkGreenDark else DarkGreenLight
 
 val ColorScheme.middleGreen: Color
     @Composable
     @ReadOnlyComposable
-    get() = if (isSystemInDarkTheme()) MiddleGreenDark else MiddleGreenLight
+    get() = if (LocalIsDarkTheme.current) MiddleGreenDark else MiddleGreenLight
 
 val ColorScheme.lightGreen: Color
     @Composable
     @ReadOnlyComposable
-    get() = if (isSystemInDarkTheme()) LightGreenDark else LightGreenLight
-
+    get() = if (LocalIsDarkTheme.current) LightGreenDark else LightGreenLight
 
 // Red
 val ColorScheme.darkRed: Color
     @Composable
     @ReadOnlyComposable
-    get() = if (isSystemInDarkTheme()) DarkRedDark else DarkRedLight
+    get() = if (LocalIsDarkTheme.current) DarkRedDark else DarkRedLight
 
 val ColorScheme.middleRed: Color
     @Composable
     @ReadOnlyComposable
-    get() = if (isSystemInDarkTheme()) MiddleRedDark else MiddleRedLight
+    get() = if (LocalIsDarkTheme.current) MiddleRedDark else MiddleRedLight
 
 val ColorScheme.lightRed: Color
     @Composable
     @ReadOnlyComposable
-    get() = if (isSystemInDarkTheme()) LightRedDark else LightRedLight
-
+    get() = if (LocalIsDarkTheme.current) LightRedDark else LightRedLight
 
 // Input fields
 val ColorScheme.inputFieldFill: Color
     @Composable
     @ReadOnlyComposable
-    get() = if (isSystemInDarkTheme()) InputFieldFillDark else InputFieldFillLight
+    get() = if (LocalIsDarkTheme.current) InputFieldFillDark else InputFieldFillLight
 
 val ColorScheme.inputFieldOutline: Color
     @Composable
     @ReadOnlyComposable
-    get() = if (isSystemInDarkTheme()) InputFieldOutlineDark else InputFieldOutlineLight
+    get() = if (LocalIsDarkTheme.current) InputFieldOutlineDark else InputFieldOutlineLight
 
 val ColorScheme.inputFieldPlaceholder: Color
     @Composable
     @ReadOnlyComposable
-    get() = if (isSystemInDarkTheme()) InputFieldPlaceholderDark else InputFieldPlaceholderLight
-
+    get() = if (LocalIsDarkTheme.current) InputFieldPlaceholderDark else InputFieldPlaceholderLight
 
 // Card
 val ColorScheme.cardBackground: Color
     @Composable
     @ReadOnlyComposable
-    get() = if (isSystemInDarkTheme()) CardBackgroundDark else CardBackgroundLight
+    get() = if (LocalIsDarkTheme.current) CardBackgroundDark else CardBackgroundLight
 
 // Add device list item
 val ColorScheme.ListItemBackground: Color
     @Composable
     @ReadOnlyComposable
-    get() = if (isSystemInDarkTheme()) ListItemBackgroundDark else ListItemBackgroundLight
+    get() = if (LocalIsDarkTheme.current) ListItemBackgroundDark else ListItemBackgroundLight

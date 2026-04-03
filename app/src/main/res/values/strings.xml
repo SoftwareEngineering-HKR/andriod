@@ -162,6 +162,7 @@
 
     <!-- Settings - Users & Permissions -->
     <string name="role">Role</string>
+    <string name="user">User</string>
     <string name="extra_permissions">Extra permissions</string>
     <string name="permissions_active">%1$d permissions active</string>
 

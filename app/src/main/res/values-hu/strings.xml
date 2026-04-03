@@ -156,6 +156,12 @@
     <string name="device_state_unlocked">Feloldva</string>
     <string name="current_value">Jelenlegi érték</string>
 
+    <!-- Settings - Theme -->
+    <string name="theme_light">Világos</string>
+    <string name="theme_dark">Sötét</string>
+    <string name="theme_system">Rendszer alapértelmezett</string>
+    <string name="select_theme">Válassz témát</string>
+
     <!-- Settings - Language -->
     <string name="language">Nyelv</string>
     <string name="choose_language">Nyelv kiválasztása</string>

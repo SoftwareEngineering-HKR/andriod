@@ -1,10 +1,12 @@
 package se.hkr.andriod.ui.theme
 
 import android.os.Build
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.staticCompositionLocalOf
 
 private val DarkColorScheme = darkColorScheme(
     primary = DarkBlueDark,
@@ -15,6 +17,8 @@ private val LightColorScheme = lightColorScheme(
     primary = DarkBlueLight,
     secondary = MiddleBlueLight
 )
+
+val LocalIsDarkTheme = staticCompositionLocalOf { false }
 
 @Composable
 fun AndriodTheme(
@@ -32,10 +36,12 @@ fun AndriodTheme(
         else -> LightColorScheme
     }
 
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = Typography,
-        shapes = Shapes,
-        content = content
-    )
+    CompositionLocalProvider(LocalIsDarkTheme provides darkTheme) {
+        MaterialTheme(
+            colorScheme = colorScheme,
+            typography = Typography,
+            shapes = Shapes,
+            content = content
+        )
+    }
 }

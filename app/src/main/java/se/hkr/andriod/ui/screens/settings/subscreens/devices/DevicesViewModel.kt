@@ -1,10 +1,13 @@
 package se.hkr.andriod.ui.screens.settings.subscreens.devices
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import se.hkr.andriod.data.mock.MockDevices
+import se.hkr.andriod.data.network.DeviceStore
 import se.hkr.andriod.domain.model.device.Device
 import se.hkr.andriod.domain.model.device.Room
 
@@ -38,9 +41,29 @@ data class DevicesUiState(
 
 }
 
-class DevicesViewModel : ViewModel() {
+class DevicesViewModel(
+    private val deviceStore: DeviceStore
+) : ViewModel() {
+
     private val _uiState = MutableStateFlow(DevicesUiState())
     val uiState: StateFlow<DevicesUiState> = _uiState
+
+    init {
+        viewModelScope.launch {
+            deviceStore.devices.collect { devices ->
+                _uiState.update { state ->
+                    val selectedId = state.selectedDeviceId
+                        .takeIf { id -> devices.any { it.id == id } }
+                        ?: devices.firstOrNull()?.id.orEmpty()
+
+                    state.copy(
+                        devices = devices,
+                        selectedDeviceId = selectedId
+                    )
+                }
+            }
+        }
+    }
 
     fun onDeviceSelected(deviceId: String) {
         _uiState.update { state ->
@@ -85,6 +108,31 @@ class DevicesViewModel : ViewModel() {
                 selectedRoomIdForDialog = selectedDevice.room.orEmpty()
             )
         }
+    }
+
+    fun renameSelectedDevice() {
+        val selectedDevice = _uiState.value.selectedDevice ?: return
+        val newName = _uiState.value.inputText.trim()
+        if (newName.isEmpty() || newName == selectedDevice.displayName) return
+
+        // Use current description to avoid overwriting it
+        val currentDescription = selectedDevice.description ?: ""
+
+        deviceStore.updateDevice(
+            deviceId = selectedDevice.id,
+            name = newName,
+            description = currentDescription
+        )
+
+        dismissDialogs()
+    }
+
+    fun deleteSelectedDevice() {
+        val selectedDevice = _uiState.value.selectedDevice ?: return
+
+        deviceStore.deleteDevice(selectedDevice.id)
+
+        dismissDialogs()
     }
 
     fun dismissDialogs() {

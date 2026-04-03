@@ -198,7 +198,10 @@ fun MainScreen(
                         onBackClick = { navController.navigateUp() }
                     )
                 }
-                composable(Routes.ACCOUNT) { AccountInfoScreen() }
+                composable(Routes.ACCOUNT) { AccountInfoScreen(
+                    viewModel = viewModel(),
+                    onBackClick = { navController.navigateUp() }
+                ) }
             }
         }
     }

@@ -1,11 +1,15 @@
 package se.hkr.andriod.ui.screens.settings.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.ExpandLess
+import androidx.compose.material.icons.rounded.ExpandMore
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
@@ -13,6 +17,7 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -35,7 +40,9 @@ fun UserPermissionsCard(
     effectivePermissions: Set<Permission>,
     permissionItems: List<PermissionUi>,
     roleExpanded: Boolean,
+    permissionsExpanded: Boolean,
     onRoleExpandedChange: (Boolean) -> Unit,
+    onPermissionsExpandedChange: (Boolean) -> Unit,
     onRoleChanged: (UserRole) -> Unit,
     onPermissionToggle: (Permission) -> Unit,
     isPermissionEditable: (Permission) -> Boolean
@@ -92,33 +99,54 @@ fun UserPermissionsCard(
                 }
             }
 
-            Text(
-                text = stringResource(R.string.extra_permissions),
-                style = MaterialTheme.typography.titleMedium
-            )
-
-            Column(
-                verticalArrangement = Arrangement.spacedBy(4.dp)
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable {
+                        onPermissionsExpandedChange(!permissionsExpanded)
+                    },
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                permissionItems.forEach { permissionUi ->
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text(
-                            text = stringResource(permissionUi.labelRes),
-                            modifier = Modifier.weight(1f),
-                            style = MaterialTheme.typography.bodyLarge
-                        )
+                Text(
+                    text = stringResource(R.string.extra_permissions),
+                    style = MaterialTheme.typography.titleMedium
+                )
 
-                        Checkbox(
-                            checked = permissionUi.permission in effectivePermissions,
-                            onCheckedChange = {
-                                onPermissionToggle(permissionUi.permission)
-                            },
-                            enabled = isPermissionEditable(permissionUi.permission)
-                        )
+                Icon(
+                    imageVector = if (permissionsExpanded) {
+                        Icons.Rounded.ExpandLess
+                    } else {
+                        Icons.Rounded.ExpandMore
+                    },
+                    contentDescription = null
+                )
+            }
+
+            if (permissionsExpanded) {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    permissionItems.forEach { permissionUi ->
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                text = stringResource(permissionUi.labelRes),
+                                modifier = Modifier.weight(1f),
+                                style = MaterialTheme.typography.bodyLarge
+                            )
+
+                            Checkbox(
+                                checked = permissionUi.permission in effectivePermissions,
+                                onCheckedChange = {
+                                    onPermissionToggle(permissionUi.permission)
+                                },
+                                enabled = isPermissionEditable(permissionUi.permission)
+                            )
+                        }
                     }
                 }
             }

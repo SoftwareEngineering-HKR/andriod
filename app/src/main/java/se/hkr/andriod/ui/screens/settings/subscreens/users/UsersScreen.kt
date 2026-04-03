@@ -84,6 +84,8 @@ fun UsersScreen(
 
     var userDropdownExpanded by remember { mutableStateOf(false) }
     var roleDropdownExpanded by remember { mutableStateOf(false) }
+    var permissionsExpanded by remember { mutableStateOf(false) }
+
 
     LazyColumn(
         modifier = Modifier
@@ -154,6 +156,7 @@ fun UsersScreen(
                                         viewModel.onUserSelected(user.id)
                                         userDropdownExpanded = false
                                         roleDropdownExpanded = false
+                                        permissionsExpanded = false
                                     }
                                 )
                             }
@@ -206,8 +209,12 @@ fun UsersScreen(
                     effectivePermissions = effectivePermissions,
                     permissionItems = permissionItems,
                     roleExpanded = roleDropdownExpanded,
+                    permissionsExpanded = permissionsExpanded,
                     onRoleExpandedChange = { expanded ->
                         roleDropdownExpanded = expanded
+                    },
+                    onPermissionsExpandedChange = { expanded ->
+                        permissionsExpanded = expanded
                     },
                     onRoleChanged = { role ->
                         viewModel.onRoleChanged(selectedUser.id, role)

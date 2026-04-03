@@ -2,24 +2,11 @@ package se.hkr.andriod.ui.screens.settings
 
 import android.util.Log
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -32,6 +19,7 @@ import se.hkr.andriod.data.network.ConnectionManager
 import se.hkr.andriod.navigation.Routes
 import se.hkr.andriod.ui.components.AppButton
 import se.hkr.andriod.ui.screens.settings.components.SettingsItem
+import se.hkr.andriod.ui.screens.settings.components.ThemeSelectorDialog
 import se.hkr.andriod.ui.theme.lightBlue
 
 @Composable
@@ -41,6 +29,7 @@ fun SettingsScreen(
     onLogoutClicked: () -> Unit
 ) {
     var discoveredIp: String? by remember { mutableStateOf("Not connected") }
+    var showThemeDialog by remember { mutableStateOf(false) }
 
     val devices by connectionManager.deviceStore.devices.collectAsState()
 
@@ -65,16 +54,24 @@ fun SettingsScreen(
                     style = MaterialTheme.typography.titleMedium
                 )
             }
+
+            // Theme selector
             item {
                 SettingsItem(
                     title = stringResource(R.string.settings_theme)
-                ) { /* show popup */ }
+                ) {
+                    showThemeDialog = true
+                }
             }
+
+            // Language
             item {
                 SettingsItem(
                     title = stringResource(R.string.language)
                 ) { navController.navigate(Routes.LANGUAGE) }
             }
+
+            // Account info
             item {
                 SettingsItem(
                     title = stringResource(R.string.settings_account_info)
@@ -169,5 +166,11 @@ fun SettingsScreen(
                 )
             }
         }
+
+        // Theme selection dialog
+        ThemeSelectorDialog(
+            show = showThemeDialog,
+            onDismiss = { showThemeDialog = false }
+        )
     }
 }

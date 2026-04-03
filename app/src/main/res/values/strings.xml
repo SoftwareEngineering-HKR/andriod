@@ -155,6 +155,12 @@
     <string name="device_state_unlocked">Unlocked</string>
     <string name="current_value">Current value</string>
 
+    <!-- Settings - Theme -->
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="theme_system">System Default</string>
+    <string name="select_theme">Select Theme</string>
+
     <!-- Settings - Language -->
     <string name="language">Language</string>
     <string name="choose_language">Choose language</string>

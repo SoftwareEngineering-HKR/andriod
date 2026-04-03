@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Cancel
@@ -26,12 +27,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import se.hkr.andriod.R
 import se.hkr.andriod.ui.components.CustomScreenHeader
 import se.hkr.andriod.ui.screens.settings.components.ActionRow
 import se.hkr.andriod.ui.screens.settings.components.InfoRow
+import se.hkr.andriod.ui.theme.cardBackground
 import se.hkr.andriod.ui.theme.lightBlue
 
 @Composable
@@ -63,34 +66,18 @@ fun AccountInfoScreen(
                 modifier = Modifier.fillMaxWidth(0.9f),
                 shape = RoundedCornerShape(20.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surface
+                    containerColor = MaterialTheme.colorScheme.cardBackground
                 )
             ) {
                 Column(
                     modifier = Modifier.padding(20.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    Icon(
-                        imageVector = Icons.Rounded.Person,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-
                     Text(
                         text = user?.username.orEmpty(),
-                        style = MaterialTheme.typography.headlineSmall
+                        style = MaterialTheme.typography.headlineMedium
                     )
-
-                    Text(
-                        text = stringResource(id = R.string.account_info_description),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-
-                    Spacer(modifier = Modifier.height(4.dp))
-
                     InfoRow(text = user?.role?.name.orEmpty())
-
                 }
             }
 
@@ -100,11 +87,12 @@ fun AccountInfoScreen(
                 modifier = Modifier.fillMaxWidth(0.9f),
                 shape = RoundedCornerShape(20.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surface
+                    containerColor = MaterialTheme.colorScheme.cardBackground
                 )
             ) {
                 Column(
-                    modifier = Modifier.padding(20.dp)
+                    modifier = Modifier.padding(20.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     Text(
                         text = stringResource(id = R.string.username),
@@ -117,12 +105,11 @@ fun AccountInfoScreen(
                         value = uiState.usernameInput,
                         onValueChange = viewModel::onUsernameChanged,
                         modifier = Modifier.fillMaxWidth(),
-                        readOnly = !uiState.isEditMode,
                         singleLine = true,
                         label = {
-                            Text(text = stringResource(id = R.string.edit_username))
+                            Text(text = stringResource(R.string.username))
                         },
-                        shape = RoundedCornerShape(14.dp),
+                        shape = RoundedCornerShape(14.dp)
                     )
                 }
             }
@@ -133,54 +120,26 @@ fun AccountInfoScreen(
                 modifier = Modifier.fillMaxWidth(0.9f),
                 shape = RoundedCornerShape(20.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surface
+                    containerColor = MaterialTheme.colorScheme.cardBackground
                 )
             ) {
                 Column(
                     modifier = Modifier.padding(vertical = 8.dp)
                 ) {
-                    if (uiState.isEditMode) {
-                        ActionRow(
-                            title = stringResource(id = R.string.edit_username),
-                            icon = {
-                                Icon(
-                                    imageVector = Icons.Rounded.Edit,
-                                    contentDescription = null
-                                )
-                            },
-                            onClick = viewModel::enterEditMode
-
-                        )
-                    } else {
-                        ActionRow(
-                            title = stringResource(id = R.string.save),
-                            icon = {
-                                Icon(
-                                    imageVector = Icons.Rounded.Save,
-                                    contentDescription = null
-                                )
-                            },
-                            onClick = {
-                                if (uiState.isSaveEnabled) {
-                                    viewModel.saveUsername()
-                                }
-                            }
-                        )
-
-                        ActionRow(
-                            title = stringResource(id = R.string.cancel),
-                            icon = {
-                                Icon(
-                                    imageVector = Icons.Rounded.Cancel,
-                                    contentDescription = null
-                                )
-                            },
-                            onClick = viewModel::cancelEdit
-                        )
-                    }
+                    ActionRow(
+                        title = stringResource(id = R.string.save),
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Rounded.Save,
+                                contentDescription = null
+                            )
+                        },
+                        onClick = viewModel::saveUsername,
+                        enabled = uiState.isSaveEnabled
+                    )
                 }
             }
         }
     }
-
 }
+

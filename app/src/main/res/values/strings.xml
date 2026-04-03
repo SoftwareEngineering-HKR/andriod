@@ -157,7 +157,6 @@
 
     <!-- Settings - Account Info -->
     <string name="account_info">Account Information</string>
-    <string name="account_info_description">View and edit your account details.</string>
     <string name="username">Username</string>
     <string name="edit_username">Edit username</string>
 

@@ -11,7 +11,6 @@ import se.hkr.andriod.domain.model.user.User
 data class AccountInfoUiState(
     val user: User? = null,
     val usernameInput: String = "",
-    val isEditMode: Boolean = false,
     val isSaveEnabled: Boolean = false
 )
 
@@ -20,22 +19,11 @@ class AccountInfoViewModel : ViewModel() {
         AccountInfoUiState(
             user = currentUser,
             usernameInput = currentUser.username,
-            isEditMode = false,
             isSaveEnabled = false
         )
     )
 
     val uiState: StateFlow<AccountInfoUiState> = _uiState.asStateFlow()
-
-    fun enterEditMode() {
-        _uiState.update { state ->
-            state.copy(
-                isEditMode = true,
-                usernameInput = state.user?.username.orEmpty(),
-                isSaveEnabled = false
-            )
-        }
-    }
 
     fun onUsernameChanged(value: String) {
         _uiState.update { state ->
@@ -48,17 +36,6 @@ class AccountInfoViewModel : ViewModel() {
             )
         }
     }
-
-    fun cancelEdit() {
-        _uiState.update { state ->
-            state.copy(
-                usernameInput = state.user?.username.orEmpty(),
-                isEditMode = false,
-                isSaveEnabled = false
-            )
-        }
-    }
-
     fun saveUsername() {
         val state = _uiState.value
         val user = state.user ?: return
@@ -74,7 +51,6 @@ class AccountInfoViewModel : ViewModel() {
             state.copy(
                 user = updatedUser,
                 usernameInput = updatedUser.username,
-                isEditMode = false,
                 isSaveEnabled = false
             )
         }

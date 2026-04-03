@@ -159,6 +159,10 @@
     <string name="account_info">Account Information</string>
     <string name="username">Username</string>
     <string name="edit_username">Edit username</string>
+
+    <!-- Settings - Users & Permissions -->
+    <string name="role">Role</string>
+    <string name="extra_permissions">Extra permissions</string>
   
     <!-- Settings - Theme -->
     <string name="theme_light">Light</string>

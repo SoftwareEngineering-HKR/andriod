@@ -165,7 +165,10 @@ fun MainScreen(
                     )
                 }
 
-                composable(Routes.USERS) { UsersScreen() }
+                composable(Routes.USERS) { UsersScreen(
+                    viewModel = viewModel(),
+                    onBackClick = { navController.navigateUp() }
+                ) }
                 composable(Routes.DEVICES) {
 
                     val viewModel: DevicesViewModel = viewModel(

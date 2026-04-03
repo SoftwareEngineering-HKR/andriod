@@ -89,7 +89,7 @@ class UsersViewModel : ViewModel() {
     }
 
     private fun getEditedRole(state: UsersUiState, user: User): UserRole {
-        return state.editedRoles[user.id] ?: user.role]
+        return state.editedRoles[user.id] ?: user.role
     }
 
     private fun getEditedPermissions(state: UsersUiState, user: User): Set<Permission> {

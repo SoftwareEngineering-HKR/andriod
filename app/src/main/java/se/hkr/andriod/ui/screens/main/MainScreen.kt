@@ -29,7 +29,7 @@ import se.hkr.andriod.navigation.BottomNavItem
 import se.hkr.andriod.ui.screens.adddevice.AddDeviceScreen
 import se.hkr.andriod.ui.screens.devicecard.DeviceHostScreen
 import se.hkr.andriod.ui.screens.scan.ScanScreen
-import se.hkr.andriod.ui.screens.settings.subscreens.AccountInfoScreen
+import se.hkr.andriod.ui.screens.settings.subscreens.accountinfo.AccountInfoScreen
 import se.hkr.andriod.ui.screens.settings.subscreens.language.LanguageScreen
 import se.hkr.andriod.ui.screens.settings.subscreens.rooms.RoomsScreen
 import se.hkr.andriod.ui.screens.settings.subscreens.SchedulesScreen
@@ -198,7 +198,10 @@ fun MainScreen(
                         onBackClick = { navController.navigateUp() }
                     )
                 }
-                composable(Routes.ACCOUNT) { AccountInfoScreen() }
+                composable(Routes.ACCOUNT) { AccountInfoScreen(
+                    viewModel = viewModel(),
+                    onBackClick = { navController.navigateUp() }
+                ) }
             }
         }
     }

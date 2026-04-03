@@ -112,7 +112,7 @@
     <string name="device_type_gas">Gáz</string>
     <string name="device_type_humidity">Páratartalom</string>
     <string name="device_type_steam">Gőz</string>
-    <string name="device_type_buzz">Búgó</string>
+    <string name="device_type_buzz">Berregő</string>
     <string name="device_type_fan">Ventilátor</string>
     <string name="device_type_servo">Szervo</string>
     <string name="device_type_window">Ablak</string>
@@ -156,6 +156,11 @@
     <string name="device_state_unlocked">Feloldva</string>
     <string name="current_value">Jelenlegi érték</string>
 
+    <!-- Settings - Account Info -->
+    <string name="account_info">Fiókadatok</string>
+    <string name="username">Felhasználónév</string>
+    <string name="edit_username">Felhasználónév módosítása</string>
+  
     <!-- Settings - Theme -->
     <string name="theme_light">Világos</string>
     <string name="theme_dark">Sötét</string>

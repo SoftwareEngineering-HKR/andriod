@@ -160,6 +160,12 @@
     <string name="account_info">Fiókadatok</string>
     <string name="username">Felhasználónév</string>
     <string name="edit_username">Felhasználónév módosítása</string>
+  
+    <!-- Settings - Theme -->
+    <string name="theme_light">Világos</string>
+    <string name="theme_dark">Sötét</string>
+    <string name="theme_system">Rendszer alapértelmezett</string>
+    <string name="select_theme">Válassz témát</string>
 
     <!-- Settings - Language -->
     <string name="language">Nyelv</string>

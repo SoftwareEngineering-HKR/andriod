@@ -32,16 +32,16 @@ import se.hkr.andriod.ui.theme.cardBackground
 @Composable
 fun UserPermissionsCard(
     selectedRole: UserRole,
-    selectedPermissions: Set<Permission>,
+    effectivePermissions: Set<Permission>,
     permissionItems: List<PermissionUi>,
     roleExpanded: Boolean,
-    onRoleExpandedChange: () -> Unit,
-    onRoleDismissRequest: () -> Unit,
+    onRoleExpandedChange: (Boolean) -> Unit,
     onRoleChanged: (UserRole) -> Unit,
-    onPermissionToggle: (Permission) -> Unit
+    onPermissionToggle: (Permission) -> Unit,
+    isPermissionEditable: (Permission) -> Boolean
 ) {
     Card(
-        modifier = Modifier.fillMaxWidth(0.9f),
+        modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.cardBackground
@@ -58,7 +58,7 @@ fun UserPermissionsCard(
 
             ExposedDropdownMenuBox(
                 expanded = roleExpanded,
-                onExpandedChange = { onRoleExpandedChange() }
+                onExpandedChange = onRoleExpandedChange
             ) {
                 OutlinedTextField(
                     value = stringResource(selectedRole.toRoleTextRes()),
@@ -76,13 +76,16 @@ fun UserPermissionsCard(
 
                 ExposedDropdownMenu(
                     expanded = roleExpanded,
-                    onDismissRequest = onRoleDismissRequest
+                    onDismissRequest = {
+                        onRoleExpandedChange(false)
+                    }
                 ) {
                     UserRole.entries.forEach { role ->
                         DropdownMenuItem(
                             text = { Text(stringResource(role.toRoleTextRes())) },
                             onClick = {
                                 onRoleChanged(role)
+                                onRoleExpandedChange(false)
                             }
                         )
                     }
@@ -110,10 +113,11 @@ fun UserPermissionsCard(
                         )
 
                         Checkbox(
-                            checked = permissionUi.permission in selectedPermissions,
+                            checked = permissionUi.permission in effectivePermissions,
                             onCheckedChange = {
                                 onPermissionToggle(permissionUi.permission)
-                            }
+                            },
+                            enabled = isPermissionEditable(permissionUi.permission)
                         )
                     }
                 }

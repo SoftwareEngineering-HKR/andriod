@@ -5,6 +5,7 @@ import se.hkr.andriod.R
 import se.hkr.andriod.domain.model.user.Permission
 import se.hkr.andriod.domain.model.user.User
 import se.hkr.andriod.domain.model.user.UserRole
+import java.util.UUID
 
 data class UserInfoUi(
     val name: String,
@@ -20,7 +21,7 @@ data class PermissionUi(
 fun mapUserToInfoUi(
     user: User?,
     selectedRole: UserRole?,
-    selectedPermissions: Set<Permission>?
+    selectedExtraPermissions: Set<Permission>?
 ): UserInfoUi {
     if (user == null) {
         return UserInfoUi(
@@ -31,7 +32,7 @@ fun mapUserToInfoUi(
     }
 
     val displayedRole = selectedRole ?: user.role
-    val displayedExtraPermissions = selectedPermissions ?: user.extraPermissions
+    val displayedExtraPermissions = selectedExtraPermissions ?: user.extraPermissions
     val effectivePermissions = displayedRole.defaultPermissions + displayedExtraPermissions
 
     return UserInfoUi(
@@ -48,6 +49,46 @@ fun mapPermissionsToUi(): List<PermissionUi> {
             labelRes = permission.toPermissionTextRes()
         )
     }
+}
+
+fun getSelectedUser(
+    users: List<User>,
+    selectedUserId: UUID?
+): User? {
+    return users.find { it.id == selectedUserId }
+}
+
+fun getDisplayedRole(
+    user: User,
+    editedRoles: Map<UUID, UserRole>
+): UserRole {
+    return editedRoles[user.id] ?: user.role
+}
+
+fun getDisplayedExtraPermissions(
+    user: User,
+    editedPermissions: Map<UUID, Set<Permission>>
+): Set<Permission> {
+    return editedPermissions[user.id] ?: user.extraPermissions
+}
+
+fun getEffectivePermissions(
+    user: User,
+    editedRoles: Map<UUID, UserRole>,
+    editedPermissions: Map<UUID, Set<Permission>>
+): Set<Permission> {
+    val displayedRole = getDisplayedRole(user, editedRoles)
+    val displayedExtraPermissions = getDisplayedExtraPermissions(user, editedPermissions)
+    return displayedRole.defaultPermissions + displayedExtraPermissions
+}
+
+fun isPermissionEditable(
+    user: User,
+    permission: Permission,
+    editedRoles: Map<UUID, UserRole>
+): Boolean {
+    val displayedRole = getDisplayedRole(user, editedRoles)
+    return permission !in displayedRole.defaultPermissions
 }
 
 @StringRes

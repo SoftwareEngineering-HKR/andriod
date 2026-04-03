@@ -2,8 +2,6 @@ package se.hkr.andriod.ui.screens.settings.subscreens.users
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,10 +10,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Save
+import androidx.compose.material.icons.rounded.Save
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenuItem
@@ -32,7 +29,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -51,37 +47,73 @@ fun UsersScreen(
     onBackClick: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    val selectedUser = viewModel.getSelectedUser()
     val permissionItems = remember { mapPermissionsToUi() }
+
+    val selectedUser = getSelectedUser(
+        users = uiState.users,
+        selectedUserId = uiState.selectedUserId
+    )
+
+    val selectedRole = selectedUser?.let {
+        getDisplayedRole(
+            user = it,
+            editedRoles = uiState.editedRoles
+        )
+    }
+
+    val selectedExtraPermissions = selectedUser?.let {
+        getDisplayedExtraPermissions(
+            user = it,
+            editedPermissions = uiState.editedPermissions
+        )
+    }
+
+    val effectivePermissions = selectedUser?.let {
+        getEffectivePermissions(
+            user = it,
+            editedRoles = uiState.editedRoles,
+            editedPermissions = uiState.editedPermissions
+        )
+    }.orEmpty()
+
+    val userInfo = mapUserToInfoUi(
+        user = selectedUser,
+        selectedRole = selectedRole,
+        selectedExtraPermissions = selectedExtraPermissions
+    )
 
     var userDropdownExpanded by remember { mutableStateOf(false) }
     var roleDropdownExpanded by remember { mutableStateOf(false) }
 
-    Box(
+    LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.lightBlue)
-            .padding(top = 24.dp)
+            .padding(top = 24.dp),
+        contentPadding = PaddingValues(
+            start = 20.dp,
+            end = 20.dp,
+            top = 24.dp,
+            bottom = 32.dp
+        ),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(vertical = 24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
+        item {
             CustomScreenHeader(
                 title = stringResource(R.string.settings_users_permissions),
                 onBackClick = onBackClick
             )
+        }
 
+        item {
             Card(
-                modifier = Modifier.fillMaxWidth(0.9f),
+                modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(20.dp),
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.cardBackground
                 )
             ) {
-                Column(
+                androidx.compose.foundation.layout.Column(
                     modifier = Modifier.padding(20.dp)
                 ) {
                     Text(
@@ -93,7 +125,9 @@ fun UsersScreen(
 
                     ExposedDropdownMenuBox(
                         expanded = userDropdownExpanded,
-                        onExpandedChange = { userDropdownExpanded = !userDropdownExpanded }
+                        onExpandedChange = { expanded ->
+                            userDropdownExpanded = expanded
+                        }
                     ) {
                         OutlinedTextField(
                             value = selectedUser?.username.orEmpty(),
@@ -119,6 +153,7 @@ fun UsersScreen(
                                     onClick = {
                                         viewModel.onUserSelected(user.id)
                                         userDropdownExpanded = false
+                                        roleDropdownExpanded = false
                                     }
                                 )
                             }
@@ -126,23 +161,18 @@ fun UsersScreen(
                     }
                 }
             }
+        }
 
-            if (selectedUser != null) {
-                val selectedRole = viewModel.getDisplayedRole(selectedUser)
-                val selectedPermissions = viewModel.getDisplayedPermissions(selectedUser)
-
-                val userInfo = mapUserToInfoUi(selectedUser, selectedRole, selectedPermissions)
-
-                Spacer(modifier = Modifier.height(16.dp))
-
+        if (selectedUser != null && selectedRole != null) {
+            item {
                 Card(
-                    modifier = Modifier.fillMaxWidth(0.9f),
+                    modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(20.dp),
                     colors = CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.cardBackground
                     )
                 ) {
-                    Column(
+                    androidx.compose.foundation.layout.Column(
                         modifier = Modifier.padding(20.dp)
                     ) {
                         Text(
@@ -156,7 +186,7 @@ fun UsersScreen(
                             horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
                             InfoRow(
-                                text = stringResource(userInfo.roleRes),
+                                text = stringResource(userInfo.roleRes)
                             )
 
                             InfoRow(
@@ -168,51 +198,60 @@ fun UsersScreen(
                         }
                     }
                 }
+            }
 
-                Spacer(modifier = Modifier.height(16.dp))
-
+            item {
                 UserPermissionsCard(
                     selectedRole = selectedRole,
-                    selectedPermissions = selectedPermissions,
+                    effectivePermissions = effectivePermissions,
                     permissionItems = permissionItems,
                     roleExpanded = roleDropdownExpanded,
-                    onRoleExpandedChange = { roleDropdownExpanded = !roleDropdownExpanded },
-                    onRoleDismissRequest = { roleDropdownExpanded = false },
-                    onRoleChanged = { role ->
-                        viewModel.onRoleChanged(role)
-                        roleDropdownExpanded = false
+                    onRoleExpandedChange = { expanded ->
+                        roleDropdownExpanded = expanded
                     },
-                    onPermissionToggle = viewModel::onPermissionToggled
+                    onRoleChanged = { role ->
+                        viewModel.onRoleChanged(selectedUser.id, role)
+                    },
+                    onPermissionToggle = { permission ->
+                        viewModel.onPermissionToggled(selectedUser.id, permission)
+                    },
+                    isPermissionEditable = { permission ->
+                        isPermissionEditable(
+                            user = selectedUser,
+                            permission = permission,
+                            editedRoles = uiState.editedRoles
+                        )
+                    }
                 )
+            }
 
-                Spacer(modifier = Modifier.height(16.dp))
-
+            item {
                 Card(
-                    modifier = Modifier.fillMaxWidth(0.9f),
+                    modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(20.dp),
                     colors = CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.cardBackground
                     )
                 ) {
-                    Column(
-                        modifier = Modifier.padding(20.dp)
+                    androidx.compose.foundation.layout.Column(
+                        modifier = Modifier.padding(vertical = 8.dp)
                     ) {
                         ActionRow(
                             title = stringResource(R.string.save),
                             icon = {
                                 Icon(
-                                    imageVector = Icons.Default.Save,
-                                    contentDescription = stringResource(R.string.save)
+                                    imageVector = Icons.Rounded.Save,
+                                    contentDescription = null
                                 )
                             },
                             onClick = viewModel::saveSelectedUser,
-                            enabled = viewModel.isSaveEnabled(selectedUser)
+                            enabled =
+                                selectedRole != selectedUser.role ||
+                                        selectedExtraPermissions != selectedUser.extraPermissions
                         )
                     }
                 }
             }
         }
     }
-
-
 }

@@ -13,35 +13,46 @@ import java.util.UUID
 
 data class UsersUiState(
     val users: List<User> = emptyList(),
+    val selectedUserId: UUID? = null,
     val editedRoles: Map<UUID, UserRole> = emptyMap(),
     val editedPermissions: Map<UUID, Set<Permission>> = emptyMap()
 )
 
 class UsersViewModel : ViewModel() {
+    private val initialUsers = MockUsers.allUsers
+
     private val _uiState = MutableStateFlow(
         UsersUiState(
-            users = MockUsers.allUsers
+            users = initialUsers,
+            selectedUserId = initialUsers.firstOrNull()?.id
         )
     )
 
     val uiState: StateFlow<UsersUiState> = _uiState.asStateFlow()
 
-    fun onRoleChanged(userId: UUID, role: UserRole) {
+    fun onUserSelected(userId: UUID) {
+        _uiState.update { state ->
+            state.copy(selectedUserId = userId)
+        }
+    }
+    fun onRoleChanged(role: UserRole) {
+        val selectedUser = getSelectedUser() ?: return
+
         _uiState.update { state ->
             state.copy(
-                editedRoles = state.editedRoles + (userId to role)
+                editedRoles = state.editedRoles + (selectedUser.id to role)
             )
         }
     }
 
-    fun onPermissionToggled(userId: UUID, permission: Permission) {
+    fun onPermissionToggled(permission: Permission) {
+        val selectedUser = getSelectedUser() ?: return
+
         _uiState.update { state ->
-            val user = state.users.find { it.id == userId } ?: return@update state
+            val currentPermissions = state.editedPermissions[selectedUser.id]
+                ?: selectedUser.extraPermissions
 
-            val currentPermissions = state.editedPermissions[userId]
-                ?: user.extraPermissions
-
-            val updatedPermission =
+            val updatedPermissions =
                 if (permission in currentPermissions) {
                     currentPermissions - permission
                 } else {
@@ -49,29 +60,33 @@ class UsersViewModel : ViewModel() {
                 }
 
             state.copy(
-                editedPermissions = state.editedPermissions + (userId to updatedPermission)
+                editedPermissions = state.editedPermissions + (selectedUser.id to updatedPermissions)
             )
-
         }
     }
 
-    fun saveUser(userId: UUID) {
-        _uiState.update { state ->
-            val user = state.users.find { it.id == userId } ?: return@update state
+    fun saveSelectedUser() {
+        val selectedUser = getSelectedUser() ?: return
 
-            val updatedUser = user.copy(
-                role = getEditedRole(state, user),
-                extraPermissions = getEditedPermissions(state, user)
+        _uiState.update { state ->
+            val updatedUser = selectedUser.copy(
+                role = getEditedRole(state, selectedUser),
+                extraPermissions = getEditedPermissions(state, selectedUser)
             )
 
             state.copy(
-                users = state.users.map {
-                    if (it.id == userId) updatedUser else it
+                users = state.users.map { user ->
+                    if (user.id == selectedUser.id) updatedUser else user
                 },
-                editedRoles = state.editedRoles - userId,
-                editedPermissions = state.editedPermissions - userId
+                editedRoles = state.editedRoles - selectedUser.id,
+                editedPermissions = state.editedPermissions - selectedUser.id
             )
         }
+    }
+
+    fun getSelectedUser(): User? {
+        val state = _uiState.value
+        return state.users.find { it.id == state.selectedUserId }
     }
 
     fun getDisplayedRole(user: User): UserRole {

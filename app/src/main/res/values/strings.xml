@@ -163,7 +163,21 @@
     <!-- Settings - Users & Permissions -->
     <string name="role">Role</string>
     <string name="extra_permissions">Extra permissions</string>
-  
+    <string name="permissions_active">%1$d permissions active</string>
+
+    <string name="admin">Admin</string>
+    <string name="base_user">Base user</string>
+
+    <string name="permission_add_room">Add room</string>
+    <string name="permission_remove_room">Remove room</string>
+    <string name="permission_rename_room">Rename room</string>
+    <string name="permission_add_device">Add device</string>
+    <string name="permission_remove_device">Remove device</string>
+    <string name="permission_rename_device">Rename device</string>
+    <string name="permission_move_device">Move device</string>
+    <string name="permission_manage_schedules">Manage schedules</string>
+    <string name="permission_manage_users">Manage users</string>
+
     <!-- Settings - Theme -->
     <string name="theme_light">Light</string>
     <string name="theme_dark">Dark</string>

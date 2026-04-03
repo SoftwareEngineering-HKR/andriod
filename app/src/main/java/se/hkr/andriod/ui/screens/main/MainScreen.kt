@@ -33,7 +33,7 @@ import se.hkr.andriod.ui.screens.settings.subscreens.accountinfo.AccountInfoScre
 import se.hkr.andriod.ui.screens.settings.subscreens.language.LanguageScreen
 import se.hkr.andriod.ui.screens.settings.subscreens.rooms.RoomsScreen
 import se.hkr.andriod.ui.screens.settings.subscreens.SchedulesScreen
-import se.hkr.andriod.ui.screens.settings.subscreens.UsersScreen
+import se.hkr.andriod.ui.screens.settings.subscreens.users.UsersScreen
 import se.hkr.andriod.ui.screens.settings.subscreens.devices.DevicesScreen
 import se.hkr.andriod.ui.screens.settings.subscreens.devices.DevicesViewModel
 import se.hkr.andriod.ui.screens.settings.subscreens.devices.DevicesViewModelFactory
@@ -165,7 +165,10 @@ fun MainScreen(
                     )
                 }
 
-                composable(Routes.USERS) { UsersScreen() }
+                composable(Routes.USERS) { UsersScreen(
+                    viewModel = viewModel(),
+                    onBackClick = { navController.navigateUp() }
+                ) }
                 composable(Routes.DEVICES) {
 
                     val viewModel: DevicesViewModel = viewModel(

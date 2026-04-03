@@ -159,6 +159,11 @@
     <string name="device_state_unlocked">Upplåst</string>
     <string name="current_value">Nuvarande värde</string>
 
+    <!-- Settings - Account Info -->
+    <string name="account_info">Kontoinformation</string>
+    <string name="username">Användarnamn</string>
+    <string name="edit_username">Ändra användarnamn</string>
+
     <!-- Settings - Language -->
     <string name="language">Språk</string>
     <string name="choose_language">Välj språk</string>

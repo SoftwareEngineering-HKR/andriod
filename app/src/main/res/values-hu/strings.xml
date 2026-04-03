@@ -156,6 +156,11 @@
     <string name="device_state_unlocked">Feloldva</string>
     <string name="current_value">Jelenlegi érték</string>
 
+    <!-- Settings - Account Info -->
+    <string name="account_info">Fiókadatok</string>
+    <string name="username">Felhasználónév</string>
+    <string name="edit_username">Felhasználónév módosítása</string>
+
     <!-- Settings - Language -->
     <string name="language">Nyelv</string>
     <string name="choose_language">Nyelv kiválasztása</string>

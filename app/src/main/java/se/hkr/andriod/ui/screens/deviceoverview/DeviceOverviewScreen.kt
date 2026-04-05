@@ -43,9 +43,8 @@ fun DeviceOverviewScreen(
 
     val search = remember { mutableStateOf("") }
 
-    // Todo: use the real offline/online count
-    val onlineCount = 3
-    val offlineCount = 1
+    val onlineCount = devices.count { it.online }
+    val offlineCount = devices.count { !it.online }
 
     Column(
         modifier = Modifier
@@ -60,7 +59,6 @@ fun DeviceOverviewScreen(
         )
 
         // Main content
-
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -69,7 +67,7 @@ fun DeviceOverviewScreen(
             elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.cardBackground)
         ) {
-            // Search bar Todo: Implement functionality
+            // Search bar
             AppTextField(
             value = search.value,
             onValueChange = { search.value = it },

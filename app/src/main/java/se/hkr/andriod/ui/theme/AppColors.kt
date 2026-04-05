@@ -85,3 +85,9 @@ val ColorScheme.ListItemBackground: Color
     @Composable
     @ReadOnlyComposable
     get() = if (LocalIsDarkTheme.current) ListItemBackgroundDark else ListItemBackgroundLight
+
+// Gray card overlay
+val ColorScheme.GrayCardOverlay: Color
+    @Composable
+    @ReadOnlyComposable
+    get() = if (LocalIsDarkTheme.current) GrayCardOverlayDark else GrayCardOverlayLight

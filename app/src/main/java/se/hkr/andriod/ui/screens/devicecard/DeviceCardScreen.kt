@@ -40,7 +40,7 @@ fun DeviceCardScreen(
     onBackClick: () -> Unit,
 
     // Dynamic device specific content injected from device layer
-    deviceComponent: @Composable () -> Unit,
+    deviceComponent: @Composable (Device) -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -80,7 +80,7 @@ fun DeviceCardScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             // Dynamic components
-            deviceComponent()
+            deviceComponent(liveDevice)
 
             // Schedule selection TODO
             Card(

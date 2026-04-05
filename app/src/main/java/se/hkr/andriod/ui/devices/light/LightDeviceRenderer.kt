@@ -1,12 +1,15 @@
 package se.hkr.andriod.ui.devices.light
 
+import android.R.attr.enabled
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import se.hkr.andriod.domain.model.device.Device
 
 @Composable
 fun LightDeviceRenderer(
-    viewModel: LightViewModel
+    viewModel: LightViewModel,
+    device: Device
 ) {
     val state by viewModel.lightState.collectAsState()
 
@@ -14,12 +17,14 @@ fun LightDeviceRenderer(
     BrightnessComponent(
         value = state.brightness,
         onValueChange = viewModel::setBrightness,
-        onValueChangeFinished = { viewModel.commitBrightness() }
+        onValueChangeFinished = { viewModel.commitBrightness() },
+        device = device
     )
 
     // Color control
     ColorPickerComponent(
         hue = state.hue,
-        onColorSelected = viewModel::setHue
+        onColorSelected = viewModel::setHue,
+        device = device
     )
 }

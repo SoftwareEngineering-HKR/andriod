@@ -28,6 +28,7 @@ class DeviceStore(private val webSocketManager: WebSocketManager) {
             when (type.lowercase()) {
                 "inital devices" -> handleInitialDevices(payload)
                 "update value" -> handleDeviceUpdate(payload)
+                "added new device" -> handleAddedNewDevice(payload)
                 "update device onlinestate" -> handleDeviceOnlineState(payload)
                 "action response" -> handleActionResponse(payload)
                 else -> Log.d("DEVICESTORE", "Unhandled message type: $type")
@@ -66,6 +67,20 @@ class DeviceStore(private val webSocketManager: WebSocketManager) {
         }
 
         Log.d("DEVICESTORE", "Device updated: $deviceId : $newValue")
+    }
+
+    private fun handleAddedNewDevice(payload: JSONObject) {
+        val deviceJson = payload.optJSONObject("content") ?: return
+        val device = Device.fromBackendJson(deviceJson)
+
+        scope.launch {
+            _devices.update { currentList ->
+                // Append the new device
+                currentList + device
+            }
+        }
+
+        Log.d("DEVICESTORE", "New device added: ${device.id}")
     }
 
     private fun handleDeviceOnlineState(payload: JSONObject) {

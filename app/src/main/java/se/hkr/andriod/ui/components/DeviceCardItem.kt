@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import se.hkr.andriod.R
 import se.hkr.andriod.domain.model.device.Device
 import se.hkr.andriod.domain.model.device.DeviceType
+import se.hkr.andriod.ui.theme.GrayCardOverlay
 import se.hkr.andriod.ui.theme.cardBackground
 
 @Composable
@@ -52,98 +53,113 @@ fun DeviceCardItem(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp)
-            .then(if (onClick != null) Modifier.clickable { onClick() } else Modifier),
+            .then(
+                if (onClick != null && device.online)
+                    Modifier.clickable { onClick() }
+                else Modifier
+            ),
         shape = MaterialTheme.shapes.medium,
         elevation = CardDefaults.cardElevation(defaultElevation = elevation),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.cardBackground)
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(16.dp)
-        ) {
-            // ICON
-            val icon = when (device.deviceTypeEnum) {
-                DeviceType.LIGHT -> rememberVectorPainter(Icons.Default.Lightbulb)
-                DeviceType.LOCK -> rememberVectorPainter(Icons.Default.Lock)
-                DeviceType.BUZZ -> painterResource(R.drawable.brand_awareness_24px)
-                DeviceType.FAN -> painterResource(R.drawable.mode_fan_24px)
-                DeviceType.SERVO -> painterResource(R.drawable.door_front_24px)
-                DeviceType.DOOR -> painterResource(R.drawable.door_front_24px)
-                DeviceType.WINDOW -> painterResource(R.drawable.window_24px)
-                DeviceType.GAS -> painterResource(R.drawable.detector_co_24px)
-                DeviceType.STEAM -> painterResource(R.drawable.heat_24px)
-                DeviceType.HUMIDITY -> painterResource(R.drawable.humidity_percentage_24px)
-                DeviceType.DISPLAY -> painterResource(R.drawable.assistant_on_hub_24px)
-                else -> rememberVectorPainter(Icons.Default.QuestionMark)
-            }
-
-            Box(
-                modifier = Modifier
-                    .size(60.dp)
-                    .clip(MaterialTheme.shapes.small)
-                    .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)),
-                contentAlignment = Alignment.Center
+        Box {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(16.dp)
             ) {
-                Icon(
-                    painter = icon,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(40.dp)
-                )
-            }
-
-            Spacer(modifier = Modifier.width(16.dp))
-
-            Column(modifier = Modifier.weight(1f)) {
-                // Display name
-                Text(
-                    text = device.displayName,
-                    style = MaterialTheme.typography.titleMedium
-                )
-
-                // Room + online status
-                Row {
-                    device.displayRoom?.let { roomText ->
-                        Text(
-                            text = roomText,
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                        Text(" - ", style = MaterialTheme.typography.bodyMedium)
-                    }
-
-                    // Always show online/offline status
-                    Text(
-                        text = stringResource(
-                            if (device.online) R.string.device_online else R.string.device_offline
-                        ),
-                        color = if (device.online) Color(0xFF2E7D32) else MaterialTheme.colorScheme.error,
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                }
-            }
-
-            if (isSwitchDevice && onSwitchToggle != null) {
-                val checked = device.value > device.minValue
-                Switch(
-                    checked = checked,
-                    onCheckedChange = onSwitchToggle
-                )
-            } else if (isSensor) {
-
-                val valueText = when (device.deviceTypeEnum) {
-                    DeviceType.HUMIDITY -> "${device.value}%"
-                    else -> device.value.toString()
+                // ICON
+                val icon = when (device.deviceTypeEnum) {
+                    DeviceType.LIGHT -> rememberVectorPainter(Icons.Default.Lightbulb)
+                    DeviceType.LOCK -> rememberVectorPainter(Icons.Default.Lock)
+                    DeviceType.BUZZ -> painterResource(R.drawable.brand_awareness_24px)
+                    DeviceType.FAN -> painterResource(R.drawable.mode_fan_24px)
+                    DeviceType.SERVO -> painterResource(R.drawable.door_front_24px)
+                    DeviceType.DOOR -> painterResource(R.drawable.door_front_24px)
+                    DeviceType.WINDOW -> painterResource(R.drawable.window_24px)
+                    DeviceType.GAS -> painterResource(R.drawable.detector_co_24px)
+                    DeviceType.STEAM -> painterResource(R.drawable.heat_24px)
+                    DeviceType.HUMIDITY -> painterResource(R.drawable.humidity_percentage_24px)
+                    DeviceType.DISPLAY -> painterResource(R.drawable.assistant_on_hub_24px)
+                    else -> rememberVectorPainter(Icons.Default.QuestionMark)
                 }
 
                 Box(
-                    modifier = Modifier.padding(end = 12.dp)
+                    modifier = Modifier
+                        .size(60.dp)
+                        .clip(MaterialTheme.shapes.small)
+                        .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)),
+                    contentAlignment = Alignment.Center
                 ) {
-                    Text(
-                        text = valueText,
-                        style = MaterialTheme.typography.headlineSmall,
-                        color = MaterialTheme.colorScheme.primary
+                    Icon(
+                        painter = icon,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(40.dp)
                     )
                 }
+
+                Spacer(modifier = Modifier.width(16.dp))
+
+                Column(modifier = Modifier.weight(1f)) {
+                    // Display name
+                    Text(
+                        text = device.displayName,
+                        style = MaterialTheme.typography.titleMedium
+                    )
+
+                    // Room + online status
+                    Row {
+                        device.displayRoom?.let { roomText ->
+                            Text(
+                                text = roomText,
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                            Text(" - ", style = MaterialTheme.typography.bodyMedium)
+                        }
+
+                        // Always show online/offline status
+                        Text(
+                            text = stringResource(
+                                if (device.online) R.string.device_online else R.string.device_offline
+                            ),
+                            color = if (device.online) Color(0xFF2E7D32) else MaterialTheme.colorScheme.error,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
+                }
+
+                if (isSwitchDevice && onSwitchToggle != null) {
+                    val checked = device.value > device.minValue
+                    Switch(
+                        checked = checked,
+                        onCheckedChange = { if (device.online) onSwitchToggle(it) },
+                        enabled = device.online
+                    )
+                } else if (isSensor) {
+                    val valueText = when (device.deviceTypeEnum) {
+                        DeviceType.HUMIDITY -> "${device.value}%"
+                        else -> device.value.toString()
+                    }
+
+                    Box(
+                        modifier = Modifier.padding(end = 12.dp)
+                    ) {
+                        Text(
+                            text = valueText,
+                            style = MaterialTheme.typography.headlineSmall,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
+            }
+
+            // Gray overlay when offline
+            if (!device.online) {
+                Box(
+                    modifier = Modifier
+                        .matchParentSize()
+                        .background(MaterialTheme.colorScheme.GrayCardOverlay)
+                )
             }
         }
     }

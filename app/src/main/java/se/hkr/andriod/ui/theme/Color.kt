@@ -41,3 +41,6 @@ val CardBackgroundDark = Color(0xFF1E1E1E)
 
 val ListItemBackgroundLight = Color(0xF2F8F8FA)
 val ListItemBackgroundDark = Color(0xFF2A2A2E)
+
+val GrayCardOverlayLight = Color(0xFFCCCCCC).copy(alpha = 0.15f)
+val GrayCardOverlayDark = Color(0xFF000000).copy(alpha = 0.3f)

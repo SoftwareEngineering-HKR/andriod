@@ -29,6 +29,7 @@ class DeviceStore(private val webSocketManager: WebSocketManager) {
                 "inital devices" -> handleInitialDevices(payload)
                 "update value" -> handleDeviceUpdate(payload)
                 "added new device" -> handleAddedNewDevice(payload)
+                "update device onlinestate" -> handleDeviceOnlineState(payload)
                 "action response" -> handleActionResponse(payload)
                 else -> Log.d("DEVICESTORE", "Unhandled message type: $type")
             }
@@ -80,6 +81,25 @@ class DeviceStore(private val webSocketManager: WebSocketManager) {
         }
 
         Log.d("DEVICESTORE", "New device added: ${device.id}")
+    }
+
+    private fun handleDeviceOnlineState(payload: JSONObject) {
+        val deviceId = payload.optString("deviceID")
+        if (deviceId.isEmpty()) return
+
+        val isOnline = payload.optBoolean("content")
+
+        scope.launch {
+            _devices.update { currentList ->
+                currentList.map { device ->
+                    if (device.id == deviceId) {
+                        device.copy(online = isOnline)
+                    } else device
+                }
+            }
+        }
+
+        Log.d("DEVICESTORE", "Device online state updated: $deviceId : $isOnline")
     }
 
     private fun handleActionResponse(payload: JSONObject) {

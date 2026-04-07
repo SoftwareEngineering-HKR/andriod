@@ -25,7 +25,7 @@ fun DeviceHostScreen(
         viewModel = deviceCardViewModel,
         connectionManager = connectionManager,
         onBackClick = onBackClick
-    ) {
+    ) { liveDevice ->
 
         when (device.deviceTypeEnum) {
 
@@ -33,12 +33,12 @@ fun DeviceHostScreen(
                 val lightViewModel = remember(deviceCardViewModel) {
                     LightViewModel(deviceCardViewModel, device, connectionManager)
                 }
-                LightDeviceRenderer(lightViewModel)
+                LightDeviceRenderer(lightViewModel, liveDevice)
             }
 
             DeviceType.LOCK -> {
                 val lockViewModel = remember(deviceCardViewModel) {
-                    LockViewModel(deviceCardViewModel, device)
+                    LockViewModel(deviceCardViewModel, liveDevice)
                 }
                 LockDeviceRenderer(lockViewModel)
             }

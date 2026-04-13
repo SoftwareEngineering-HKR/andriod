@@ -93,7 +93,7 @@ fun SettingsScreen(
             if (currentUser.canManageUsers()) {
                 item {
                     SettingsItem(
-                        title = stringResource(R.string.settings_users_permissions)
+                        title = stringResource(R.string.settings_users_devices)
                     ) { navController.navigate(Routes.USERS) }
                 }
             }

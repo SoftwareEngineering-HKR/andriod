@@ -165,23 +165,15 @@
     <string name="edit_username">Ändra användarnamn</string>
 
     <!-- Settings - Users & Permissions -->
-    <string name="role">Roll</string>
-    <string name="user">Användare</string>
-    <string name="extra_permissions">Extra behörigheter</string>
-    <string name="permissions_active">%1$d behörigheter aktiva</string>
+    <string name="settings_users_devices">Användare och enheter</string>
+    <string name="assigned_devices">Tilldelade enheter</string>
+    <string name="assigned_devices_count">%1$d enheter tilldelade</string>
+    <string name="no_devices_available">Inga enheter tillgängliga</string>
+    <string name="device_type_unknown">Okänd enhet</string>
 
     <string name="admin">Admin</string>
     <string name="base_user">Standardanvändare</string>
 
-    <string name="permission_add_room">Lägg till rum</string>
-    <string name="permission_remove_room">Ta bort rum</string>
-    <string name="permission_rename_room">Byt namn på rum</string>
-    <string name="permission_add_device">Lägg till enhet</string>
-    <string name="permission_remove_device">Ta bort enhet</string>
-    <string name="permission_rename_device">Byt namn på enhet</string>
-    <string name="permission_move_device">Flytta enhet</string>
-    <string name="permission_manage_schedules">Hantera scheman</string>
-    <string name="permission_manage_users">Hantera användare</string>
 
     <!-- Settings - Theme -->
     <string name="theme_light">Ljust</string>

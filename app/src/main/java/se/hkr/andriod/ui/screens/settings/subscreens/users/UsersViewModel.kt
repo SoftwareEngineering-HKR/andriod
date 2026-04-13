@@ -5,30 +5,40 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import se.hkr.andriod.data.mock.MockDevices
 import se.hkr.andriod.data.mock.MockUsers
-import se.hkr.andriod.domain.model.user.Permission
+import se.hkr.andriod.domain.model.device.Device
 import se.hkr.andriod.domain.model.user.User
-import se.hkr.andriod.domain.model.user.UserRole
 import java.util.UUID
 
 data class UsersUiState(
     val users: List<User> = emptyList(),
+    val devices: List<Device> = emptyList(),
     val selectedUserId: UUID? = null,
-    val editedRoles: Map<UUID, UserRole> = emptyMap(),
-    val editedPermissions: Map<UUID, Set<Permission>> = emptyMap()
+    val savedAssignments: Map<UUID, Set<String>> = emptyMap(),
+    val editedAssignments: Map<UUID, Set<String>> = emptyMap()
 )
 
 class UsersViewModel : ViewModel() {
 
     private val initialUsers = MockUsers.allUsers
+    private val initialDevices = MockDevices.allDevices
+
+    private val initialAssignments: Map<UUID, Set<String>> =
+        MockUserDeviceAssignments.assignments.mapNotNull { (userIdString, deviceIds) ->
+            userIdString.toUUIDOrNull()?.let { uuid ->
+                uuid to deviceIds
+            }
+        }.toMap()
 
     private val _uiState = MutableStateFlow(
         UsersUiState(
             users = initialUsers,
-            selectedUserId = initialUsers.firstOrNull()?.id
+            devices = initialDevices,
+            selectedUserId = initialUsers.firstOrNull()?.id,
+            savedAssignments = initialAssignments
         )
     )
-
     val uiState: StateFlow<UsersUiState> = _uiState.asStateFlow()
 
     fun onUserSelected(userId: UUID) {
@@ -37,34 +47,21 @@ class UsersViewModel : ViewModel() {
         }
     }
 
-    fun onRoleChanged(userId: UUID, role: UserRole) {
+    fun onDeviceToggled(userId: UUID, deviceId: String) {
         _uiState.update { state ->
-            state.copy(
-                editedRoles = state.editedRoles + (userId to role)
-            )
-        }
-    }
+            val currentAssignments = state.editedAssignments[userId]
+                ?: state.savedAssignments[userId]
+                ?: emptySet()
 
-    fun onPermissionToggled(userId: UUID, permission: Permission) {
-        _uiState.update { state ->
-            val user = state.users.find { it.id == userId } ?: return@update state
-            val displayedRole = state.editedRoles[userId] ?: user.role
-
-            if (permission in displayedRole.defaultPermissions) {
-                return@update state
-            }
-
-            val currentExtraPermissions = state.editedPermissions[userId] ?: user.extraPermissions
-
-            val updatedPermissions =
-                if (permission in currentExtraPermissions) {
-                    currentExtraPermissions - permission
+            val updatedAssignments =
+                if (deviceId in currentAssignments) {
+                    currentAssignments - deviceId
                 } else {
-                    currentExtraPermissions + permission
+                    currentAssignments + deviceId
                 }
 
             state.copy(
-                editedPermissions = state.editedPermissions + (userId to updatedPermissions)
+                editedAssignments = state.editedAssignments + (userId to updatedAssignments)
             )
         }
     }
@@ -72,20 +69,27 @@ class UsersViewModel : ViewModel() {
     fun saveSelectedUser() {
         _uiState.update { state ->
             val selectedUserId = state.selectedUserId ?: return@update state
-            val user = state.users.find { it.id == selectedUserId } ?: return@update state
-
-            val updatedUser = user.copy(
-                role = state.editedRoles[selectedUserId] ?: user.role,
-                extraPermissions = state.editedPermissions[selectedUserId] ?: user.extraPermissions
-            )
+            val updatedAssignments = state.editedAssignments[selectedUserId] ?: return@update state
 
             state.copy(
-                users = state.users.map { currentUser ->
-                    if (currentUser.id == selectedUserId) updatedUser else currentUser
-                },
-                editedRoles = state.editedRoles - selectedUserId,
-                editedPermissions = state.editedPermissions - selectedUserId
+                savedAssignments = state.savedAssignments + (selectedUserId to updatedAssignments),
+                editedAssignments = state.editedAssignments - selectedUserId
             )
+        }
+    }
+
+    fun hasUnsavedChanges(userId: UUID): Boolean {
+        val state = _uiState.value
+        val saved = state.savedAssignments[userId] ?: emptySet()
+        val edited = state.editedAssignments[userId] ?: saved
+        return saved != edited
+    }
+
+    private fun String.toUUIDOrNull(): UUID? {
+        return try {
+            UUID.fromString(this)
+        } catch (_: IllegalArgumentException) {
+            null
         }
     }
 }

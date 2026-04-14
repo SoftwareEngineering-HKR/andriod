@@ -11,7 +11,15 @@ class WebSocketManager {
     private val messageListeners = mutableListOf<(String) -> Unit>()
 
     fun connect(ip: String, port: Int = 8080) {
-        val url = "ws://$ip:$port"
+
+        val token = AuthSession.getToken()
+
+        val url = if (token != null) {
+            "ws://$ip:$port?token=$token"
+        } else {
+            "ws://$ip:$port"
+        }
+
         Log.d("WEBSOCKET", "Connecting to $url")
 
         val request = Request.Builder().url(url).build()

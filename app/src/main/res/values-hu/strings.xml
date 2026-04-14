@@ -160,7 +160,17 @@
     <string name="account_info">Fiókadatok</string>
     <string name="username">Felhasználónév</string>
     <string name="edit_username">Felhasználónév módosítása</string>
-  
+
+    <!-- Settings - Users & Permissions -->
+    <string name="settings_users_devices">Felhasználók és eszközök</string>
+    <string name="assigned_devices">Hozzárendelt eszközök</string>
+    <string name="assigned_devices_count">%1$d eszköz hozzárendelve</string>
+    <string name="no_devices_available">Nincsenek elérhető eszközök</string>
+    <string name="device_type_unknown">Ismeretlen eszköz</string>
+
+    <string name="admin">Admin</string>
+    <string name="base_user">Alap felhasználó</string>
+
     <!-- Settings - Theme -->
     <string name="theme_light">Világos</string>
     <string name="theme_dark">Sötét</string>

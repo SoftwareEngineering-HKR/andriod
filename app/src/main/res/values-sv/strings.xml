@@ -163,7 +163,18 @@
     <string name="account_info">Kontoinformation</string>
     <string name="username">Användarnamn</string>
     <string name="edit_username">Ändra användarnamn</string>
-  
+
+    <!-- Settings - Users & Permissions -->
+    <string name="settings_users_devices">Användare och enheter</string>
+    <string name="assigned_devices">Tilldelade enheter</string>
+    <string name="assigned_devices_count">%1$d enheter tilldelade</string>
+    <string name="no_devices_available">Inga enheter tillgängliga</string>
+    <string name="device_type_unknown">Okänd enhet</string>
+
+    <string name="admin">Admin</string>
+    <string name="base_user">Standardanvändare</string>
+
+
     <!-- Settings - Theme -->
     <string name="theme_light">Ljust</string>
     <string name="theme_dark">Mörkt</string>

@@ -25,5 +25,5 @@ object MockUsers {
         extraPermissions = setOf(Permission.RENAME_DEVICE, Permission.RENAME_ROOM)
     )
 
-    val allUsers = listOf(adminUser, baseUser)
+    val allUsers = listOf(adminUser, baseUser, baseWithRename)
 }

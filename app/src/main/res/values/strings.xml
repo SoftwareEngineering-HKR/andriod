@@ -159,7 +159,18 @@
     <string name="account_info">Account Information</string>
     <string name="username">Username</string>
     <string name="edit_username">Edit username</string>
-  
+
+    <!-- Settings - Users & Permissions -->
+    <string name="settings_users_devices">Users &amp; Devices</string>
+    <string name="assigned_devices">Assigned devices</string>
+    <string name="assigned_devices_count">%1$d devices assigned</string>
+    <string name="no_devices_available">No devices available</string>
+    <string name="device_type_unknown">Unknown device</string>
+
+    <string name="admin">Admin</string>
+    <string name="base_user">Base user</string>
+
+
     <!-- Settings - Theme -->
     <string name="theme_light">Light</string>
     <string name="theme_dark">Dark</string>

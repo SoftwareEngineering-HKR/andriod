@@ -148,7 +148,12 @@ fun SettingsScreen(
                         onClick = {
                             discoveredIp = "Searching..."
                             connectionManager.startConnection { ip ->
-                                discoveredIp = ip ?: "No backend found"
+                                if (ip == null) {
+                                    discoveredIp = "No backend found"
+                                    return@startConnection
+                                }
+                                discoveredIp = ip
+                                connectionManager.connectWebSocket()
                             }
                         },
                         modifier = Modifier.width(160.dp)

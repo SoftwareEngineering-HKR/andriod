@@ -100,12 +100,11 @@ fun LoginScreen(
                     Spacer(modifier = Modifier.height(16.dp))
 
                     AppTextField(
-                        label = stringResource(R.string.email_label),
-                        value = uiState.email,
-                        onValueChange = { viewModel.onEmailChanged(it) },
-                        placeholder = stringResource(R.string.email_placeholder),
-                        keyboardType = androidx.compose.ui.text.input.KeyboardType.Email,
-                        errorText = uiState.emailError?.let { stringResource(it) }
+                        label = stringResource(R.string.username_label),
+                        value = uiState.username,
+                        onValueChange = { viewModel.onUsernameChanged(it) },
+                        placeholder = stringResource(R.string.username_placeholder),
+                        errorText = uiState.usernameError?.let { stringResource(it) }
                     )
 
                     AppTextField(

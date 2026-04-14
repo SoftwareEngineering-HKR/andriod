@@ -17,6 +17,9 @@
     <string name="dont_have_account_text">Har du inget konto?</string>
     <string name="error_email_empty">E-post får inte vara tom</string>
     <string name="error_password_short">Lösenordet måste vara minst 8 tecken</string>
+    <string name="username_label">Användarnamn</string>
+    <string name="username_placeholder">användarnamn</string>
+    <string name="error_username_empty">Användarnamn får inte vara tomt</string>
     <string name="signing_in">Loggar in...</string>
 
     <!-- Sign up -->

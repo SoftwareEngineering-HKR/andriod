@@ -13,6 +13,9 @@
     <string name="dont_have_account_text">Don\'t have an account?</string>
     <string name="error_email_empty">Email cannot be empty</string>
     <string name="error_password_short">Password must be at least 8 characters</string>
+    <string name="username_label">Username</string>
+    <string name="username_placeholder">username</string>
+    <string name="error_username_empty">Username cannot be empty</string>
     <string name="signing_in">Signing in...</string>
 
     <!-- Sign up -->

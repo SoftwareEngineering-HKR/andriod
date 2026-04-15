@@ -1,5 +1,6 @@
 package se.hkr.andriod.data.network
 
+import android.R.id.message
 import android.util.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -19,9 +20,8 @@ class DeviceStore(private val webSocketManager: WebSocketManager) {
     // Coroutine scope for updates
     private val scope = CoroutineScope(Dispatchers.Main)
 
-    fun handleIncomingMessage(message: String) {
+    fun handleMessage(json: JSONObject) {
         try {
-            val json = JSONObject(message)
             val type = json.getString("type")
             val payload = json.getJSONObject("payload")
 
@@ -30,7 +30,6 @@ class DeviceStore(private val webSocketManager: WebSocketManager) {
                 "update value" -> handleDeviceUpdate(payload)
                 "added new device" -> handleAddedNewDevice(payload)
                 "update device onlinestate" -> handleDeviceOnlineState(payload)
-                "action response" -> handleActionResponse(payload)
                 else -> Log.d("DEVICESTORE", "Unhandled message type: $type")
             }
         } catch (e: Exception) {
@@ -100,12 +99,6 @@ class DeviceStore(private val webSocketManager: WebSocketManager) {
         }
 
         Log.d("DEVICESTORE", "Device online state updated: $deviceId : $isOnline")
-    }
-
-    private fun handleActionResponse(payload: JSONObject) {
-        val statusCode = payload.optInt("statusCode")
-        val message = payload.optString("message")
-        Log.d("DEVICESTORE", "Action response: $statusCode - $message")
     }
 
     // Public helper to send a value update

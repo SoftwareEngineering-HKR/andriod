@@ -5,7 +5,16 @@ import android.util.Log
 class ConnectionManager(private val udpPort: Int = 4444) {
     private val udpDiscovery = UdpDiscovery()
     private val webSocketManager = WebSocketManager()
-    val deviceStore = DeviceStore(webSocketManager) // central device store
+
+    val deviceStore = DeviceStore(webSocketManager)
+    val userStore = UserStore(webSocketManager)
+    val actionHandler = ActionResponseHandler()
+
+    private val messageRouter = MessageRouter(
+        deviceStore,
+        userStore,
+        actionHandler
+    )
 
     private var isListening = false
     private var backendIp: String? = null
@@ -37,7 +46,7 @@ class ConnectionManager(private val udpPort: Int = 4444) {
         if (!isListening) {
             webSocketManager.addMessageListener { message ->
                 Log.d("CONNECTION", "Received message: $message")
-                deviceStore.handleIncomingMessage(message)
+                messageRouter.handle(message)
             }
             isListening = true
         }

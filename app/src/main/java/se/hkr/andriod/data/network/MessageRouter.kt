@@ -1,0 +1,32 @@
+package se.hkr.andriod.data.network
+
+import android.util.Log
+import org.json.JSONObject
+
+class MessageRouter(
+    private val deviceStore: DeviceStore,
+    private val userStore: UserStore
+) {
+    fun handle(message: String) {
+        try {
+            val json = JSONObject(message)
+            when (val type = json.getString("type").lowercase()) {
+
+                // Device messages
+                "inital devices",
+                "update value",
+                "added new device",
+                "update device onlinestate",
+                "action response" -> deviceStore.handleMessage(json)
+
+                // User messages
+                "users" -> userStore.handleMessage(json)
+
+                else -> Log.d("ROUTER", "Unhandled type: $type")
+            }
+
+        } catch (e: Exception) {
+            Log.e("ROUTER", "Failed to route message", e)
+        }
+    }
+}

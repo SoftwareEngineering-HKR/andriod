@@ -1,5 +1,6 @@
 package se.hkr.andriod.data.network
 
+import android.R.id.message
 import android.util.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -19,9 +20,8 @@ class DeviceStore(private val webSocketManager: WebSocketManager) {
     // Coroutine scope for updates
     private val scope = CoroutineScope(Dispatchers.Main)
 
-    fun handleIncomingMessage(message: String) {
+    fun handleMessage(json: JSONObject) {
         try {
-            val json = JSONObject(message)
             val type = json.getString("type")
             val payload = json.getJSONObject("payload")
 

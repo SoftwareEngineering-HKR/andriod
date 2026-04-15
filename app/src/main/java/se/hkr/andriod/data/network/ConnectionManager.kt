@@ -8,7 +8,13 @@ class ConnectionManager(private val udpPort: Int = 4444) {
 
     val deviceStore = DeviceStore(webSocketManager)
     val userStore = UserStore(webSocketManager)
-    val messageRouter = MessageRouter(deviceStore, userStore)
+    val actionHandler = ActionResponseHandler()
+
+    private val messageRouter = MessageRouter(
+        deviceStore,
+        userStore,
+        actionHandler
+    )
 
     private var isListening = false
     private var backendIp: String? = null

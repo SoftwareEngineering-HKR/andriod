@@ -49,4 +49,51 @@ class UserStore(private val webSocketManager: WebSocketManager) {
         scope.launch { _users.value = newUsers }
         Log.d("USERSTORE", "Users loaded: ${newUsers.size}")
     }
+
+    fun fetchUsers() {
+        val message = JSONObject().apply {
+            put("type", "get users")
+            put("payload", JSONObject())
+        }
+        webSocketManager.sendMessage(message.toString())
+    }
+
+    fun updateUserRole(username: String, role: String) {
+        val message = JSONObject().apply {
+            put("type", "update user role")
+            put("payload", JSONObject().apply {
+                put("userName", username)
+                put("role", role)
+            })
+        }
+
+        webSocketManager.sendMessage(message.toString())
+
+        fetchUsers()
+    }
+
+    fun deleteUser(username: String) {
+        val message = JSONObject().apply {
+            put("type", "delete user")
+            put("payload", JSONObject().apply {
+                put("userName", username)
+            })
+        }
+
+        webSocketManager.sendMessage(message.toString())
+
+        fetchUsers()
+    }
+
+    fun addUserToDevice(userId: String, deviceId: String) {
+        val message = JSONObject().apply {
+            put("type", "add user to device")
+            put("payload", JSONObject().apply {
+                put("userId", userId)
+                put("deviceId", deviceId)
+            })
+        }
+
+        webSocketManager.sendMessage(message.toString())
+    }
 }

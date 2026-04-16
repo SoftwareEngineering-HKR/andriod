@@ -102,20 +102,11 @@ fun SignUpScreen(
                     Spacer(modifier = Modifier.height(16.dp))
 
                     AppTextField(
-                        label = stringResource(R.string.name_label),
-                        value = uiState.firstName,
-                        onValueChange = { viewModel.onFirstNameChanged(it) },
-                        placeholder = stringResource(R.string.name_placeholder),
-                        errorText = uiState.firstNameError?.let { stringResource(it) }
-                    )
-
-                    AppTextField(
-                        label = stringResource(R.string.email_label),
-                        value = uiState.email,
-                        onValueChange = { viewModel.onEmailChanged(it) },
-                        placeholder = stringResource(R.string.email_placeholder),
-                        keyboardType = KeyboardType.Email,
-                        errorText = uiState.emailError?.let { stringResource(it) }
+                        label = stringResource(R.string.username_label),
+                        value = uiState.userName,
+                        onValueChange = { viewModel.onUserNameChanged(it) },
+                        placeholder = stringResource(R.string.username_placeholder),
+                        errorText = uiState.userNameError?.let { stringResource(it) }
                     )
 
                     AppTextField(

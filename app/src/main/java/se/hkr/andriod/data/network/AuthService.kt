@@ -9,19 +9,12 @@ import java.io.IOException
 class AuthService {
     private val client = OkHttpClient()
 
-    fun login(
-        ip: String,
-        username: String,
-        password: String,
+    private fun postRequest(
+        url: String,
+        jsonBody: JSONObject,
         onResult: (Boolean, String?) -> Unit
     ) {
-        val url = "http://$ip:8081/login"
-
-        val json = JSONObject()
-        json.put("username", username)
-        json.put("password", password)
-
-        val body = json.toString()
+        val body = jsonBody.toString()
             .toRequestBody("application/json".toMediaType())
 
         val request = Request.Builder()
@@ -39,22 +32,80 @@ class AuthService {
                 val responseBody = response.body?.string()
 
                 if (!response.isSuccessful || responseBody == null) {
-                    onResult(false, "Login failed")
+                    onResult(false, "Request failed")
                     return
                 }
 
-                try {
-                    val jsonResponse = JSONObject(responseBody)
-                    val token = jsonResponse.getString("accessToken")
-
-                    AuthSession.saveToken(token)
-
-                    onResult(true, token)
-
-                } catch (e: Exception) {
-                    onResult(false, e.message)
-                }
+                onResult(true, responseBody)
             }
         })
+    }
+
+    fun login(
+        ip: String,
+        username: String,
+        password: String,
+        onResult: (Boolean, String?) -> Unit
+    ) {
+        val url = "http://$ip:8081/login"
+
+        val json = JSONObject().apply {
+            put("username", username)
+            put("password", password)
+        }
+
+        postRequest(url, json) { success, response ->
+
+            if (!success || response == null) {
+                onResult(false, "Login failed")
+                return@postRequest
+            }
+
+            try {
+                val jsonResponse = JSONObject(response)
+                val token = jsonResponse.getString("accessToken")
+
+                AuthSession.saveToken(token)
+
+                onResult(true, token)
+
+            } catch (e: Exception) {
+                onResult(false, e.message)
+            }
+        }
+    }
+
+    fun register(
+        ip: String,
+        username: String,
+        password: String,
+        onResult: (Boolean, String?) -> Unit
+    ) {
+        val url = "http://$ip:8081/signup"
+
+        val json = JSONObject().apply {
+            put("username", username)
+            put("password", password)
+        }
+
+        postRequest(url, json) { success, response ->
+
+            if (!success || response == null) {
+                onResult(false, "Register failed")
+                return@postRequest
+            }
+
+            try {
+                val jsonResponse = JSONObject(response)
+                val token = jsonResponse.getString("accessToken")
+
+                AuthSession.saveToken(token)
+
+                onResult(true, token)
+
+            } catch (e: Exception) {
+                onResult(false, e.message)
+            }
+        }
     }
 }

@@ -9,13 +9,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import se.hkr.andriod.R
 import se.hkr.andriod.data.mock.currentUser
-import se.hkr.andriod.data.network.ConnectionManager
+import se.hkr.andriod.data.network.*
 import se.hkr.andriod.navigation.Routes
 import se.hkr.andriod.ui.components.AppButton
 import se.hkr.andriod.ui.screens.settings.components.SettingsItem
@@ -28,6 +29,8 @@ fun SettingsScreen(
     connectionManager: ConnectionManager,
     onLogoutClicked: () -> Unit
 ) {
+    val context = LocalContext.current
+
     var discoveredIp: String? by remember { mutableStateOf("Not connected") }
     var showThemeDialog by remember { mutableStateOf(false) }
 
@@ -130,7 +133,34 @@ fun SettingsScreen(
                 ) {
                     AppButton(
                         text = stringResource(R.string.logout),
-                        onClick = onLogoutClicked,
+                        onClick = {
+                            val ip = connectionManager.getBackendIp()
+                            val token = AuthSession.getToken()
+
+                            // Always clear local state
+                            val cookieJar = NetworkModule.getClient(context).cookieJar as PersistentCookieJar
+
+                            fun finishLogout() {
+                                AuthSession.clear()
+                                cookieJar.clear()
+                                connectionManager.disconnect()
+
+                                android.os.Handler(android.os.Looper.getMainLooper()).post {
+                                    onLogoutClicked()
+                                }
+                            }
+
+                            if (ip == null || token == null) {
+                                finishLogout()
+                                return@AppButton
+                            }
+
+                            val authService = AuthService(context)
+
+                            authService.logout(ip, token) { _, _ ->
+                                finishLogout()
+                            }
+                        },
                         modifier = Modifier.width(160.dp)
                     )
                 }

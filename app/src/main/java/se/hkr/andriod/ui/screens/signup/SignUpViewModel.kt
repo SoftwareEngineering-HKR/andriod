@@ -24,7 +24,7 @@ data class SignupUiState(
 
 class SignUpViewModel(
     private val connectionManager: ConnectionManager = ConnectionManager(),
-    private val authService: AuthService = AuthService()
+    private val authService: AuthService
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SignupUiState())

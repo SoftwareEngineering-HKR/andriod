@@ -1,13 +1,14 @@
 package se.hkr.andriod.data.network
 
+import android.content.Context
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 import java.io.IOException
 
-class AuthService {
-    private val client = OkHttpClient()
+class AuthService(context: Context) {
+    private val client = NetworkModule.getClient(context)
 
     private fun postRequest(
         url: String,

@@ -67,4 +67,8 @@ class ConnectionManager(private val udpPort: Int = 4444) {
         webSocketManager.disconnect()
         isListening = false
     }
+
+    fun getBackendIp(): String? {
+        return backendIp
+    }
 }

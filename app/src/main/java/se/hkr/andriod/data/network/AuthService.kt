@@ -74,4 +74,38 @@ class AuthService {
             }
         }
     }
+
+    fun register(
+        ip: String,
+        username: String,
+        password: String,
+        onResult: (Boolean, String?) -> Unit
+    ) {
+        val url = "http://$ip:8081/signup"
+
+        val json = JSONObject().apply {
+            put("username", username)
+            put("password", password)
+        }
+
+        postRequest(url, json) { success, response ->
+
+            if (!success || response == null) {
+                onResult(false, "Register failed")
+                return@postRequest
+            }
+
+            try {
+                val jsonResponse = JSONObject(response)
+                val token = jsonResponse.getString("accessToken")
+
+                AuthSession.saveToken(token)
+
+                onResult(true, token)
+
+            } catch (e: Exception) {
+                onResult(false, e.message)
+            }
+        }
+    }
 }

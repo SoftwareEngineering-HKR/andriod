@@ -109,4 +109,38 @@ class AuthService(context: Context) {
             }
         }
     }
+
+    fun logout(
+        ip: String,
+        accessToken: String,
+        onResult: (Boolean, String?) -> Unit
+    ) {
+        val url = "http://$ip:8081/logout"
+
+        val json = JSONObject()
+
+        val request = Request.Builder()
+            .url(url)
+            .addHeader("Authorization", "Bearer $accessToken")
+            .post(json.toString().toRequestBody("application/json".toMediaType()))
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+
+            override fun onFailure(call: Call, e: IOException) {
+                onResult(false, e.message)
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val body = response.body?.string()
+
+                if (!response.isSuccessful) {
+                    onResult(false, body ?: "Logout failed")
+                    return
+                }
+
+                onResult(true, "Logged out")
+            }
+        })
+    }
 }

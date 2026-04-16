@@ -10,13 +10,11 @@ import kotlinx.coroutines.launch
 import se.hkr.andriod.R
 
 data class SignupUiState(
-    val firstName: String = "",
-    val email: String = "",
+    val userName: String = "",
     val password: String = "",
     val confirmPassword: String = "",
     val isLoading: Boolean = false,
-    val firstNameError: Int? = null,
-    val emailError: Int? = null,
+    val userNameError: Int? = null,
     val passwordError: Int? = null,
     val confirmPasswordError: Int? = null,
     val navigateToHome: Boolean = false
@@ -27,12 +25,8 @@ class SignUpViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(SignupUiState())
     val uiState: StateFlow<SignupUiState> = _uiState
 
-    fun onFirstNameChanged(firstName: String) {
-        _uiState.update { it.copy(firstName = firstName, firstNameError = null) }
-    }
-
-    fun onEmailChanged(email: String) {
-        _uiState.update { it.copy(email = email, emailError = null) }
+    fun onUserNameChanged(firstName: String) {
+        _uiState.update { it.copy(userName = firstName, userNameError = null) }
     }
 
     fun onPasswordChanged(password: String) {
@@ -48,17 +42,11 @@ class SignUpViewModel : ViewModel() {
 
         var hasError = false
         var firstNameErrorId: Int? = null
-        var emailErrorId: Int? = null
         var passwordErrorId: Int? = null
         var confirmPasswordErrorId: Int? = null
 
-        if (currentState.firstName.isBlank()) {
-            firstNameErrorId = R.string.error_name_empty
-            hasError = true
-        }
-
-        if (currentState.email.isBlank()) {
-            emailErrorId = R.string.error_email_empty
+        if (currentState.userName.isBlank()) {
+            firstNameErrorId = R.string.error_username_empty
             hasError = true
         }
 
@@ -75,8 +63,7 @@ class SignUpViewModel : ViewModel() {
         if (hasError) {
             _uiState.update {
                 it.copy(
-                    firstNameError = firstNameErrorId,
-                    emailError = emailErrorId,
+                    userNameError = firstNameErrorId,
                     passwordError = passwordErrorId,
                     confirmPasswordError = confirmPasswordErrorId
                 )
@@ -88,8 +75,7 @@ class SignUpViewModel : ViewModel() {
             _uiState.update {
                 it.copy(
                     isLoading = true,
-                    firstNameError = null,
-                    emailError = null,
+                    userNameError = null,
                     passwordError = null,
                     confirmPasswordError = null
                 )

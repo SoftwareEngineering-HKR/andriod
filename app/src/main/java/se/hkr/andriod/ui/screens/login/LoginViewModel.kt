@@ -22,7 +22,7 @@ data class LoginUiState(
 
 class LoginViewModel(
     private val connectionManager: ConnectionManager = ConnectionManager(),
-    private val authService: AuthService = AuthService()
+    private val authService: AuthService
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(LoginUiState())

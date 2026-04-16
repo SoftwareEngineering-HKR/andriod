@@ -1,6 +1,8 @@
 package se.hkr.andriod.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -10,6 +12,7 @@ import se.hkr.andriod.ui.screens.login.LoginViewModel
 import se.hkr.andriod.ui.screens.main.MainScreen
 import se.hkr.andriod.ui.screens.signup.SignUpScreen
 import se.hkr.andriod.ui.screens.signup.SignUpViewModel
+import se.hkr.andriod.ui.viewmodel.AuthViewModelFactory
 
 @Composable
 fun AppNavGraph() {
@@ -20,7 +23,9 @@ fun AppNavGraph() {
         startDestination = Routes.LOGIN
     ) {
         composable(Routes.LOGIN) {
-            val loginViewModel: LoginViewModel = viewModel()
+            val context = LocalContext.current
+            val factory = remember { AuthViewModelFactory(context) }
+            val loginViewModel: LoginViewModel = viewModel(factory = factory)
 
             LoginScreen(
                 viewModel = loginViewModel,
@@ -36,7 +41,9 @@ fun AppNavGraph() {
         }
 
         composable(Routes.SIGN_UP) {
-            val registerViewModel: SignUpViewModel = viewModel()
+            val context = LocalContext.current
+            val factory = remember { AuthViewModelFactory(context) }
+            val registerViewModel: SignUpViewModel = viewModel(factory = factory)
 
             SignUpScreen(
                 viewModel = registerViewModel,

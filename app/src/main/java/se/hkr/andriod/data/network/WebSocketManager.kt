@@ -10,6 +10,12 @@ class WebSocketManager {
 
     private val messageListeners = mutableListOf<(String) -> Unit>()
 
+    private var onFailureListener: (() -> Unit)? = null
+
+    fun setOnFailureListener(listener: () -> Unit) {
+        onFailureListener = listener
+    }
+
     fun connect(ip: String, port: Int = 8080) {
 
         val token = AuthSession.getToken()
@@ -37,14 +43,18 @@ class WebSocketManager {
 
             override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
                 Log.d("WEBSOCKET", "Closing: $code / $reason")
+                webSocket.close(1000, null)
+                onFailureListener?.invoke()
             }
 
             override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
                 Log.d("WEBSOCKET", "Closed: $code / $reason")
+                onFailureListener?.invoke()
             }
 
             override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
                 Log.d("WEBSOCKET", "Failure: ${t.message}")
+                onFailureListener?.invoke()
             }
         })
     }

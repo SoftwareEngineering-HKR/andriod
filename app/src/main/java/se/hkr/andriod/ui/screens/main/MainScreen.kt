@@ -50,13 +50,14 @@ fun MainScreen(
     val navController = rememberNavController()
 
     val connectionManager = remember { ConnectionManager() }
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         val token = AuthSession.getToken()
         if (token != null) {
             connectionManager.startConnection { ip ->
                 if (ip != null) {
-                    connectionManager.connectWebSocket()
+                    connectionManager.connectWebSocket(context)
                 }
             }
         }

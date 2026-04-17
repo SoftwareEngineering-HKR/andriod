@@ -23,6 +23,12 @@ class ConnectionManager(private val udpPort: Int = 4444) {
     // Prevent infinite refresh loops
     private var hasTriedRefresh = false
 
+    private var onAuthFailure: (() -> Unit)? = null
+
+    fun setOnAuthFailureListener(listener: () -> Unit) {
+        onAuthFailure = listener
+    }
+
     fun startConnection(onResult: (String?) -> Unit) {
         udpDiscovery.discoverServer(port = udpPort) { ip ->
             if (ip != null) {
@@ -71,10 +77,10 @@ class ConnectionManager(private val udpPort: Int = 4444) {
                         Log.d("CONNECTION", "Refresh successful, retrying connection")
 
                         AuthSession.saveToken(context, newToken)
-
                         connectWebSocket(context) // retry
                     } else {
                         Log.d("CONNECTION", "Refresh failed, user must log in again")
+                        onAuthFailure?.invoke()
                     }
                 }
             } else {

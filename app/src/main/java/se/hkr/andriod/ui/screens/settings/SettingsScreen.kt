@@ -11,7 +11,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import se.hkr.andriod.R
@@ -31,7 +30,6 @@ fun SettingsScreen(
 ) {
     val context = LocalContext.current
 
-    var discoveredIp: String? by remember { mutableStateOf("Not connected") }
     var showThemeDialog by remember { mutableStateOf(false) }
 
     val devices by connectionManager.deviceStore.devices.collectAsState()
@@ -141,7 +139,7 @@ fun SettingsScreen(
                             val cookieJar = NetworkModule.getClient(context).cookieJar as PersistentCookieJar
 
                             fun finishLogout() {
-                                AuthSession.clear()
+                                AuthSession.clear(context)
                                 cookieJar.clear()
                                 connectionManager.disconnect()
 
@@ -164,41 +162,6 @@ fun SettingsScreen(
                         modifier = Modifier.width(160.dp)
                     )
                 }
-            }
-
-            // Connect to Server
-            item {
-                Spacer(modifier = Modifier.height(24.dp))
-                Box(
-                    modifier = Modifier.fillMaxWidth(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    AppButton(
-                        text = "Connect to Server",
-                        onClick = {
-                            discoveredIp = "Searching..."
-                            connectionManager.startConnection { ip ->
-                                if (ip == null) {
-                                    discoveredIp = "No backend found"
-                                    return@startConnection
-                                }
-                                discoveredIp = ip
-                                connectionManager.connectWebSocket()
-                            }
-                        },
-                        modifier = Modifier.width(160.dp)
-                    )
-                }
-            }
-
-            // Backend IP display
-            item {
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(
-                    text = "Backend IP: $discoveredIp",
-                    style = MaterialTheme.typography.bodyMedium,
-                    textAlign = TextAlign.Center,
-                )
             }
         }
 

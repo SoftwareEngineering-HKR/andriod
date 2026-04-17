@@ -10,6 +10,7 @@ import se.hkr.andriod.ui.screens.deviceoverview.DeviceOverviewScreen
 import se.hkr.andriod.ui.screens.settings.SettingsScreen
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -24,6 +25,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import se.hkr.andriod.data.language.LanguageStorage
+import se.hkr.andriod.data.network.AuthSession
 import se.hkr.andriod.data.network.ConnectionManager
 import se.hkr.andriod.navigation.BottomNavItem
 import se.hkr.andriod.ui.screens.adddevice.AddDeviceScreen
@@ -48,6 +50,17 @@ fun MainScreen(
     val navController = rememberNavController()
 
     val connectionManager = remember { ConnectionManager() }
+
+    LaunchedEffect(Unit) {
+        val token = AuthSession.getToken()
+        if (token != null) {
+            connectionManager.startConnection { ip ->
+                if (ip != null) {
+                    connectionManager.connectWebSocket()
+                }
+            }
+        }
+    }
 
     val items = listOf(
         BottomNavItem.Overview,

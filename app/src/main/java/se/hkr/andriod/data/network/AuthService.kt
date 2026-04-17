@@ -143,4 +143,44 @@ class AuthService(private val context: Context) {
             }
         })
     }
+
+    fun refresh(
+        ip: String,
+        onResult: (Boolean, String?) -> Unit
+    ) {
+        val url = "http://$ip:8081/refresh"
+
+        val request = Request.Builder()
+            .url(url)
+            .post("".toRequestBody(null)) // empty body
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+
+            override fun onFailure(call: Call, e: IOException) {
+                onResult(false, e.message)
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val responseBody = response.body?.string()
+
+                if (!response.isSuccessful || responseBody == null) {
+                    onResult(false, "Refresh failed")
+                    return
+                }
+
+                try {
+                    val json = JSONObject(responseBody)
+                    val newToken = json.getString("accessToken")
+
+                    AuthSession.saveToken(context, newToken)
+
+                    onResult(true, newToken)
+
+                } catch (e: Exception) {
+                    onResult(false, e.message)
+                }
+            }
+        })
+    }
 }

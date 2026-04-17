@@ -27,6 +27,8 @@ import androidx.navigation.navArgument
 import se.hkr.andriod.data.language.LanguageStorage
 import se.hkr.andriod.data.network.AuthSession
 import se.hkr.andriod.data.network.ConnectionManager
+import se.hkr.andriod.data.network.NetworkModule
+import se.hkr.andriod.data.network.PersistentCookieJar
 import se.hkr.andriod.navigation.BottomNavItem
 import se.hkr.andriod.ui.screens.adddevice.AddDeviceScreen
 import se.hkr.andriod.ui.screens.devicecard.DeviceHostScreen
@@ -50,14 +52,32 @@ fun MainScreen(
     val navController = rememberNavController()
 
     val connectionManager = remember { ConnectionManager() }
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         val token = AuthSession.getToken()
         if (token != null) {
             connectionManager.startConnection { ip ->
                 if (ip != null) {
-                    connectionManager.connectWebSocket()
+                    connectionManager.connectWebSocket(context)
                 }
+            }
+        }
+    }
+
+    // Force logout in auth failure (if token refresh fails)
+    LaunchedEffect(Unit) {
+        connectionManager.setOnAuthFailureListener {
+            android.util.Log.d("AUTH", "Auth failed, forcing logout")
+
+            val cookieJar = NetworkModule.getClient(context).cookieJar as PersistentCookieJar
+
+            AuthSession.clear(context)
+            cookieJar.clear()
+            connectionManager.disconnect()
+
+            android.os.Handler(android.os.Looper.getMainLooper()).post {
+                onLogout() // navigate back to login
             }
         }
     }

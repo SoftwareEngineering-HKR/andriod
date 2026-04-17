@@ -141,7 +141,7 @@ fun SettingsScreen(
                             val cookieJar = NetworkModule.getClient(context).cookieJar as PersistentCookieJar
 
                             fun finishLogout() {
-                                AuthSession.clear()
+                                AuthSession.clear(context)
                                 cookieJar.clear()
                                 connectionManager.disconnect()
 

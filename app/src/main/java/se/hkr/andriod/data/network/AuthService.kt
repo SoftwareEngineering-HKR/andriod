@@ -7,7 +7,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 import java.io.IOException
 
-class AuthService(context: Context) {
+class AuthService(private val context: Context) {
     private val client = NetworkModule.getClient(context)
 
     private fun postRequest(
@@ -66,7 +66,7 @@ class AuthService(context: Context) {
                 val jsonResponse = JSONObject(response)
                 val token = jsonResponse.getString("accessToken")
 
-                AuthSession.saveToken(token)
+                AuthSession.saveToken(context, token)
 
                 onResult(true, token)
 
@@ -100,7 +100,7 @@ class AuthService(context: Context) {
                 val jsonResponse = JSONObject(response)
                 val token = jsonResponse.getString("accessToken")
 
-                AuthSession.saveToken(token)
+                AuthSession.saveToken(context, token)
 
                 onResult(true, token)
 

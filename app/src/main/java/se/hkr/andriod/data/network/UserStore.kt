@@ -7,12 +7,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.json.JSONObject
-
-data class User(
-    val id: String,
-    val username: String,
-    val role: String
-)
+import se.hkr.andriod.domain.model.user.User
+import se.hkr.andriod.domain.model.user.UserRole
+import java.util.UUID
 
 class UserStore(private val webSocketManager: WebSocketManager) {
 
@@ -22,11 +19,15 @@ class UserStore(private val webSocketManager: WebSocketManager) {
     private val scope = CoroutineScope(Dispatchers.Main)
 
     fun handleMessage(json: JSONObject) {
-        val type = json.getString("type").lowercase()
-        val payload = json.getJSONObject("payload")
+        try {
+            val type = json.getString("type").lowercase()
+            val payload = json.getJSONObject("payload")
 
-        when (type) {
-            "users" -> handleUsers(payload)
+            when (type) {
+                "users" -> handleUsers(payload)
+            }
+        } catch (e: Exception) {
+            Log.e("USERSTORE", "Failed to handle message", e)
         }
     }
 
@@ -37,10 +38,12 @@ class UserStore(private val webSocketManager: WebSocketManager) {
         for (i in 0 until usersJson.length()) {
             val userJson = usersJson.getJSONObject(i)
 
+            val idString = userJson.optString("id")
+
             val user = User(
-                id = userJson.optString("id"),
+                id = idString.toUUIDOrNull() ?: continue,
                 username = userJson.optString("username"),
-                role = userJson.optString("type")
+                role = UserRole.fromBackendType(userJson.optString("type"))
             )
 
             newUsers.add(user)
@@ -58,11 +61,11 @@ class UserStore(private val webSocketManager: WebSocketManager) {
         webSocketManager.sendMessage(message.toString())
     }
 
-    fun updateUserRole(username: String, role: String) {
+    fun updateUserRole(userId: UUID, role: String) {
         val message = JSONObject().apply {
             put("type", "update user role")
             put("payload", JSONObject().apply {
-                put("userName", username)
+                put("userId", userId.toString())
                 put("role", role)
             })
         }
@@ -72,11 +75,11 @@ class UserStore(private val webSocketManager: WebSocketManager) {
         fetchUsers()
     }
 
-    fun deleteUser(username: String) {
+    fun deleteUser(userId: UUID) {
         val message = JSONObject().apply {
             put("type", "delete user")
             put("payload", JSONObject().apply {
-                put("userName", username)
+                put("userId", userId.toString())
             })
         }
 
@@ -85,15 +88,23 @@ class UserStore(private val webSocketManager: WebSocketManager) {
         fetchUsers()
     }
 
-    fun addUserToDevice(userId: String, deviceId: String) {
+    fun addUserToDevice(userId: UUID, deviceId: String) {
         val message = JSONObject().apply {
             put("type", "add user to device")
             put("payload", JSONObject().apply {
-                put("userId", userId)
+                put("userId", userId.toString())
                 put("deviceId", deviceId)
             })
         }
 
         webSocketManager.sendMessage(message.toString())
+    }
+
+    private fun String.toUUIDOrNull(): UUID? {
+        return try {
+            UUID.fromString(this)
+        } catch (_: Exception) {
+            null
+        }
     }
 }

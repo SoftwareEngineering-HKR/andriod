@@ -22,7 +22,8 @@ class MessageRouter(
                 "inital devices",
                 "update value",
                 "added new device",
-                "update device onlinestate" -> deviceStore.handleMessage(json)
+                "update device onlinestate",
+                "device info" -> deviceStore.handleMessage(json)
 
                 // User messages
                 "users" -> userStore.handleMessage(json)

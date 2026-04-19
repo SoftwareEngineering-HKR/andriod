@@ -165,6 +165,7 @@
     <string name="edit_username">Felhasználónév módosítása</string>
 
     <!-- Settings - Users & Permissions -->
+    <string name="user">Felhasználó</string>
     <string name="settings_users_devices">Felhasználók és eszközök</string>
     <string name="assigned_devices">Hozzárendelt eszközök</string>
     <string name="assigned_devices_count">%1$d eszköz hozzárendelve</string>

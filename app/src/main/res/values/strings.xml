@@ -164,6 +164,7 @@
     <string name="edit_username">Edit username</string>
 
     <!-- Settings - Users & Permissions -->
+    <string name="user">User</string>
     <string name="settings_users_devices">Users &amp; Devices</string>
     <string name="assigned_devices">Assigned devices</string>
     <string name="assigned_devices_count">%1$d devices assigned</string>

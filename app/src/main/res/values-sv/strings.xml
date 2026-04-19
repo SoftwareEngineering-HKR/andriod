@@ -168,6 +168,7 @@
     <string name="edit_username">Ändra användarnamn</string>
 
     <!-- Settings - Users & Permissions -->
+    <string name="user">Användare</string>
     <string name="settings_users_devices">Användare och enheter</string>
     <string name="assigned_devices">Tilldelade enheter</string>
     <string name="assigned_devices_count">%1$d enheter tilldelade</string>

@@ -89,7 +89,7 @@ fun UsersScreen(
                 Column(Modifier.padding(20.dp)) {
 
                     Text(
-                        text = stringResource(R.string.base_user), // todo: add correct string
+                        text = stringResource(R.string.user),
                         style = MaterialTheme.typography.titleMedium
                     )
 

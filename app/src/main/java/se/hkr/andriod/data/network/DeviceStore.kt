@@ -13,9 +13,13 @@ import se.hkr.andriod.domain.model.device.Device
 
 class DeviceStore(private val webSocketManager: WebSocketManager) {
 
-    // Start with empty list
+    // Devices assigned to the current user
     private val _devices = MutableStateFlow<List<Device>>(emptyList())
     val devices: StateFlow<List<Device>> get() = _devices
+
+    // All devices with user relationships (admin)
+    private val _allDevices = MutableStateFlow<List<Device>>(emptyList())
+    val allDevices: StateFlow<List<Device>> get() = _allDevices
 
     // Coroutine scope for updates
     private val scope = CoroutineScope(Dispatchers.Main)
@@ -30,6 +34,7 @@ class DeviceStore(private val webSocketManager: WebSocketManager) {
                 "update value" -> handleDeviceUpdate(payload)
                 "added new device" -> handleAddedNewDevice(payload)
                 "update device onlinestate" -> handleDeviceOnlineState(payload)
+                "device info" -> handleAllDeviceInfo(payload)
                 else -> Log.d("DEVICESTORE", "Unhandled message type: $type")
             }
         } catch (e: Exception) {
@@ -63,6 +68,13 @@ class DeviceStore(private val webSocketManager: WebSocketManager) {
                     else device
                 }
             }
+
+            _allDevices.update { currentList ->
+                currentList.map { device ->
+                    if (device.id == deviceId) device.copy(value = newValue)
+                    else device
+                }
+            }
         }
 
         Log.d("DEVICESTORE", "Device updated: $deviceId : $newValue")
@@ -73,10 +85,8 @@ class DeviceStore(private val webSocketManager: WebSocketManager) {
         val device = Device.fromBackendJson(deviceJson)
 
         scope.launch {
-            _devices.update { currentList ->
-                // Append the new device
-                currentList + device
-            }
+            _devices.update { currentList -> currentList + device }
+            _allDevices.update { currentList -> currentList + device }
         }
 
         Log.d("DEVICESTORE", "New device added: ${device.id}")
@@ -91,14 +101,37 @@ class DeviceStore(private val webSocketManager: WebSocketManager) {
         scope.launch {
             _devices.update { currentList ->
                 currentList.map { device ->
-                    if (device.id == deviceId) {
-                        device.copy(online = isOnline)
-                    } else device
+                    if (device.id == deviceId) device.copy(online = isOnline)
+                    else device
+                }
+            }
+
+            _allDevices.update { currentList ->
+                currentList.map { device ->
+                    if (device.id == deviceId) device.copy(online = isOnline)
+                    else device
                 }
             }
         }
 
         Log.d("DEVICESTORE", "Device online state updated: $deviceId : $isOnline")
+    }
+
+    private fun handleAllDeviceInfo(payload: JSONObject) {
+        val devicesJson = payload.getJSONArray("devices")
+        val allDevicesList = mutableListOf<Device>()
+
+        for (i in 0 until devicesJson.length()) {
+            val deviceJson = devicesJson.getJSONObject(i)
+            val device = Device.fromBackendJson(deviceJson)
+            allDevicesList.add(device)
+        }
+
+        scope.launch {
+            _allDevices.value = allDevicesList
+        }
+
+        Log.d("DEVICESTORE", "All devices loaded: ${allDevicesList.size}")
     }
 
     // Public helper to send a value update
@@ -157,4 +190,14 @@ class DeviceStore(private val webSocketManager: WebSocketManager) {
 
     // Get a device by ID
     fun getDeviceById(id: String): Device? = _devices.value.find { it.id == id }
+
+    // Fetch all devices + relationships (admin)
+    fun fetchAllDeviceInfo() {
+        val message = JSONObject().apply {
+            put("type", "get all device info")
+            put("payload", JSONObject())
+        }
+
+        webSocketManager.sendMessage(message.toString())
+    }
 }

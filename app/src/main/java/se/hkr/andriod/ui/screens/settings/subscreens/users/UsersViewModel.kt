@@ -2,6 +2,7 @@ package se.hkr.andriod.ui.screens.settings.subscreens.users
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import se.hkr.andriod.data.network.DeviceStore
@@ -55,7 +56,12 @@ class UsersViewModel(
 
     fun onDeviceToggled(userId: UUID, deviceId: String) {
         viewModelScope.launch {
-            // todo: backend call
+            userStore.addUserToDevice(userId, deviceId)
+
+            // Not a good solution but it works for now
+            deviceStore.fetchAllDeviceInfo()
+            delay(100)
+            deviceStore.fetchAllDeviceInfo()
         }
     }
 }

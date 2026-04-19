@@ -3,6 +3,7 @@ package se.hkr.andriod.ui.screens.settings.subscreens.users
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -16,31 +17,20 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Devices
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.Divider
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material.icons.rounded.Delete
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import se.hkr.andriod.R
+import se.hkr.andriod.domain.model.user.UserRole
 import se.hkr.andriod.ui.components.CustomScreenHeader
+import se.hkr.andriod.ui.screens.settings.components.ActionRow
+import se.hkr.andriod.ui.screens.settings.components.ConfirmDialog
 import se.hkr.andriod.ui.theme.cardBackground
 import se.hkr.andriod.ui.theme.lightBlue
 
@@ -149,12 +139,33 @@ fun UsersScreen(
                             fontWeight = FontWeight.Bold
                         )
 
-                        Spacer(Modifier.height(8.dp))
+                        Spacer(Modifier.height(12.dp))
 
-                        Text(
-                            text = stringResource(selectedUser.role.toRoleTextRes()),
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        RoleSelector(
+                            selectedRole = selectedUser.role,
+                            onRoleSelected = { role ->
+                                viewModel.onUserRoleChanged(selectedUser.id, role)
+                            }
+                        )
+                    }
+                }
+            }
+
+            // Delete user
+            item {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(20.dp),
+                    colors = CardDefaults.cardColors(MaterialTheme.colorScheme.cardBackground)
+                ) {
+                    Column(Modifier.padding(vertical = 8.dp)) {
+
+                        ActionRow(
+                            title = "Delete User", // todo translate string
+                            icon = {
+                                Icon(Icons.Rounded.Delete, contentDescription = null)
+                            },
+                            onClick = viewModel::showDeleteUserDialog
                         )
                     }
                 }
@@ -250,6 +261,60 @@ fun UsersScreen(
                         }
                     }
                 }
+            }
+        }
+    }
+
+    // Delete dialog
+    if (uiState.showDeleteUserDialog && selectedUser != null) {
+        ConfirmDialog(
+            title = "Delete User", // todo translate string
+            message = "Are you sure you want to delete ${selectedUser.username}?", // todo translate string
+            confirmText = stringResource(R.string.delete),
+            dismissText = stringResource(R.string.cancel),
+            onConfirm = {
+                viewModel.deleteSelectedUser()
+            },
+            onDismiss = viewModel::dismissDialogs
+        )
+    }
+}
+
+
+@Composable
+fun RoleSelector(
+    selectedRole: UserRole,
+    onRoleSelected: (UserRole) -> Unit
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        UserRole.entries.forEach { role ->
+
+            val selected = role == selectedRole
+
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .clip(MaterialTheme.shapes.extraLarge)
+                    .background(
+                        if (selected)
+                            MaterialTheme.colorScheme.primary
+                        else
+                            MaterialTheme.colorScheme.surfaceVariant
+                    )
+                    .clickable { onRoleSelected(role) }
+                    .padding(vertical = 6.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = role.name,
+                    color = if (selected)
+                        MaterialTheme.colorScheme.onPrimary
+                    else
+                        MaterialTheme.colorScheme.onSurface
+                )
             }
         }
     }

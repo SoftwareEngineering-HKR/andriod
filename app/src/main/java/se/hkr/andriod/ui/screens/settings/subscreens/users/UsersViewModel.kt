@@ -9,12 +9,14 @@ import se.hkr.andriod.data.network.DeviceStore
 import se.hkr.andriod.data.network.UserStore
 import se.hkr.andriod.domain.model.device.Device
 import se.hkr.andriod.domain.model.user.User
+import se.hkr.andriod.domain.model.user.UserRole
 import java.util.UUID
 
 data class UsersUiState(
     val users: List<User> = emptyList(),
     val devices: List<Device> = emptyList(),
-    val selectedUserId: UUID? = null
+    val selectedUserId: UUID? = null,
+    val showDeleteUserDialog: Boolean = false
 )
 
 class UsersViewModel(
@@ -42,7 +44,9 @@ class UsersViewModel(
                 UsersUiState(
                     users = users,
                     devices = devices,
-                    selectedUserId = selectedUserId ?: users.firstOrNull()?.id
+                    selectedUserId = selectedUserId ?: users.firstOrNull()?.id,
+                    // preserve dialog state across refresh
+                    showDeleteUserDialog = _uiState.value.showDeleteUserDialog
                 )
             }.collect { state ->
                 _uiState.value = state
@@ -62,6 +66,33 @@ class UsersViewModel(
             deviceStore.fetchAllDeviceInfo()
             delay(100)
             deviceStore.fetchAllDeviceInfo()
+        }
+    }
+
+    fun onUserRoleChanged(userId: UUID, role: UserRole) {
+        viewModelScope.launch {
+            // TODO: replace with real backend call
+        }
+    }
+
+    fun showDeleteUserDialog() {
+        _uiState.update {
+            it.copy(showDeleteUserDialog = true)
+        }
+    }
+
+    fun dismissDialogs() {
+        _uiState.update {
+            it.copy(showDeleteUserDialog = false)
+        }
+    }
+
+    fun deleteSelectedUser() {
+        val userId = _uiState.value.selectedUserId ?: return
+
+        viewModelScope.launch {
+            // TODO: replace with real backend call
+            dismissDialogs()
         }
     }
 }

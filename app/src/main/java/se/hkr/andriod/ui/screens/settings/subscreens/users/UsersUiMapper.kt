@@ -4,6 +4,7 @@ import androidx.annotation.StringRes
 import se.hkr.andriod.R
 import se.hkr.andriod.data.mock.MockDevices
 import se.hkr.andriod.domain.model.device.Device
+import se.hkr.andriod.domain.model.device.DeviceType
 import se.hkr.andriod.domain.model.user.User
 import se.hkr.andriod.domain.model.user.UserRole
 import java.util.UUID
@@ -59,12 +60,21 @@ fun UserRole.toRoleTextRes(): Int {
 }
 
 @StringRes
-fun deviceTypeToTextRes(type: String): Int {
-    return when (type.lowercase()) {
-        "light" -> R.string.device_type_light
-        "lock" -> R.string.device_type_lock
-        "sensor" -> R.string.device_type_sensor
-        else -> R.string.device_type_unknown
+fun DeviceType.toTextRes(): Int {
+    return when (this) {
+        DeviceType.LIGHT -> R.string.device_type_light
+        DeviceType.LOCK -> R.string.device_type_lock
+        DeviceType.SENSOR -> R.string.device_type_sensor
+        DeviceType.GAS -> R.string.device_type_gas
+        DeviceType.HUMIDITY -> R.string.device_type_humidity
+        DeviceType.STEAM -> R.string.device_type_steam
+        DeviceType.BUZZ -> R.string.device_type_buzz
+        DeviceType.FAN -> R.string.device_type_fan
+        DeviceType.SERVO -> R.string.device_type_servo
+        DeviceType.WINDOW -> R.string.device_type_window
+        DeviceType.DOOR -> R.string.device_type_door
+        DeviceType.DISPLAY -> R.string.device_type_display
+        DeviceType.UNKNOWN -> R.string.device_type_unknown
     }
 }
 

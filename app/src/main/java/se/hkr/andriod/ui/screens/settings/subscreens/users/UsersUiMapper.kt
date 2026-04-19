@@ -102,12 +102,3 @@ fun Device.displayDescription(): String {
         description.orEmpty()
     }
 }
-
-fun resolveRoomName(roomId: String?): String {
-    if (roomId.isNullOrBlank()) return ""
-
-    return listOf(
-        MockDevices.livingRoom,
-        MockDevices.kitchen
-    ).firstOrNull { it.id == roomId }?.name.orEmpty()
-}

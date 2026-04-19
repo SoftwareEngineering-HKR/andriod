@@ -213,8 +213,15 @@ fun UsersScreen(
 
                                     Spacer(Modifier.height(4.dp))
 
+                                    val typeText = stringResource(device.deviceTypeEnum.toTextRes())
+                                    val roomName = device.room
+
                                     Text(
-                                        text = stringResource(device.deviceTypeEnum.toTextRes()),
+                                        text = if (!roomName.isNullOrBlank() && roomName != "null") {
+                                            "$typeText • $roomName"
+                                        } else {
+                                            typeText
+                                        },
                                         style = MaterialTheme.typography.bodyMedium
                                     )
 

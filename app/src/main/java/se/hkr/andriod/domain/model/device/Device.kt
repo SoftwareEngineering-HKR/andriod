@@ -1,6 +1,7 @@
 package se.hkr.andriod.domain.model.device
 
 import org.json.JSONObject
+import se.hkr.andriod.domain.model.user.User
 
 data class Device(
     val id: String,
@@ -13,7 +14,8 @@ data class Device(
     var value: Int = 0,
     var maxValue: Int = 1,
     var minValue: Int = 0,
-    var scaleName: String? = null
+    var scaleName: String? = null,
+    val users: List<User> = emptyList()
 ) {
     // Computed property for UI
     val deviceTypeEnum: DeviceType
@@ -53,7 +55,18 @@ data class Device(
                 value = json.optInt("value", 0),
                 maxValue = json.optInt("max_value", 1),
                 minValue = json.optInt("min_value", 0),
-                scaleName = json.optString("scale_name", null)
+                scaleName = json.optString("scale_name", null),
+
+                users = json.optJSONArray("users")?.let { array ->
+                    List(array.length()) { i ->
+                        val obj = array.getJSONObject(i)
+                        User.fromBackendJson(
+                            id = obj.optString("id"),
+                            username = obj.optString("username"),
+                            type = obj.optString("type")
+                        )
+                    }
+                } ?: emptyList()
             )
         }
     }

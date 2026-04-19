@@ -1,5 +1,6 @@
 package se.hkr.andriod.ui.screens.settings.subscreens.users
 
+import android.R.id.message
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -161,7 +162,7 @@ fun UsersScreen(
                     Column(Modifier.padding(vertical = 8.dp)) {
 
                         ActionRow(
-                            title = "Delete User", // todo translate string
+                            title = stringResource(R.string.delete_user_title),
                             icon = {
                                 Icon(Icons.Rounded.Delete, contentDescription = null)
                             },
@@ -268,8 +269,11 @@ fun UsersScreen(
     // Delete dialog
     if (uiState.showDeleteUserDialog && selectedUser != null) {
         ConfirmDialog(
-            title = "Delete User", // todo translate string
-            message = "Are you sure you want to delete ${selectedUser.username}?", // todo translate string
+            title = stringResource(R.string.delete_user_title),
+            message = stringResource(
+                R.string.delete_user_confirmation_with_name,
+                selectedUser.username
+            ),
             confirmText = stringResource(R.string.delete),
             dismissText = stringResource(R.string.cancel),
             onConfirm = {

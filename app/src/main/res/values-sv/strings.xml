@@ -174,6 +174,8 @@
     <string name="assigned_devices_count">%1$d enheter tilldelade</string>
     <string name="no_devices_available">Inga enheter tillgängliga</string>
     <string name="device_type_unknown">Okänd enhet</string>
+    <string name="delete_user_title">Ta bort användare</string>
+    <string name="delete_user_confirmation_with_name">Är du säker på att du vill ta bort "%1$s"?</string>
 
     <string name="admin">Admin</string>
     <string name="base_user">Standardanvändare</string>

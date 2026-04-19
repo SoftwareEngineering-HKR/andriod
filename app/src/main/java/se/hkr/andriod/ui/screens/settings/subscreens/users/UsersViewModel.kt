@@ -7,6 +7,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import se.hkr.andriod.data.mock.MockDevices
 import se.hkr.andriod.data.mock.MockUsers
+import se.hkr.andriod.data.network.DeviceStore
+import se.hkr.andriod.data.network.UserStore
 import se.hkr.andriod.domain.model.device.Device
 import se.hkr.andriod.domain.model.user.User
 import java.util.UUID
@@ -19,7 +21,10 @@ data class UsersUiState(
     val editedAssignments: Map<UUID, Set<String>> = emptyMap()
 )
 
-class UsersViewModel : ViewModel() {
+class UsersViewModel(
+    private val userStore: UserStore,
+    private val deviceStore: DeviceStore
+) : ViewModel() {
 
     private val initialUsers = MockUsers.allUsers
     private val initialDevices = MockDevices.allDevices

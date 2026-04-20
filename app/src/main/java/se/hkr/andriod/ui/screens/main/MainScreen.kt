@@ -44,6 +44,8 @@ import se.hkr.andriod.ui.screens.settings.subscreens.devices.DevicesViewModelFac
 import se.hkr.andriod.ui.screens.settings.subscreens.language.LanguageViewModel
 import se.hkr.andriod.ui.screens.settings.subscreens.users.UsersViewModel
 import se.hkr.andriod.ui.screens.settings.subscreens.users.UsersViewModelFactory
+import se.hkr.andriod.ui.screens.settings.subscreens.rooms.RoomsViewModel
+import se.hkr.andriod.ui.screens.settings.subscreens.rooms.RoomsViewModelFactory
 import se.hkr.andriod.ui.theme.cardBackground
 import se.hkr.andriod.ui.theme.lightBlue
 
@@ -212,6 +214,7 @@ fun MainScreen(
                         onBackClick = { navController.navigateUp() }
                     )
                 }
+
                 composable(Routes.DEVICES) {
                     val viewModel: DevicesViewModel = viewModel(
                         factory = DevicesViewModelFactory(connectionManager.deviceStore)
@@ -222,13 +225,22 @@ fun MainScreen(
                         onBackClick = { navController.navigateUp() }
                     )
                 }
+
                 composable(Routes.ROOMS) {
+                    val viewModel: RoomsViewModel = viewModel(
+                        factory = RoomsViewModelFactory(
+                            connectionManager.roomStore, connectionManager.deviceStore
+                        )
+                    )
+
                     RoomsScreen(
-                        viewModel = viewModel(),
+                        viewModel = viewModel,
                         onBackClick = { navController.navigateUp() }
                     )
                 }
+
                 composable(Routes.SCHEDULES) { SchedulesScreen() }
+
                 composable(Routes.LANGUAGE) {
                     val context = LocalContext.current.applicationContext
 
@@ -243,6 +255,7 @@ fun MainScreen(
                         onBackClick = { navController.navigateUp() }
                     )
                 }
+
                 composable(Routes.ACCOUNT) { AccountInfoScreen(
                     viewModel = viewModel(),
                     onBackClick = { navController.navigateUp() }

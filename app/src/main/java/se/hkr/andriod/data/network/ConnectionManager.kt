@@ -9,11 +9,13 @@ class ConnectionManager(private val udpPort: Int = 4444) {
 
     val deviceStore = DeviceStore(webSocketManager)
     val userStore = UserStore(webSocketManager)
+    val roomStore = RoomStore(webSocketManager)
     val actionHandler = ActionResponseHandler()
 
     private val messageRouter = MessageRouter(
         deviceStore,
         userStore,
+        roomStore,
         actionHandler
     )
 

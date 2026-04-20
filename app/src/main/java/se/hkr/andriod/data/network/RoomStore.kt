@@ -1,7 +1,5 @@
 package se.hkr.andriod.data.network
 
-import android.R.id.message
-import android.util.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,21 +20,48 @@ class RoomStore(private val webSocketManager: WebSocketManager) {
 
     // Get rooms
     fun getRooms() {
-        // TODO
+        val message = JSONObject().apply {
+            put("type", "get all rooms")
+            put("payload", JSONObject())
+        }
+
+        webSocketManager.sendMessage(message.toString())
     }
 
     // Create room
     fun createRoom(name: String) {
-        // TODO
+        val message = JSONObject().apply {
+            put("type", "create room")
+            put("payload", JSONObject().apply {
+                put("name", name)
+            })
+        }
+
+        webSocketManager.sendMessage(message.toString())
     }
 
     // Update room name
-    fun updateRoomName(roomId: String, newName: String) {
-        // TODO
+    fun updateRoomName(id: String, newName: String) {
+        val message = JSONObject().apply {
+            put("type", "update room")
+            put("payload", JSONObject().apply {
+                put("id", id)
+                put("name", newName)
+            })
+        }
+
+        webSocketManager.sendMessage(message.toString())
     }
 
     // Delete room
-    fun deleteRoom(roomId: String) {
-        // TODO
+    fun deleteRoom(id: String) {
+        val message = JSONObject().apply {
+            put("type", "delete room")
+            put("payload", JSONObject().apply {
+                put("id", id)
+            })
+        }
+
+        webSocketManager.sendMessage(message.toString())
     }
 }

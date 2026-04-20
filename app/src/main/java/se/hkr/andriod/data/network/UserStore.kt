@@ -75,11 +75,11 @@ class UserStore(private val webSocketManager: WebSocketManager) {
         fetchUsers()
     }
 
-    fun deleteUser(userId: UUID) {
+    fun deleteUser(userName: String) {
         val message = JSONObject().apply {
             put("type", "delete user")
             put("payload", JSONObject().apply {
-                put("userId", userId.toString())
+                put("userName", userName)
             })
         }
 

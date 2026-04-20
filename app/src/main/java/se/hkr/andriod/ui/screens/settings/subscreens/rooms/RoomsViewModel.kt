@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import se.hkr.andriod.data.network.DeviceStore
+import se.hkr.andriod.data.network.RoomStore
 
 // Currently only mock data, will change
 data class RoomsUiState(
@@ -31,7 +33,10 @@ data class RoomsUiState(
 
 )
 
-class RoomsViewModel : ViewModel() {
+class RoomsViewModel(
+    private val roomStore: RoomStore,
+    private val deviceStore: DeviceStore
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(RoomsUiState())
     val uiState: StateFlow<RoomsUiState> = _uiState

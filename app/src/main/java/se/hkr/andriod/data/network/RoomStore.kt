@@ -1,5 +1,7 @@
 package se.hkr.andriod.data.network
 
+import android.R.id.message
+import android.util.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,6 +19,42 @@ class RoomStore(private val webSocketManager: WebSocketManager) {
     val rooms: StateFlow<List<Room>> get() = _rooms
 
     private val scope = CoroutineScope(Dispatchers.Main)
+
+    fun handleMessage(json: JSONObject) {
+        try {
+            val type = json.getString("type")
+            val payload = json.getJSONObject("payload")
+
+            when (type.lowercase()) {
+                "rooms" -> handleRooms(payload)
+                else -> Log.d("ROOMSTORE", "Unhandled message type: $type")
+            }
+        } catch (e: Exception) {
+            Log.e("ROOMSTORE", "Failed to parse message: $message", e)
+        }
+    }
+
+    private fun handleRooms(payload: JSONObject) {
+        try {
+            val roomsJsonArray = payload.getJSONArray("rooms")
+            val roomsList = mutableListOf<Room>()
+
+            for (i in 0 until roomsJsonArray.length()) {
+                val roomObj = roomsJsonArray.getJSONObject(i)
+                val room = Room(
+                    id = roomObj.getString("id"),
+                    name = roomObj.getString("name")
+                )
+                roomsList.add(room)
+            }
+
+            scope.launch {
+                _rooms.value = roomsList
+            }
+        } catch (e: Exception) {
+            Log.e("ROOMSTORE", "Failed to parse rooms payload", e)
+        }
+    }
 
     // Get rooms
     fun getRooms() {

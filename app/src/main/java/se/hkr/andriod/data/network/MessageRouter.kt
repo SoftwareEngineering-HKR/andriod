@@ -9,7 +9,7 @@ import org.json.JSONObject
 class MessageRouter(
     private val deviceStore: DeviceStore,
     private val userStore: UserStore,
-    private val RoomStore: RoomStore,
+    private val roomStore: RoomStore,
     private val actionHandler: ActionResponseHandler
 ) {
     private val scope = CoroutineScope(Dispatchers.Main)
@@ -28,6 +28,9 @@ class MessageRouter(
 
                 // User messages
                 "users" -> userStore.handleMessage(json)
+
+                // Room messages
+                "rooms" -> roomStore.handleMessage(json)
 
                 // Action response
                 "action response" -> {

@@ -61,118 +61,122 @@ fun RoomsScreen(
             .background(MaterialTheme.colorScheme.lightBlue)
             .padding(top = 24.dp)
     ) {
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(vertical = 24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            CustomScreenHeader(
-                title = stringResource(R.string.rooms),
-                onBackClick = onBackClick
-            )
-
-            // Room Selector
-            Card(
-                modifier = Modifier.fillMaxWidth(0.9f),
-                shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.cardBackground
+            item {
+                CustomScreenHeader(
+                    title = stringResource(R.string.rooms),
+                    onBackClick = onBackClick
                 )
-            ) {
-                Column(
-                    modifier = Modifier.padding(20.dp)
-                ) {
-                    Text(
-                        text = stringResource(R.string.room),
-                        style = MaterialTheme.typography.titleMedium
+            }
+
+            item {
+                Card(
+                    modifier = Modifier.fillMaxWidth(0.9f),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.cardBackground
                     )
+                ) {
+                    Column(modifier = Modifier.padding(20.dp)) {
 
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    ExposedDropdownMenuBox(
-                        expanded = expanded,
-                        onExpandedChange = { expanded = !expanded }
-                    ) {
-                        OutlinedTextField(
-                            value = uiState.selectedRoom,
-                            onValueChange = {},
-                            readOnly = true,
-                            modifier = Modifier
-                                .menuAnchor()
-                                .fillMaxWidth(),
-                            trailingIcon = {
-                                ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
-                            },
-                            shape = RoundedCornerShape(12.dp),
-                            singleLine = true
+                        Text(
+                            text = stringResource(R.string.room),
+                            style = MaterialTheme.typography.titleMedium
                         )
 
-                        ExposedDropdownMenu(
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        ExposedDropdownMenuBox(
                             expanded = expanded,
-                            onDismissRequest = { expanded = false }
+                            onExpandedChange = { expanded = !expanded }
                         ) {
-                            uiState.rooms.forEach { room ->
-                                DropdownMenuItem(
-                                    text = { Text(room) },
-                                    onClick = {
-                                        viewModel.onRoomSelected(room)
-                                        expanded = false
-                                    }
-                                )
+
+                            OutlinedTextField(
+                                value = uiState.selectedRoom?.name ?: "",
+                                onValueChange = {},
+                                readOnly = true,
+                                modifier = Modifier
+                                    .menuAnchor()
+                                    .fillMaxWidth(),
+                                trailingIcon = {
+                                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                                },
+                                shape = RoundedCornerShape(12.dp),
+                                singleLine = true
+                            )
+
+                            ExposedDropdownMenu(
+                                expanded = expanded,
+                                onDismissRequest = { expanded = false }
+                            ) {
+                                uiState.rooms.forEach { room ->
+                                    DropdownMenuItem(
+                                        text = { Text(room.name) },
+                                        onClick = {
+                                            viewModel.onRoomSelected(room)
+                                            expanded = false
+                                        }
+                                    )
+                                }
                             }
                         }
-                    }
 
-                    Spacer(modifier = Modifier.height(12.dp))
+                        Spacer(modifier = Modifier.height(12.dp))
 
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        IconButton(onClick = { viewModel.showCreateDialog() }) {
-                            Icon(Icons.Rounded.Add, contentDescription = null)
-                        }
-                        IconButton(onClick = { viewModel.showRenameDialog() }) {
-                            Icon(Icons.Rounded.Edit, contentDescription = null)
-                        }
-                        IconButton(onClick = { viewModel.showDeleteDialog() }) {
-                            Icon(Icons.Rounded.Delete, contentDescription = null)
+                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+
+                            IconButton(onClick = { viewModel.showCreateDialog() }) {
+                                Icon(Icons.Rounded.Add, contentDescription = null)
+                            }
+
+                            IconButton(onClick = { viewModel.showRenameDialog() }) {
+                                Icon(Icons.Rounded.Edit, contentDescription = null)
+                            }
+
+                            IconButton(onClick = { viewModel.showDeleteDialog() }) {
+                                Icon(Icons.Rounded.Delete, contentDescription = null)
+                            }
                         }
                     }
                 }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            item { Spacer(modifier = Modifier.height(16.dp)) }
 
-            // Devices in room
-            Card(
-                modifier = Modifier.fillMaxWidth(0.9f),
-                shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.cardBackground
-                )
-            ) {
-                Column(
-                    modifier = Modifier.padding(20.dp)
-                ) {
-                    Text(
-                        text = stringResource(R.string.devices_in_room),
-                        style = MaterialTheme.typography.titleMedium
+            item {
+                Card(
+                    modifier = Modifier.fillMaxWidth(0.9f),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.cardBackground
                     )
+                ) {
+                    Column(modifier = Modifier.padding(20.dp)) {
 
-                    Spacer(modifier = Modifier.height(12.dp))
+                        Text(
+                            text = stringResource(R.string.devices_in_room),
+                            style = MaterialTheme.typography.titleMedium
+                        )
 
-                    LazyColumn {
-                        items(uiState.devicesInRoom) { device ->
+                        Spacer(modifier = Modifier.height(12.dp))
+
+                        uiState.devicesInRoom.forEach { device ->
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(vertical = 8.dp),
                                 horizontalArrangement = Arrangement.SpaceBetween,
                             ) {
-                                Text(device)
+                                Text(device.name ?: "")
 
-                                TextButton(onClick = { /* Remove Device from room */ }) {
+                                TextButton(onClick = {
+                                    viewModel.removeDeviceFromRoom(device)
+                                }) {
                                     Text(stringResource(R.string.remove))
                                 }
                             }
@@ -181,43 +185,46 @@ fun RoomsScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            item { Spacer(modifier = Modifier.height(16.dp)) }
 
-            // Add Device to the room
-            Card(
-                modifier = Modifier.fillMaxWidth(0.9f),
-                shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.cardBackground
-                )
-            ) {
-                Column(
-                    modifier = Modifier.padding(20.dp)
-                ) {
-                    Text(
-                        text = stringResource(R.string.add_device_to_room),
-                        style = MaterialTheme.typography.titleMedium
+            item {
+                Card(
+                    modifier = Modifier.fillMaxWidth(0.9f),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.cardBackground
                     )
+                ) {
+                    Column(modifier = Modifier.padding(20.dp)) {
 
-                    Spacer(modifier = Modifier.height(12.dp))
+                        Text(
+                            text = stringResource(R.string.add_device_to_room),
+                            style = MaterialTheme.typography.titleMedium
+                        )
 
-                    uiState.availableDevices.forEach { device ->
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 8.dp),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                        ) {
-                            Text(device)
+                        Spacer(modifier = Modifier.height(12.dp))
 
-                            TextButton(onClick = { /* Add Device to room */ }) {
-                                Text(stringResource(R.string.add_device_to_room))
+                        uiState.availableDevices.forEach { device ->
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 8.dp),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                            ) {
+                                Text(device.name ?: "")
+
+                                TextButton(onClick = {
+                                    viewModel.addDeviceToRoom(device)
+                                }) {
+                                    Text(stringResource(R.string.add_device_to_room))
+                                }
                             }
                         }
                     }
                 }
             }
         }
+
         if (uiState.showCreateDialog) {
             InputDialog(
                 title = stringResource(R.string.create_room),
@@ -227,8 +234,8 @@ fun RoomsScreen(
                 confirmText = stringResource(R.string.create),
                 dismissText = stringResource(R.string.cancel),
                 onConfirm = {
+                    viewModel.createRoom()
                     viewModel.dismissDialogs()
-                    // create room
                 },
                 onDismiss = viewModel::dismissDialogs
             )
@@ -243,8 +250,8 @@ fun RoomsScreen(
                 confirmText = stringResource(R.string.rename),
                 dismissText = stringResource(R.string.cancel),
                 onConfirm = {
+                    viewModel.renameRoom()
                     viewModel.dismissDialogs()
-                    // rename room
                 },
                 onDismiss = viewModel::dismissDialogs
             )
@@ -257,12 +264,11 @@ fun RoomsScreen(
                 confirmText = stringResource(R.string.delete),
                 dismissText = stringResource(R.string.cancel),
                 onConfirm = {
+                    viewModel.deleteRoom()
                     viewModel.dismissDialogs()
-                    // delete room
                 },
                 onDismiss = viewModel::dismissDialogs
             )
         }
-
     }
 }

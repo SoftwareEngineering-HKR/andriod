@@ -61,11 +61,11 @@ class UserStore(private val webSocketManager: WebSocketManager) {
         webSocketManager.sendMessage(message.toString())
     }
 
-    fun updateUserRole(userId: UUID, role: String) {
+    fun updateUserRole(userName: String, role: String) {
         val message = JSONObject().apply {
             put("type", "update user role")
             put("payload", JSONObject().apply {
-                put("userId", userId.toString())
+                put("userName", userName)
                 put("role", role)
             })
         }

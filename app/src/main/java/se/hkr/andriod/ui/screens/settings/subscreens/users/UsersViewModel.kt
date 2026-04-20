@@ -69,9 +69,12 @@ class UsersViewModel(
         }
     }
 
-    fun onUserRoleChanged(userId: UUID, role: UserRole) {
+    fun onUserRoleChanged(userName: String, role: UserRole) {
+        val backendRole = role.toBackendType()
         viewModelScope.launch {
-            // TODO: replace with real backend call
+            userStore.updateUserRole(userName, backendRole)
+            delay(100)
+            userStore.fetchUsers()
         }
     }
 

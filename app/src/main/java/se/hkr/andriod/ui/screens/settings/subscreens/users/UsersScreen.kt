@@ -145,7 +145,7 @@ fun UsersScreen(
                         RoleSelector(
                             selectedRole = selectedUser.role,
                             onRoleSelected = { role ->
-                                viewModel.onUserRoleChanged(selectedUser.id, role)
+                                viewModel.onUserRoleChanged(selectedUser.username, role)
                             }
                         )
                     }

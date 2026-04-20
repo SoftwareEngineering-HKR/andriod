@@ -6,11 +6,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.json.JSONObject
+import se.hkr.andriod.domain.model.device.Room
+import kotlin.collections.filter
+import kotlin.collections.map
 
-data class Room(
-    val id: String,
-    val name: String
-)
 
 class RoomStore(private val webSocketManager: WebSocketManager) {
 

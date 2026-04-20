@@ -9,6 +9,7 @@ import org.json.JSONObject
 class MessageRouter(
     private val deviceStore: DeviceStore,
     private val userStore: UserStore,
+    private val RoomStore: RoomStore,
     private val actionHandler: ActionResponseHandler
 ) {
     private val scope = CoroutineScope(Dispatchers.Main)

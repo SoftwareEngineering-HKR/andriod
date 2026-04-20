@@ -22,4 +22,11 @@ enum class UserRole(
             }
         }
     }
+
+    fun toBackendType(): String {
+        return when (this) {
+            ADMIN -> "admin"
+            BASE -> "user"
+        }
+    }
 }

@@ -1,8 +1,10 @@
 package se.hkr.andriod.ui.screens.settings.subscreens.users
 
+import android.R.id.message
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -11,38 +13,25 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Devices
-import androidx.compose.material.icons.rounded.Save
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.Divider
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material.icons.rounded.Delete
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import se.hkr.andriod.R
+import se.hkr.andriod.domain.model.user.UserRole
 import se.hkr.andriod.ui.components.CustomScreenHeader
 import se.hkr.andriod.ui.screens.settings.components.ActionRow
+import se.hkr.andriod.ui.screens.settings.components.ConfirmDialog
 import se.hkr.andriod.ui.theme.cardBackground
 import se.hkr.andriod.ui.theme.lightBlue
 
@@ -54,27 +43,7 @@ fun UsersScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    val selectedUser = getSelectedUser(
-        users = uiState.users,
-        selectedUserId = uiState.selectedUserId
-    )
-
-    val displayedAssignedDeviceIds = selectedUser?.let {
-        getDisplayedAssignedDeviceIds(
-            user = it,
-            editedAssignments = uiState.editedAssignments,
-            savedAssignments = uiState.savedAssignments
-        )
-    }.orEmpty()
-
-    val userInfo = mapUserToInfoUi(
-        user = selectedUser,
-        displayedAssignedDeviceIds = displayedAssignedDeviceIds
-    )
-
-    val hasUnsavedChanges = selectedUser?.let {
-        viewModel.hasUnsavedChanges(it.id)
-    } ?: false
+    val selectedUser = uiState.users.find { it.id == uiState.selectedUserId }
 
     var userDropdownExpanded by remember { mutableStateOf(false) }
 
@@ -91,6 +60,7 @@ fun UsersScreen(
         ),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
+
         item {
             CustomScreenHeader(
                 title = stringResource(R.string.settings_users_devices),
@@ -98,6 +68,7 @@ fun UsersScreen(
             )
         }
 
+        // Users
         item {
             Card(
                 modifier = Modifier.fillMaxWidth(),
@@ -106,34 +77,28 @@ fun UsersScreen(
                     containerColor = MaterialTheme.colorScheme.cardBackground
                 )
             ) {
-                Column(
-                    modifier = Modifier.padding(20.dp)
-                ) {
+                Column(Modifier.padding(20.dp)) {
+
                     Text(
-                        text = stringResource(R.string.base_user),
+                        text = stringResource(R.string.user),
                         style = MaterialTheme.typography.titleMedium
                     )
 
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(Modifier.height(16.dp))
 
                     ExposedDropdownMenuBox(
                         expanded = userDropdownExpanded,
-                        onExpandedChange = { expanded ->
-                            userDropdownExpanded = expanded
-                        }
+                        onExpandedChange = { userDropdownExpanded = it }
                     ) {
                         OutlinedTextField(
                             value = selectedUser?.username.orEmpty(),
                             onValueChange = {},
                             readOnly = true,
-                            singleLine = true,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .menuAnchor(),
                             trailingIcon = {
-                                ExposedDropdownMenuDefaults.TrailingIcon(
-                                    expanded = userDropdownExpanded
-                                )
+                                ExposedDropdownMenuDefaults.TrailingIcon(userDropdownExpanded)
                             },
                             shape = RoundedCornerShape(14.dp)
                         )
@@ -157,6 +122,7 @@ fun UsersScreen(
             }
         }
 
+        // User info
         if (selectedUser != null) {
             item {
                 Card(
@@ -166,37 +132,47 @@ fun UsersScreen(
                         containerColor = MaterialTheme.colorScheme.cardBackground
                     )
                 ) {
-                    Column(
-                        modifier = Modifier.padding(20.dp)
-                    ) {
+                    Column(Modifier.padding(20.dp)) {
+
                         Text(
-                            text = userInfo.name,
+                            text = selectedUser.username,
                             style = MaterialTheme.typography.headlineSmall,
                             fontWeight = FontWeight.Bold
                         )
 
-                        Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(Modifier.height(12.dp))
 
-                        Text(
-                            text = stringResource(userInfo.roleRes),
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-
-                        Spacer(modifier = Modifier.height(6.dp))
-
-                        Text(
-                            text = stringResource(
-                                R.string.assigned_devices_count,
-                                userInfo.assignedDeviceCount
-                            ),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        RoleSelector(
+                            selectedRole = selectedUser.role,
+                            onRoleSelected = { role ->
+                                viewModel.onUserRoleChanged(selectedUser.username, role)
+                            }
                         )
                     }
                 }
             }
 
+            // Delete user
+            item {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(20.dp),
+                    colors = CardDefaults.cardColors(MaterialTheme.colorScheme.cardBackground)
+                ) {
+                    Column(Modifier.padding(vertical = 8.dp)) {
+
+                        ActionRow(
+                            title = stringResource(R.string.delete_user_title),
+                            icon = {
+                                Icon(Icons.Rounded.Delete, contentDescription = null)
+                            },
+                            onClick = viewModel::showDeleteUserDialog
+                        )
+                    }
+                }
+            }
+
+            // Devices
             item {
                 Card(
                     modifier = Modifier.fillMaxWidth(),
@@ -205,18 +181,12 @@ fun UsersScreen(
                         containerColor = MaterialTheme.colorScheme.cardBackground
                     )
                 ) {
-                    Column(
-                        modifier = Modifier.padding(20.dp)
-                    ) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(10.dp)
-                        ) {
-                            Icon(
-                                imageVector = Icons.Rounded.Devices,
-                                contentDescription = null,
-                                modifier = Modifier.size(22.dp)
-                            )
+                    Column(Modifier.padding(20.dp)) {
+
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(Icons.Rounded.Devices, contentDescription = null)
+
+                            Spacer(Modifier.width(10.dp))
 
                             Text(
                                 text = stringResource(R.string.assigned_devices),
@@ -225,117 +195,130 @@ fun UsersScreen(
                             )
                         }
 
-                        Spacer(modifier = Modifier.height(16.dp))
+                        Spacer(Modifier.height(16.dp))
 
-                        if (uiState.devices.isEmpty()) {
-                            Text(
-                                text = stringResource(R.string.no_devices_available),
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        } else {
-                            uiState.devices.forEachIndexed { index, device ->
-                                val isAssigned = device.id in displayedAssignedDeviceIds
-                                val roomName = resolveRoomName(device.room)
-                                val description = device.displayDescription()
+                        uiState.devices.forEachIndexed { index, device ->
 
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .clickable {
-                                            viewModel.onDeviceToggled(
-                                                selectedUser.id,
-                                                device.id
-                                            )
-                                        }
-                                        .padding(vertical = 12.dp),
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    Column(
-                                        modifier = Modifier.weight(1f)
-                                    ) {
-                                        Text(
-                                            text = device.displayName(),
-                                            style = MaterialTheme.typography.titleSmall,
-                                            fontWeight = FontWeight.SemiBold
-                                        )
+                            val isAssigned =
+                                device.users.any { it.id == selectedUser.id }
 
-                                        Spacer(modifier = Modifier.height(4.dp))
-
-                                        Text(
-                                            text = buildString {
-                                                append(stringResource(deviceTypeToTextRes(device.type)))
-                                                if (roomName.isNotBlank()) {
-                                                    append(" • ")
-                                                    append(roomName)
-                                                }
-                                            },
-                                            style = MaterialTheme.typography.bodyMedium,
-                                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                                        )
-
-                                        if (description.isNotBlank()) {
-                                            Spacer(modifier = Modifier.height(4.dp))
-                                            Text(
-                                                text = description,
-                                                style = MaterialTheme.typography.bodySmall,
-                                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                                            )
-                                        }
-
-                                        Spacer(modifier = Modifier.height(4.dp))
-
-                                        Text(
-                                            text = stringResource(deviceStatusToTextRes(device.online)),
-                                            style = MaterialTheme.typography.bodySmall,
-                                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable {
+                                        viewModel.onDeviceToggled(
+                                            selectedUser.id,
+                                            device.id
                                         )
                                     }
+                                    .padding(vertical = 12.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
 
-                                    Checkbox(
-                                        checked = isAssigned,
-                                        onCheckedChange = {
-                                            viewModel.onDeviceToggled(
-                                                selectedUser.id,
-                                                device.id
-                                            )
-                                        }
+                                Column(Modifier.weight(1f)) {
+
+                                    Text(
+                                        text = device.displayName(),
+                                        style = MaterialTheme.typography.titleSmall,
+                                        fontWeight = FontWeight.SemiBold
+                                    )
+
+                                    Spacer(Modifier.height(4.dp))
+
+                                    val typeText = stringResource(device.deviceTypeEnum.toTextRes())
+                                    val roomName = device.room
+
+                                    Text(
+                                        text = if (!roomName.isNullOrBlank() && roomName != "null") {
+                                            "$typeText • $roomName"
+                                        } else {
+                                            typeText
+                                        },
+                                        style = MaterialTheme.typography.bodyMedium
+                                    )
+
+                                    Spacer(Modifier.height(4.dp))
+
+                                    Text(
+                                        text = stringResource(deviceStatusToTextRes(device.online)),
+                                        style = MaterialTheme.typography.bodySmall
                                     )
                                 }
 
-                                if (index != uiState.devices.lastIndex) {
-                                    Divider()
-                                }
+                                Checkbox(
+                                    checked = isAssigned,
+                                    onCheckedChange = {
+                                        viewModel.onDeviceToggled(
+                                            selectedUser.id,
+                                            device.id
+                                        )
+                                    }
+                                )
+                            }
+
+                            if (index != uiState.devices.lastIndex) {
+                                Divider()
                             }
                         }
                     }
                 }
             }
+        }
+    }
 
-            item {
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(20.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.cardBackground
+    // Delete dialog
+    if (uiState.showDeleteUserDialog && selectedUser != null) {
+        ConfirmDialog(
+            title = stringResource(R.string.delete_user_title),
+            message = stringResource(
+                R.string.delete_user_confirmation_with_name,
+                selectedUser.username
+            ),
+            confirmText = stringResource(R.string.delete),
+            dismissText = stringResource(R.string.cancel),
+            onConfirm = {
+                viewModel.deleteSelectedUser(selectedUser.username)
+            },
+            onDismiss = viewModel::dismissDialogs
+        )
+    }
+}
+
+
+@Composable
+fun RoleSelector(
+    selectedRole: UserRole,
+    onRoleSelected: (UserRole) -> Unit
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        UserRole.entries.forEach { role ->
+
+            val selected = role == selectedRole
+
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .clip(MaterialTheme.shapes.extraLarge)
+                    .background(
+                        if (selected)
+                            MaterialTheme.colorScheme.primary
+                        else
+                            MaterialTheme.colorScheme.surfaceVariant
                     )
-                ) {
-                    Column(
-                        modifier = Modifier.padding(vertical = 8.dp)
-                    ) {
-                        ActionRow(
-                            title = stringResource(R.string.save),
-                            icon = {
-                                Icon(
-                                    imageVector = Icons.Rounded.Save,
-                                    contentDescription = null
-                                )
-                            },
-                            onClick = viewModel::saveSelectedUser,
-                            enabled = hasUnsavedChanges
-                        )
-                    }
-                }
+                    .clickable { onRoleSelected(role) }
+                    .padding(vertical = 6.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = role.name,
+                    color = if (selected)
+                        MaterialTheme.colorScheme.onPrimary
+                    else
+                        MaterialTheme.colorScheme.onSurface
+                )
             }
         }
     }

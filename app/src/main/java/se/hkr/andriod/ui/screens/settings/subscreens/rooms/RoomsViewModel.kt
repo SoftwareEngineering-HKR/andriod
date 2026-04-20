@@ -41,7 +41,7 @@ class RoomsViewModel(
         viewModelScope.launch {
             roomStore.rooms.collect { rooms ->
                 _uiState.update { state ->
-                    val selected = state.selectedRoom ?: rooms.firstOrNull()
+                    val selected = rooms.find { it.id == state.selectedRoom?.id } ?: rooms.firstOrNull()
                     val inRoom = state.allDevices.filter { it.room == selected?.name }
                     val available = state.allDevices.filter { it.room != selected?.name }
 
@@ -115,12 +115,37 @@ class RoomsViewModel(
         }
     }
 
-    // TODO
-    fun createRoom() {}
+    fun createRoom() {
+        val name = _uiState.value.inputText.trim()
+        if (name.isBlank()) return
 
-    fun renameRoom() {}
+        viewModelScope.launch {
+            roomStore.createRoom(name)
+            dismissDialogs()
+        }
+    }
 
-    fun deleteRoom() {}
+    fun renameRoom() {
+        val state = _uiState.value
+        val room = state.selectedRoom ?: return
+        val newName = state.inputText.trim()
+
+        if (newName.isBlank()) return
+
+        viewModelScope.launch {
+            roomStore.updateRoomName(room.id, newName)
+            dismissDialogs()
+        }
+    }
+
+    fun deleteRoom() {
+        val room = _uiState.value.selectedRoom ?: return
+
+        viewModelScope.launch {
+            roomStore.deleteRoom(room.id)
+            dismissDialogs()
+        }
+    }
 
     // TODO: implement when backend supports adding/removing devices to/from rooms
     fun addDeviceToRoom(device: Device) {}

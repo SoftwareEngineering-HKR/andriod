@@ -4,6 +4,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import org.json.JSONObject
 
 data class Room(
@@ -38,6 +39,18 @@ class RoomStore(private val webSocketManager: WebSocketManager) {
         }
 
         webSocketManager.sendMessage(message.toString())
+
+        // Update locally (with temp id)
+        val tempId = "temp-${System.currentTimeMillis()}"
+
+        val newRoom = Room(
+            id = tempId,
+            name = name
+        )
+
+        scope.launch {
+            _rooms.value += newRoom
+        }
     }
 
     // Update room name
@@ -51,6 +64,15 @@ class RoomStore(private val webSocketManager: WebSocketManager) {
         }
 
         webSocketManager.sendMessage(message.toString())
+
+        // Update locally
+        scope.launch {
+            _rooms.value = _rooms.value.map { room ->
+                if (room.id == id) {
+                    room.copy(name = newName)
+                } else room
+            }
+        }
     }
 
     // Delete room
@@ -63,5 +85,10 @@ class RoomStore(private val webSocketManager: WebSocketManager) {
         }
 
         webSocketManager.sendMessage(message.toString())
+
+        // Update locally
+        scope.launch {
+            _rooms.value = _rooms.value.filter { it.id != id }
+        }
     }
 }

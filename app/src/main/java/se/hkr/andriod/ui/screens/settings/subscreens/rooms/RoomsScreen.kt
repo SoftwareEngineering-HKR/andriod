@@ -172,7 +172,7 @@ fun RoomsScreen(
                                     .padding(vertical = 8.dp),
                                 horizontalArrangement = Arrangement.SpaceBetween,
                             ) {
-                                Text(device.name ?: "")
+                                Text(device.displayName)
 
                                 TextButton(onClick = {
                                     viewModel.removeDeviceFromRoom(device)
@@ -211,7 +211,7 @@ fun RoomsScreen(
                                     .padding(vertical = 8.dp),
                                 horizontalArrangement = Arrangement.SpaceBetween,
                             ) {
-                                Text(device.name ?: "")
+                                Text(device.displayName)
 
                                 TextButton(onClick = {
                                     viewModel.addDeviceToRoom(device)

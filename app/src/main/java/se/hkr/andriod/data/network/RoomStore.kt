@@ -4,6 +4,7 @@ import android.R.id.message
 import android.util.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -87,6 +88,8 @@ class RoomStore(private val webSocketManager: WebSocketManager) {
 
         scope.launch {
             _rooms.value += newRoom
+            delay(300)
+            getRooms()
         }
     }
 

@@ -90,11 +90,9 @@ class UsersViewModel(
         }
     }
 
-    fun deleteSelectedUser() {
-        val userId = _uiState.value.selectedUserId ?: return
-
+    fun deleteSelectedUser(userName: String) {
         viewModelScope.launch {
-            // TODO: replace with real backend call
+            userStore.deleteUser(userName)
             dismissDialogs()
         }
     }

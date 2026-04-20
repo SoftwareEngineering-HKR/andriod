@@ -277,7 +277,7 @@ fun UsersScreen(
             confirmText = stringResource(R.string.delete),
             dismissText = stringResource(R.string.cancel),
             onConfirm = {
-                viewModel.deleteSelectedUser()
+                viewModel.deleteSelectedUser(selectedUser.username)
             },
             onDismiss = viewModel::dismissDialogs
         )

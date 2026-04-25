@@ -5,20 +5,22 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import se.hkr.andriod.data.mock.currentUser
-import se.hkr.andriod.domain.model.user.User
+import se.hkr.andriod.data.network.AuthSession
 
 data class AccountInfoUiState(
-    val user: User? = null,
+    val username: String = "",
     val usernameInput: String = "",
     val isSaveEnabled: Boolean = false
 )
 
 class AccountInfoViewModel : ViewModel() {
+
+    private val sessionUsername = AuthSession.getUsername().orEmpty()
+
     private val _uiState = MutableStateFlow(
         AccountInfoUiState(
-            user = currentUser,
-            usernameInput = currentUser.username,
+            username = sessionUsername,
+            usernameInput = sessionUsername,
             isSaveEnabled = false
         )
     )
@@ -26,33 +28,16 @@ class AccountInfoViewModel : ViewModel() {
     val uiState: StateFlow<AccountInfoUiState> = _uiState.asStateFlow()
 
     fun onUsernameChanged(value: String) {
-        _uiState.update { state ->
-            val trimmed = value.trim()
-            val currentUsername = state.user?.username.orEmpty()
+        val trimmed = value.trim()
 
+        _uiState.update { state ->
             state.copy(
                 usernameInput = value,
-                isSaveEnabled = trimmed != currentUsername && trimmed.isNotEmpty()
+                isSaveEnabled = trimmed.isNotEmpty() && trimmed != state.username
             )
         }
     }
     fun saveUsername() {
-        val state = _uiState.value
-        val user = state.user ?: return
-
-        val trimmedUsername = state.usernameInput.trim()
-        if (trimmedUsername == user.username) return
-        if (trimmedUsername.isBlank()) return
-
-        val updatedUser = user.copy(username = trimmedUsername)
-        currentUser = updatedUser
-
-        _uiState.update { state ->
-            state.copy(
-                user = updatedUser,
-                usernameInput = updatedUser.username,
-                isSaveEnabled = false
-            )
-        }
+        // TODO: Save username to backend
     }
 }

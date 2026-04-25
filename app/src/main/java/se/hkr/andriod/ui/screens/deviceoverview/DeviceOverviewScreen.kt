@@ -146,10 +146,6 @@ fun DeviceOverviewScreen(
                         showScanModal = true
                     },
                     // Todo: Fix the scan and add menus + navigate correctly
-                    onAddDeviceClick = {
-                        showAddSheet = false
-                        navController.navigate(Routes.SCAN)
-                    },
                     onCreateRoomClick = {
                         showAddSheet = false
                         navController.goToRooms()

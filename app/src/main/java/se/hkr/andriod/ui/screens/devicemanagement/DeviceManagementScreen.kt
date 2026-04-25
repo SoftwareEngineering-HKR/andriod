@@ -53,7 +53,6 @@ fun DeviceManagementScreen() {
                     showAddSheet = false
                     showScanModal = true
                 },
-                onAddDeviceClick = { /* TODO: implement manual add */ },
                 onCreateRoomClick = { /* TODO: implement create room */ }
             )
         }

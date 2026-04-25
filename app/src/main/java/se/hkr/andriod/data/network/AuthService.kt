@@ -66,7 +66,11 @@ class AuthService(private val context: Context) {
                 val jsonResponse = JSONObject(response)
                 val token = jsonResponse.getString("accessToken")
 
-                AuthSession.saveToken(context, token)
+                AuthSession.saveSession(
+                    context = context,
+                    token = token,
+                    username = username
+                )
 
                 onResult(true, token)
 
@@ -100,7 +104,11 @@ class AuthService(private val context: Context) {
                 val jsonResponse = JSONObject(response)
                 val token = jsonResponse.getString("accessToken")
 
-                AuthSession.saveToken(context, token)
+                AuthSession.saveSession(
+                    context = context,
+                    token = token,
+                    username = username
+                )
 
                 onResult(true, token)
 

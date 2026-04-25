@@ -25,8 +25,4 @@ object Routes {
         return "device_card/${device.deviceTypeEnum.name}/${device.id}"
     }
 
-    const val ADD_DEVICE = "add_device"
-
-    const val SCAN = "scan"
-
 }

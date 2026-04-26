@@ -18,7 +18,6 @@ import se.hkr.andriod.ui.theme.cardBackground
 fun AddDeviceBottomSheet(
     onDismiss: () -> Unit,
     onScanClick: () -> Unit,
-    onAddDeviceClick: () -> Unit,
     onCreateRoomClick: () -> Unit
 ) {
     val sheetState = rememberModalBottomSheetState(
@@ -57,7 +56,6 @@ fun AddDeviceBottomSheet(
 
             if (currentUser.canAddDevice()) {
                 AppButton(text = stringResource(R.string.scan_for_devices), onClick = onScanClick)
-                AppButton(text = stringResource(R.string.add_a_device), onClick = onAddDeviceClick)
             }
             if (currentUser.canAddRoom()) {
                 AppButton(text = stringResource(R.string.create_a_room), onClick = onCreateRoomClick)
@@ -74,7 +72,6 @@ private fun AddDeviceBottomSheetPreview() {
         AddDeviceBottomSheet(
             onDismiss = {},
             onScanClick = {},
-            onAddDeviceClick = {},
             onCreateRoomClick = {}
         )
     }

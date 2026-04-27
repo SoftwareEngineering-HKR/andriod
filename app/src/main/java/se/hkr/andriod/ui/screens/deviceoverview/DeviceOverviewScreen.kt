@@ -29,6 +29,7 @@ import se.hkr.andriod.data.network.ConnectionManager
 import se.hkr.andriod.navigation.Routes
 import se.hkr.andriod.ui.components.AppTextField
 import se.hkr.andriod.ui.components.DeviceCardItem
+import se.hkr.andriod.ui.screens.main.goToRooms
 import se.hkr.andriod.ui.theme.cardBackground
 
 @Composable
@@ -145,11 +146,10 @@ fun DeviceOverviewScreen(
                         showScanModal = true
                     },
                     // Todo: Fix the scan and add menus + navigate correctly
-                    onAddDeviceClick = {
+                    onCreateRoomClick = {
                         showAddSheet = false
-                        navController.navigate(Routes.SCAN)
-                    },
-                    onCreateRoomClick = { /* TODO: implement create room */ }
+                        navController.goToRooms()
+                    }
                 )
             }
 

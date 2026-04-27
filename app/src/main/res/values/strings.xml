@@ -164,11 +164,14 @@
     <string name="edit_username">Edit username</string>
 
     <!-- Settings - Users & Permissions -->
+    <string name="user">User</string>
     <string name="settings_users_devices">Users &amp; Devices</string>
     <string name="assigned_devices">Assigned devices</string>
     <string name="assigned_devices_count">%1$d devices assigned</string>
     <string name="no_devices_available">No devices available</string>
     <string name="device_type_unknown">Unknown device</string>
+    <string name="delete_user_title">Delete User</string>
+    <string name="delete_user_confirmation_with_name">Are you sure you want to delete "%1$s"?</string>
 
     <string name="admin">Admin</string>
     <string name="base_user">Base user</string>

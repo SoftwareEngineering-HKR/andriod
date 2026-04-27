@@ -30,9 +30,7 @@ import se.hkr.andriod.data.network.ConnectionManager
 import se.hkr.andriod.data.network.NetworkModule
 import se.hkr.andriod.data.network.PersistentCookieJar
 import se.hkr.andriod.navigation.BottomNavItem
-import se.hkr.andriod.ui.screens.adddevice.AddDeviceScreen
 import se.hkr.andriod.ui.screens.devicecard.DeviceHostScreen
-import se.hkr.andriod.ui.screens.scan.ScanScreen
 import se.hkr.andriod.ui.screens.settings.subscreens.accountinfo.AccountInfoScreen
 import se.hkr.andriod.ui.screens.settings.subscreens.language.LanguageScreen
 import se.hkr.andriod.ui.screens.settings.subscreens.rooms.RoomsScreen
@@ -42,6 +40,10 @@ import se.hkr.andriod.ui.screens.settings.subscreens.devices.DevicesScreen
 import se.hkr.andriod.ui.screens.settings.subscreens.devices.DevicesViewModel
 import se.hkr.andriod.ui.screens.settings.subscreens.devices.DevicesViewModelFactory
 import se.hkr.andriod.ui.screens.settings.subscreens.language.LanguageViewModel
+import se.hkr.andriod.ui.screens.settings.subscreens.users.UsersViewModel
+import se.hkr.andriod.ui.screens.settings.subscreens.users.UsersViewModelFactory
+import se.hkr.andriod.ui.screens.settings.subscreens.rooms.RoomsViewModel
+import se.hkr.andriod.ui.screens.settings.subscreens.rooms.RoomsViewModelFactory
 import se.hkr.andriod.ui.theme.cardBackground
 import se.hkr.andriod.ui.theme.lightBlue
 
@@ -169,21 +171,6 @@ fun MainScreen(
                 )
             }
 
-            composable(Routes.SCAN) {
-                ScanScreen(
-                    viewModel = viewModel(),
-                    navController = navController,
-                    onBackClick = { navController.navigateUp() }
-                )
-            }
-
-            composable(Routes.ADD_DEVICE) {
-                AddDeviceScreen(
-                    viewModel = viewModel(),
-                    onBackClick = { navController.navigateUp() }
-                )
-            }
-
 
             navigation(
                 startDestination = Routes.SETTINGS,
@@ -198,12 +185,20 @@ fun MainScreen(
                     )
                 }
 
-                composable(Routes.USERS) { UsersScreen(
-                    viewModel = viewModel(),
-                    onBackClick = { navController.navigateUp() }
-                ) }
-                composable(Routes.DEVICES) {
+                composable(Routes.USERS) {
+                    val viewModel: UsersViewModel = viewModel(
+                        factory = UsersViewModelFactory(
+                            connectionManager.userStore, connectionManager.deviceStore
+                        )
+                    )
 
+                    UsersScreen(
+                        viewModel = viewModel,
+                        onBackClick = { navController.navigateUp() }
+                    )
+                }
+
+                composable(Routes.DEVICES) {
                     val viewModel: DevicesViewModel = viewModel(
                         factory = DevicesViewModelFactory(connectionManager.deviceStore)
                     )
@@ -213,13 +208,22 @@ fun MainScreen(
                         onBackClick = { navController.navigateUp() }
                     )
                 }
+
                 composable(Routes.ROOMS) {
+                    val viewModel: RoomsViewModel = viewModel(
+                        factory = RoomsViewModelFactory(
+                            connectionManager.roomStore, connectionManager.deviceStore
+                        )
+                    )
+
                     RoomsScreen(
-                        viewModel = viewModel(),
+                        viewModel = viewModel,
                         onBackClick = { navController.navigateUp() }
                     )
                 }
+
                 composable(Routes.SCHEDULES) { SchedulesScreen() }
+
                 composable(Routes.LANGUAGE) {
                     val context = LocalContext.current.applicationContext
 
@@ -234,6 +238,7 @@ fun MainScreen(
                         onBackClick = { navController.navigateUp() }
                     )
                 }
+
                 composable(Routes.ACCOUNT) { AccountInfoScreen(
                     viewModel = viewModel(),
                     onBackClick = { navController.navigateUp() }

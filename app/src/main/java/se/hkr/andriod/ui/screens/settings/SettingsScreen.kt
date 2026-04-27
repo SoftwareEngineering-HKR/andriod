@@ -14,8 +14,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import se.hkr.andriod.R
-import se.hkr.andriod.data.mock.currentUser
 import se.hkr.andriod.data.network.*
+import se.hkr.andriod.data.network.AuthSession.getUser
 import se.hkr.andriod.navigation.Routes
 import se.hkr.andriod.ui.components.AppButton
 import se.hkr.andriod.ui.screens.settings.components.SettingsItem
@@ -33,6 +33,8 @@ fun SettingsScreen(
     var showThemeDialog by remember { mutableStateOf(false) }
 
     val devices by connectionManager.deviceStore.devices.collectAsState()
+
+    val currentUser = getUser()
 
     LaunchedEffect(devices) {
         Log.d("DEVICE_STORE", "Current devices: $devices")

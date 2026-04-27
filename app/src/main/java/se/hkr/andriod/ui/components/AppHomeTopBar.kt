@@ -17,7 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import se.hkr.andriod.R
-import se.hkr.andriod.data.mock.currentUser
+import se.hkr.andriod.data.network.AuthSession.getUser
 import se.hkr.andriod.ui.theme.AndriodTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -28,6 +28,8 @@ fun AppHomeTopBar(
     offlineCount: Int? = null,
     onAddClick: () -> Unit
 ) {
+    val currentUser = getUser()
+
     TopAppBar(
         windowInsets = WindowInsets.statusBars,
         title = {

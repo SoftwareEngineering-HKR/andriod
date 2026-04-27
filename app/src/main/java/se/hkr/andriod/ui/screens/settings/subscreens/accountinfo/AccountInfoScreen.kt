@@ -9,12 +9,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Cancel
-import androidx.compose.material.icons.rounded.Edit
-import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.Save
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -27,7 +23,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import se.hkr.andriod.R
@@ -43,7 +38,6 @@ fun AccountInfoScreen(
     onBackClick: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    val user = uiState.user
 
     Box(
         modifier = Modifier
@@ -73,11 +67,13 @@ fun AccountInfoScreen(
                     modifier = Modifier.padding(20.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
+
                     Text(
-                        text = user?.username.orEmpty(),
+                        text = uiState.username,
                         style = MaterialTheme.typography.headlineMedium
                     )
-                    InfoRow(text = user?.role?.name.orEmpty())
+                    //Currently disabled
+                    //InfoRow(text = user?.role?.name.orEmpty())
                 }
             }
 

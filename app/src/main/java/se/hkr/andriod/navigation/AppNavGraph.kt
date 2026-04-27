@@ -23,7 +23,7 @@ fun AppNavGraph() {
 
     // Load token once when app starts
     LaunchedEffect(Unit) {
-        AuthSession.loadToken(context)
+        AuthSession.loadSession(context)
 
         if (AuthSession.isLoggedIn()) {
             navController.navigate(Routes.MAIN) {

@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.core.content.edit
 import org.json.JSONObject
 import android.util.Base64
+import se.hkr.andriod.domain.model.user.User
+import se.hkr.andriod.domain.model.user.UserRole
 import java.util.UUID
 
 object AuthSession {
@@ -83,6 +85,16 @@ object AuthSession {
 
     fun getRole(): String? {
         return role
+    }
+
+    fun getUser(): User {
+        val role = UserRole.fromBackendType(role ?: "user")
+
+        return User(
+            id = userId ?: error("No userId in session"),
+            username = username ?: "",
+            role = role
+        )
     }
 
     fun clear(context: Context) {

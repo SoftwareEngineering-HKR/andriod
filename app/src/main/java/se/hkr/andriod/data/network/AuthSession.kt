@@ -4,11 +4,12 @@ import android.content.Context
 import androidx.core.content.edit
 import org.json.JSONObject
 import android.util.Base64
+import java.util.UUID
 
 object AuthSession {
     private var accessToken: String? = null
     private var username: String? = null
-    private var userId: String? = null
+    private var userId: UUID? = null
     private var role: String? = null
 
     fun saveSession(context: Context, token: String, username: String) {
@@ -24,7 +25,7 @@ object AuthSession {
         prefs.edit {
             putString("access_token", token)
             putString("username", username)
-            putString("user_id", userId)
+            putString("user_id", userId?.toString())
             putString("role", role)
         }
     }
@@ -33,7 +34,11 @@ object AuthSession {
         val prefs = context.getSharedPreferences("auth", Context.MODE_PRIVATE)
         accessToken = prefs.getString("access_token", null)
         username = prefs.getString("username", null)
-        userId = prefs.getString("user_id", null)
+
+        userId = prefs.getString("user_id", null)?.let {
+            try { UUID.fromString(it) } catch (_: Exception) { null }
+        }
+
         role = prefs.getString("role", null)
     }
 
@@ -48,7 +53,7 @@ object AuthSession {
         val prefs = context.getSharedPreferences("auth", Context.MODE_PRIVATE)
         prefs.edit {
             putString("access_token", token)
-            putString("user_id", userId)
+            putString("user_id", userId?.toString())
             putString("role", role)
         }
     }
@@ -56,7 +61,11 @@ object AuthSession {
     fun loadToken(context: Context) {
         val prefs = context.getSharedPreferences("auth", Context.MODE_PRIVATE)
         accessToken = prefs.getString("access_token", null)
-        userId = prefs.getString("user_id", null)
+
+        userId = prefs.getString("user_id", null)?.let {
+            try { UUID.fromString(it) } catch (_: Exception) { null }
+        }
+
         role = prefs.getString("role", null)
     }
 
@@ -68,7 +77,7 @@ object AuthSession {
         return username
     }
 
-    fun getUserId(): String? {
+    fun getUserId(): UUID? {
         return userId
     }
 
@@ -90,8 +99,7 @@ object AuthSession {
         return accessToken != null
     }
 
-    // JWT parser
-    private fun parseToken(token: String): Pair<String, String>? {
+    private fun parseToken(token: String): Pair<UUID, String>? {
         return try {
             val parts = token.split(".")
             val payload = parts[1]
@@ -101,7 +109,7 @@ object AuthSession {
 
             val json = JSONObject(decodedString)
 
-            val userId = json.getString("sub")
+            val userId = UUID.fromString(json.getString("sub"))
             val role = json.getString("role")
 
             Pair(userId, role)

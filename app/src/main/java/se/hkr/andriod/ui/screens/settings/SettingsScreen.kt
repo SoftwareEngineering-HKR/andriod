@@ -1,6 +1,5 @@
 package se.hkr.andriod.ui.screens.settings
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -32,13 +31,7 @@ fun SettingsScreen(
 
     var showThemeDialog by remember { mutableStateOf(false) }
 
-    val devices by connectionManager.deviceStore.devices.collectAsState()
-
     val currentUser = getUser()
-
-    LaunchedEffect(devices) {
-        Log.d("DEVICE_STORE", "Current devices: $devices")
-    }
 
     Box(
         modifier = Modifier

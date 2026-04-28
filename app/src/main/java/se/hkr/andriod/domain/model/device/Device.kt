@@ -31,6 +31,11 @@ data class Device(
             "window" -> DeviceType.WINDOW
             "door" -> DeviceType.DOOR
             "display" -> DeviceType.DISPLAY
+            "photo" -> DeviceType.PHOTO
+            "brightness" -> DeviceType.BRIGHTNESS
+            "motion" -> DeviceType.MOTION
+            "temperature" -> DeviceType.TEMPERATURE
+            "tilt" -> DeviceType.TILT
             else -> DeviceType.UNKNOWN // Fallback
         }
 

@@ -41,6 +41,11 @@ fun mapDeviceToInfoUi(
         DeviceType.WINDOW -> stringResource(R.string.device_type_window)
         DeviceType.DOOR -> stringResource(R.string.device_type_door)
         DeviceType.DISPLAY -> stringResource(R.string.device_type_display)
+        DeviceType.PHOTO -> stringResource(R.string.device_type_photo)
+        DeviceType.BRIGHTNESS -> stringResource(R.string.device_type_brightness)
+        DeviceType.MOTION -> stringResource(R.string.device_type_motion)
+        DeviceType.TEMPERATURE -> stringResource(R.string.device_type_temperature)
+        DeviceType.TILT -> stringResource(R.string.device_type_tilt)
         DeviceType.UNKNOWN, null -> notAvailable
     }
 

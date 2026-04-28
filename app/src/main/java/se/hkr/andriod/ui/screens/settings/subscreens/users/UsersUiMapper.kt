@@ -1,8 +1,8 @@
 package se.hkr.andriod.ui.screens.settings.subscreens.users
 
 import androidx.annotation.StringRes
+import androidx.compose.ui.res.stringResource
 import se.hkr.andriod.R
-import se.hkr.andriod.data.mock.MockDevices
 import se.hkr.andriod.domain.model.device.Device
 import se.hkr.andriod.domain.model.device.DeviceType
 import se.hkr.andriod.domain.model.user.User
@@ -74,6 +74,11 @@ fun DeviceType.toTextRes(): Int {
         DeviceType.WINDOW -> R.string.device_type_window
         DeviceType.DOOR -> R.string.device_type_door
         DeviceType.DISPLAY -> R.string.device_type_display
+        DeviceType.PHOTO -> R.string.device_type_photo
+        DeviceType.BRIGHTNESS -> R.string.device_type_brightness
+        DeviceType.MOTION -> R.string.device_type_motion
+        DeviceType.TEMPERATURE -> R.string.device_type_temperature
+        DeviceType.TILT -> R.string.device_type_tilt
         DeviceType.UNKNOWN -> R.string.device_type_unknown
     }
 }

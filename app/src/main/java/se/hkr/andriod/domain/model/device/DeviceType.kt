@@ -13,5 +13,10 @@ enum class DeviceType {
     WINDOW,
     DOOR,
     DISPLAY,
+    PHOTO,
+    BRIGHTNESS,
+    MOTION,
+    TEMPERATURE,
+    TILT,
     UNKNOWN,
 }

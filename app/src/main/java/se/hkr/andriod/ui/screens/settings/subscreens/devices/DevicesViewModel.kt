@@ -24,11 +24,6 @@ data class DevicesUiState(
     val selectedDevice: Device?
         get() = devices.firstOrNull { it.id == selectedDeviceId }
 
-    fun getRoomName(roomId: String?): String? {
-        if (roomId.isNullOrBlank()) return null
-        return rooms.firstOrNull { it.id == roomId }?.name
-    }
-
     val availableRooms: List<Room>
         get() = rooms.sortedBy { it.name }
 }

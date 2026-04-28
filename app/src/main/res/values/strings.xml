@@ -160,6 +160,12 @@
     <string name="no_room_assigned">No room assigned</string>
     <string name="device_state_on">On</string>
     <string name="device_state_off">Off</string>
+    <string name="device_state_open">Open</string>
+    <string name="device_state_closed">Closed</string>
+    <string name="device_state_tilted">Tilted</string>
+    <string name="device_state_flat">Flat</string>
+    <string name="device_state_motion">Motion</string>
+    <string name="device_state_no_motion">No motion</string>
     <string name="device_state_locked">Locked</string>
     <string name="device_state_unlocked">Unlocked</string>
     <string name="current_value">Current value</string>

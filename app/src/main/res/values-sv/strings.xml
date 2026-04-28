@@ -164,6 +164,12 @@
     <string name="no_room_assigned">Inget rum tilldelat</string>
     <string name="device_state_on">På</string>
     <string name="device_state_off">Av</string>
+    <string name="device_state_open">Öppen</string>
+    <string name="device_state_closed">Stängd</string>
+    <string name="device_state_tilted">Lutad</string>
+    <string name="device_state_flat">Plan</string>
+    <string name="device_state_motion">Rörelse</string>
+    <string name="device_state_no_motion">Ingen rörelse</string>
     <string name="device_state_locked">Låst</string>
     <string name="device_state_unlocked">Upplåst</string>
     <string name="current_value">Nuvarande värde</string>

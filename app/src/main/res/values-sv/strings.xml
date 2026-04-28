@@ -50,6 +50,7 @@
     <string name="scan_for_devices">Sök efter enheter</string>
     <string name="add_a_device">Lägg till enhet</string>
     <string name="create_a_room">Skapa rum</string>
+    <string name="create_a_schedule">Skapa schemaläggning</string>
 
     <!-- Home top bar -->
     <string name="device_status">%1$d online / %2$d offline</string>

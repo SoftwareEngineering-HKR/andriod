@@ -17,3 +17,16 @@ fun NavController.goToRooms() {
     // Then go to Rooms screen
     navigate(Routes.ROOMS)
 }
+
+fun NavController.goToSchedules() {
+    // Switch to Settings tab
+    navigate(BottomNavItem.Settings.route) {
+        popUpTo(graph.findStartDestination().id) {
+            saveState = true
+        }
+        launchSingleTop = true
+        restoreState = true
+    }
+    // Then go to Schedules screen
+    navigate(Routes.SCHEDULES)
+}

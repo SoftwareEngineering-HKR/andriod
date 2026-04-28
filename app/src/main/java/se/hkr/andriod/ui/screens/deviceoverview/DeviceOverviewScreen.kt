@@ -30,6 +30,7 @@ import se.hkr.andriod.navigation.Routes
 import se.hkr.andriod.ui.components.AppTextField
 import se.hkr.andriod.ui.components.DeviceCardItem
 import se.hkr.andriod.ui.screens.main.goToRooms
+import se.hkr.andriod.ui.screens.main.goToSchedules
 import se.hkr.andriod.ui.theme.cardBackground
 
 @Composable
@@ -141,11 +142,10 @@ fun DeviceOverviewScreen(
             if (showAddSheet) {
                 AddDeviceBottomSheet(
                     onDismiss = { showAddSheet = false },
-                    onScanClick = {
+                    onSchedulesClick = {
                         showAddSheet = false
-                        showScanModal = true
+                        navController.goToSchedules()
                     },
-                    // Todo: Fix the scan and add menus + navigate correctly
                     onCreateRoomClick = {
                         showAddSheet = false
                         navController.goToRooms()

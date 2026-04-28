@@ -46,6 +46,7 @@
     <string name="scan_for_devices">Scan for devices</string>
     <string name="add_a_device">Add a device</string>
     <string name="create_a_room">Create a room</string>
+    <string name="create_a_schedule">Create a schedule</string>
 
     <!-- Home top bar -->
     <string name="device_status">%1$d online / %2$d offline</string>

@@ -63,11 +63,40 @@ fun mapDeviceToInfoUi(
             DeviceType.SENSOR,
             DeviceType.GAS,
             DeviceType.HUMIDITY,
-            DeviceType.STEAM -> {
+            DeviceType.STEAM,
+            DeviceType.PHOTO,
+            DeviceType.BRIGHTNESS,
+            DeviceType.TEMPERATURE -> {
                 if (!d.scaleName.isNullOrBlank()) {
                     stringResource(R.string.device_value_with_scale, d.value, d.scaleName!!)
                 } else {
                     d.value.toString()
+                }
+            }
+
+            DeviceType.SERVO,
+            DeviceType.WINDOW,
+            DeviceType.DOOR -> { // Open/Closed devices
+                if (d.value > d.minValue) {
+                    stringResource(R.string.device_state_open)
+                } else {
+                    stringResource(R.string.device_state_closed)
+                }
+            }
+
+            DeviceType.TILT -> { // Tilted/Flat devices
+                if (d.value > d.minValue) {
+                    stringResource(R.string.device_state_tilted)
+                } else {
+                    stringResource(R.string.device_state_flat)
+                }
+            }
+
+            DeviceType.MOTION -> { // Motion/No motion devices
+                if (d.value > d.minValue) {
+                    stringResource(R.string.device_state_motion)
+                } else {
+                    stringResource(R.string.device_state_no_motion)
                 }
             }
 

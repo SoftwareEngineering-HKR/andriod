@@ -121,6 +121,11 @@
     <string name="device_type_window">Window</string>
     <string name="device_type_door">Door</string>
     <string name="device_type_display">Display</string>
+    <string name="device_type_photo">Photo</string>
+    <string name="device_type_brightness">Brightness</string>
+    <string name="device_type_motion">Motion</string>
+    <string name="device_type_temperature">Temperature</string>
+    <string name="device_type_tilt">Tilt</string>
     <string name="device_value_percent">%d%%</string>
 
     <!-- Settings - Rooms -->
@@ -155,6 +160,12 @@
     <string name="no_room_assigned">No room assigned</string>
     <string name="device_state_on">On</string>
     <string name="device_state_off">Off</string>
+    <string name="device_state_open">Open</string>
+    <string name="device_state_closed">Closed</string>
+    <string name="device_state_tilted">Tilted</string>
+    <string name="device_state_flat">Flat</string>
+    <string name="device_state_motion">Motion</string>
+    <string name="device_state_no_motion">No motion</string>
     <string name="device_state_locked">Locked</string>
     <string name="device_state_unlocked">Unlocked</string>
     <string name="current_value">Current value</string>

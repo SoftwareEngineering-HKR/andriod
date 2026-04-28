@@ -166,7 +166,7 @@ class DeviceStore(private val webSocketManager: WebSocketManager) {
             put("type", "update value")
             put("payload", JSONObject().apply {
                 put("id", deviceId)
-                put("value", value)
+                put("value", value.toString())
             })
         }
 

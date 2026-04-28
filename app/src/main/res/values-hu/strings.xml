@@ -122,6 +122,11 @@
     <string name="device_type_window">Ablak</string>
     <string name="device_type_door">Ajtó</string>
     <string name="device_type_display">Kijelző</string>
+    <string name="device_type_photo">Fény</string>
+    <string name="device_type_brightness">Fényerő</string>
+    <string name="device_type_motion">Mozgás</string>
+    <string name="device_type_temperature">Hőmérséklet</string>
+    <string name="device_type_tilt">Dőlés</string>
     <string name="device_value_percent">%d%%</string>
 
     <!-- Settings - Rooms -->
@@ -156,6 +161,12 @@
     <string name="no_room_assigned">Nincs szobához rendelve</string>
     <string name="device_state_on">Bekapcsolva</string>
     <string name="device_state_off">Kikapcsolva</string>
+    <string name="device_state_open">Nyitva</string>
+    <string name="device_state_closed">Zárva</string>
+    <string name="device_state_tilted">Megdőlt</string>
+    <string name="device_state_flat">Vízszintes</string>
+    <string name="device_state_motion">Mozgás</string>
+    <string name="device_state_no_motion">Nincs mozgás</string>
     <string name="device_state_locked">Zárolva</string>
     <string name="device_state_unlocked">Feloldva</string>
     <string name="current_value">Jelenlegi érték</string>

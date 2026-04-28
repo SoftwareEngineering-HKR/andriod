@@ -125,6 +125,11 @@
     <string name="device_type_window">Fönster</string>
     <string name="device_type_door">Dörr</string>
     <string name="device_type_display">Display</string>
+    <string name="device_type_photo">Foto</string>
+    <string name="device_type_brightness">Ljusstyrka</string>
+    <string name="device_type_motion">Rörelse</string>
+    <string name="device_type_temperature">Temperatur</string>
+    <string name="device_type_tilt">Lutning</string>
     <string name="device_value_percent">%d%%</string>
 
     <!-- Settings - Rooms -->
@@ -159,6 +164,12 @@
     <string name="no_room_assigned">Inget rum tilldelat</string>
     <string name="device_state_on">På</string>
     <string name="device_state_off">Av</string>
+    <string name="device_state_open">Öppen</string>
+    <string name="device_state_closed">Stängd</string>
+    <string name="device_state_tilted">Lutad</string>
+    <string name="device_state_flat">Plan</string>
+    <string name="device_state_motion">Rörelse</string>
+    <string name="device_state_no_motion">Ingen rörelse</string>
     <string name="device_state_locked">Låst</string>
     <string name="device_state_unlocked">Upplåst</string>
     <string name="current_value">Nuvarande värde</string>

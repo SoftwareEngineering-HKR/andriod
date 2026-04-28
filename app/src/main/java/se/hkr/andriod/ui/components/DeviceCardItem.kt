@@ -36,7 +36,12 @@ fun DeviceCardItem(
         DeviceType.GAS,
         DeviceType.STEAM,
         DeviceType.HUMIDITY,
-        DeviceType.SENSOR
+        DeviceType.SENSOR,
+        DeviceType.PHOTO,
+        DeviceType.BRIGHTNESS,
+        DeviceType.MOTION,
+        DeviceType.TEMPERATURE,
+        DeviceType.TILT
     )
 
     val isSwitchDevice = device.deviceTypeEnum in listOf(
@@ -80,6 +85,11 @@ fun DeviceCardItem(
                     DeviceType.STEAM -> painterResource(R.drawable.heat_24px)
                     DeviceType.HUMIDITY -> painterResource(R.drawable.humidity_percentage_24px)
                     DeviceType.DISPLAY -> painterResource(R.drawable.assistant_on_hub_24px)
+                    DeviceType.PHOTO -> painterResource(R.drawable.light_mode_24px)
+                    DeviceType.BRIGHTNESS -> painterResource(R.drawable.light_mode_24px)
+                    DeviceType.MOTION -> painterResource(R.drawable.detector_24px)
+                    DeviceType.TEMPERATURE -> painterResource(R.drawable.thermometer_24px)
+                    DeviceType.TILT -> painterResource(R.drawable.diagonal_line_24px)
                     else -> rememberVectorPainter(Icons.Default.QuestionMark)
                 }
 
@@ -137,7 +147,12 @@ fun DeviceCardItem(
                     )
                 } else if (isSensor) {
                     val valueText = when (device.deviceTypeEnum) {
-                        DeviceType.HUMIDITY -> "${device.value}%"
+                        DeviceType.HUMIDITY,
+                        DeviceType.BRIGHTNESS,
+                        DeviceType.PHOTO -> "${device.value}%"
+
+                        DeviceType.TEMPERATURE -> "${device.value}°C"
+
                         else -> device.value.toString()
                     }
 

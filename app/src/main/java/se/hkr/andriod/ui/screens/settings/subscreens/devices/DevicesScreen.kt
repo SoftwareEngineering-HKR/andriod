@@ -24,7 +24,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -46,7 +45,6 @@ import se.hkr.andriod.ui.screens.settings.components.ConfirmDialog
 import se.hkr.andriod.ui.screens.settings.components.DialogOption
 import se.hkr.andriod.ui.screens.settings.components.InfoRow
 import se.hkr.andriod.ui.screens.settings.components.InputDialog
-import se.hkr.andriod.ui.screens.settings.components.SettingsItem
 import se.hkr.andriod.ui.screens.settings.components.SingleChoiceDialog
 import se.hkr.andriod.ui.theme.cardBackground
 import se.hkr.andriod.ui.theme.lightBlue
@@ -185,7 +183,11 @@ fun DevicesScreen(
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         InfoRow(text = deviceInfo.type)
-                        InfoRow(text = deviceInfo.room)
+
+                        if (deviceInfo.room.isNotBlank() && deviceInfo.room != "null") {
+                            InfoRow(text = deviceInfo.room)
+                        }
+
                         InfoRow(text = deviceInfo.status)
                     }
 

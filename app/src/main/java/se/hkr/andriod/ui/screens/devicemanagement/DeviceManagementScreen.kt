@@ -15,13 +15,11 @@ import androidx.compose.ui.res.stringResource
 import se.hkr.andriod.R
 import se.hkr.andriod.ui.components.AddDeviceBottomSheet
 import se.hkr.andriod.ui.components.AppHomeTopBar
-import se.hkr.andriod.ui.components.ScanDevicesModal
 import se.hkr.andriod.ui.theme.lightBlue
 
 @Composable
 fun DeviceManagementScreen() {
     var showAddSheet by remember { mutableStateOf(false) }
-    var showScanModal by remember { mutableStateOf(false) }
 
     // TODO: Get the real online and offline count fron devices
     val onlineCount = 3
@@ -49,18 +47,8 @@ fun DeviceManagementScreen() {
         if (showAddSheet) {
             AddDeviceBottomSheet(
                 onDismiss = { showAddSheet = false },
-                onScanClick = {
-                    showAddSheet = false
-                    showScanModal = true
-                },
+                onSchedulesClick = { /* TODO */},
                 onCreateRoomClick = { /* TODO: implement create room */ }
-            )
-        }
-
-        // Scan modal overlay
-        if (showScanModal) {
-            ScanDevicesModal(
-                onDismiss = { showScanModal = false }
             )
         }
     }

@@ -9,7 +9,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import se.hkr.andriod.R
-import se.hkr.andriod.data.mock.currentUser
+import se.hkr.andriod.data.network.AuthSession.getUser
 import se.hkr.andriod.ui.theme.AndriodTheme
 import se.hkr.andriod.ui.theme.cardBackground
 
@@ -17,12 +17,14 @@ import se.hkr.andriod.ui.theme.cardBackground
 @Composable
 fun AddDeviceBottomSheet(
     onDismiss: () -> Unit,
-    onScanClick: () -> Unit,
+    onSchedulesClick: () -> Unit,
     onCreateRoomClick: () -> Unit
 ) {
     val sheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
     )
+
+    val currentUser = getUser()
 
     ModalBottomSheet(
         onDismissRequest = onDismiss,
@@ -54,8 +56,8 @@ fun AddDeviceBottomSheet(
                 style = MaterialTheme.typography.headlineSmall
             )
 
-            if (currentUser.canAddDevice()) {
-                AppButton(text = stringResource(R.string.scan_for_devices), onClick = onScanClick)
+            if (currentUser.canManageSchedules()) {
+                AppButton(text = stringResource(R.string.create_a_schedule), onClick = onSchedulesClick)
             }
             if (currentUser.canAddRoom()) {
                 AppButton(text = stringResource(R.string.create_a_room), onClick = onCreateRoomClick)
@@ -71,7 +73,7 @@ private fun AddDeviceBottomSheetPreview() {
     AndriodTheme {
         AddDeviceBottomSheet(
             onDismiss = {},
-            onScanClick = {},
+            onSchedulesClick = {},
             onCreateRoomClick = {}
         )
     }

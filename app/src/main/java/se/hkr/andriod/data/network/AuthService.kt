@@ -58,7 +58,7 @@ class AuthService(private val context: Context) {
         postRequest(url, json) { success, response ->
 
             if (!success || response == null) {
-                onResult(false, "Login failed")
+                onResult(false, "Incorrect username or password")
                 return@postRequest
             }
 

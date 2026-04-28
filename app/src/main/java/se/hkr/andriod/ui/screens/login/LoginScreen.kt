@@ -116,6 +116,23 @@ fun LoginScreen(
                         errorText = uiState.passwordError?.let { stringResource(it) }
                     )
 
+                    uiState.loginError?.let { error ->
+                        Card(
+                            colors = CardDefaults.cardColors(
+                                containerColor = MaterialTheme.colorScheme.errorContainer
+                            ),
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = MaterialTheme.shapes.small
+                        ) {
+                            Text(
+                                text = error,
+                                color = MaterialTheme.colorScheme.onErrorContainer,
+                                modifier = Modifier.padding(10.dp),
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        }
+                    }
+
                     AppButton(
                         text = stringResource(R.string.sign_in_button),
                         loadingText = stringResource(R.string.signing_in),

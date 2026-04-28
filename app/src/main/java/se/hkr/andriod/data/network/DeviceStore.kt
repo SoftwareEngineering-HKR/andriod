@@ -34,6 +34,7 @@ class DeviceStore(private val webSocketManager: WebSocketManager) {
                 "update value" -> handleDeviceUpdate(payload)
                 "added new device" -> handleAddedNewDevice(payload)
                 "update device onlinestate" -> handleDeviceOnlineState(payload)
+                "update device description" -> handleDeviceUpdateDescription(payload)
                 "device info" -> handleAllDeviceInfo(payload)
                 else -> Log.d("DEVICESTORE", "Unhandled message type: $type")
             }
@@ -115,6 +116,31 @@ class DeviceStore(private val webSocketManager: WebSocketManager) {
         }
 
         Log.d("DEVICESTORE", "Device online state updated: $deviceId : $isOnline")
+    }
+
+    private fun handleDeviceUpdateDescription(payload: JSONObject) {
+        val deviceId = payload.optString("deviceID")
+        val content = payload.optJSONObject("content") ?: return
+
+        val newName = content.optString("name", "")
+        val newDescription = content.optString("description", "")
+
+        if (deviceId.isEmpty()) return
+
+        scope.launch {
+            val updateDevice: (Device) -> Device = { device ->
+                if (device.id == deviceId) {
+                    device.copy(
+                        name = newName,
+                        description = newDescription
+                    )
+                } else device
+            }
+
+            _devices.update { list -> list.map(updateDevice) }
+            _allDevices.update { list -> list.map(updateDevice) }
+        }
+        Log.d("DEVICESTORE", "Device description updated: $deviceId -> $newName / $newDescription")
     }
 
     private fun handleAllDeviceInfo(payload: JSONObject) {

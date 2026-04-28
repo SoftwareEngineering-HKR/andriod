@@ -6,60 +6,67 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import se.hkr.andriod.data.mock.MockDevices
 import se.hkr.andriod.data.network.DeviceStore
+import se.hkr.andriod.data.network.RoomStore
 import se.hkr.andriod.domain.model.device.Device
 import se.hkr.andriod.domain.model.device.Room
 
 data class DevicesUiState(
-    val devices: List<Device> = MockDevices.allDevices,
-    val rooms: List<Room> = listOf(
-        MockDevices.livingRoom,
-        MockDevices.kitchen
-    ),
-    val selectedDeviceId: String =
-        MockDevices.allDevices.firstOrNull()?.id.orEmpty(),
-
+    val devices: List<Device> = emptyList(),
+    val rooms: List<Room> = emptyList(),
+    val selectedDeviceId: String = "",
     val showRenameDialog: Boolean = false,
     val showDeleteDialog: Boolean = false,
     val showChangeRoomDialog: Boolean = false,
-
     val inputText: String = "",
-    val selectedRoomIdForDialog: String =
-        MockDevices.allDevices.firstOrNull()?.room.orEmpty()
+    val selectedRoomIdForDialog: String = ""
 ) {
     val selectedDevice: Device?
-        get() = devices.firstOrNull() { it.id == selectedDeviceId }
-
-    fun getRoomName(roomId: String?): String? {
-        if (roomId.isNullOrBlank()) return null
-        return rooms.firstOrNull { it.id == roomId }?.name
-    }
+        get() = devices.firstOrNull { it.id == selectedDeviceId }
 
     val availableRooms: List<Room>
         get() = rooms.sortedBy { it.name }
-
 }
 
 class DevicesViewModel(
-    private val deviceStore: DeviceStore
+    private val deviceStore: DeviceStore,
+    private val roomStore: RoomStore
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(DevicesUiState())
     val uiState: StateFlow<DevicesUiState> = _uiState
 
     init {
+        roomStore.getRooms()
+        deviceStore.fetchAllDeviceInfo()
+        observeStores()
+    }
+
+    private fun observeStores() {
+        // Observe devices
         viewModelScope.launch {
-            deviceStore.devices.collect { devices ->
+            deviceStore.allDevices.collect { devices ->
                 _uiState.update { state ->
                     val selectedId = state.selectedDeviceId
                         .takeIf { id -> devices.any { it.id == id } }
                         ?: devices.firstOrNull()?.id.orEmpty()
 
+                    val selectedDevice = devices.firstOrNull { it.id == selectedId }
+
                     state.copy(
                         devices = devices,
-                        selectedDeviceId = selectedId
+                        selectedDeviceId = selectedId,
+                        selectedRoomIdForDialog = selectedDevice?.room.orEmpty()
                     )
+                }
+            }
+        }
+
+        // Observe rooms
+        viewModelScope.launch {
+            roomStore.rooms.collect { rooms ->
+                _uiState.update { state ->
+                    state.copy(rooms = rooms)
                 }
             }
         }
@@ -67,19 +74,18 @@ class DevicesViewModel(
 
     fun onDeviceSelected(deviceId: String) {
         _uiState.update { state ->
-            val updatedState = state.copy(selectedDeviceId = deviceId)
-
-            val selectedDevice = updatedState.selectedDevice
+            val selectedDevice = state.devices.firstOrNull { it.id == deviceId }
                 ?: return@update state
 
-            updatedState.copy(
+            state.copy(
+                selectedDeviceId = deviceId,
                 selectedRoomIdForDialog = selectedDevice.room.orEmpty()
             )
         }
     }
 
     fun onInputChanged(value: String) {
-        _uiState.value = _uiState.value.copy(inputText = value)
+        _uiState.update { it.copy(inputText = value) }
     }
 
     fun onRoomSelectedForDialog(roomId: String) {
@@ -111,8 +117,10 @@ class DevicesViewModel(
     }
 
     fun renameSelectedDevice() {
-        val selectedDevice = _uiState.value.selectedDevice ?: return
-        val newName = _uiState.value.inputText.trim()
+        val state = _uiState.value
+        val selectedDevice = state.selectedDevice ?: return
+        val newName = state.inputText.trim()
+
         if (newName.isEmpty() || newName == selectedDevice.displayName) return
 
         // Use current description to avoid overwriting it

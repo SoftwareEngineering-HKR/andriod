@@ -200,7 +200,9 @@ fun MainScreen(
 
                 composable(Routes.DEVICES) {
                     val viewModel: DevicesViewModel = viewModel(
-                        factory = DevicesViewModelFactory(connectionManager.deviceStore)
+                        factory = DevicesViewModelFactory(
+                            connectionManager.deviceStore, connectionManager.roomStore
+                        )
                     )
 
                     DevicesScreen(

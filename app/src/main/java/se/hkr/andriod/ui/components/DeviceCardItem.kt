@@ -36,7 +36,12 @@ fun DeviceCardItem(
         DeviceType.GAS,
         DeviceType.STEAM,
         DeviceType.HUMIDITY,
-        DeviceType.SENSOR
+        DeviceType.SENSOR,
+        DeviceType.PHOTO,
+        DeviceType.BRIGHTNESS,
+        DeviceType.MOTION,
+        DeviceType.TEMPERATURE,
+        DeviceType.TILT
     )
 
     val isSwitchDevice = device.deviceTypeEnum in listOf(
@@ -142,7 +147,12 @@ fun DeviceCardItem(
                     )
                 } else if (isSensor) {
                     val valueText = when (device.deviceTypeEnum) {
-                        DeviceType.HUMIDITY -> "${device.value}%"
+                        DeviceType.HUMIDITY,
+                        DeviceType.BRIGHTNESS,
+                        DeviceType.PHOTO -> "${device.value}%"
+
+                        DeviceType.TEMPERATURE -> "${device.value}°C"
+
                         else -> device.value.toString()
                     }
 

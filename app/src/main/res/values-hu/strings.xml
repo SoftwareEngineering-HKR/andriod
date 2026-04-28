@@ -47,6 +47,7 @@
     <string name="scan_for_devices">Eszközök keresése</string>
     <string name="add_a_device">Eszköz hozzáadása</string>
     <string name="create_a_room">Szoba létrehozása</string>
+    <string name="create_a_schedule">Ütemterv létrehozása</string>
 
     <!-- Home top bar -->
     <string name="device_status">%1$d online / %2$d offline</string>

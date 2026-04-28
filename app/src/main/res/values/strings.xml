@@ -121,6 +121,11 @@
     <string name="device_type_window">Window</string>
     <string name="device_type_door">Door</string>
     <string name="device_type_display">Display</string>
+    <string name="device_type_photo">Photo</string>
+    <string name="device_type_brightness">Brightness</string>
+    <string name="device_type_motion">Motion</string>
+    <string name="device_type_temperature">Temperature</string>
+    <string name="device_type_tilt">Tilt</string>
     <string name="device_value_percent">%d%%</string>
 
     <!-- Settings - Rooms -->

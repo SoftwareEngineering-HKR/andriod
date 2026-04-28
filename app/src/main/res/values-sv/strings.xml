@@ -125,6 +125,11 @@
     <string name="device_type_window">Fönster</string>
     <string name="device_type_door">Dörr</string>
     <string name="device_type_display">Display</string>
+    <string name="device_type_photo">Foto</string>
+    <string name="device_type_brightness">Ljusstyrka</string>
+    <string name="device_type_motion">Rörelse</string>
+    <string name="device_type_temperature">Temperatur</string>
+    <string name="device_type_tilt">Lutning</string>
     <string name="device_value_percent">%d%%</string>
 
     <!-- Settings - Rooms -->

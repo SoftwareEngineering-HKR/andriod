@@ -126,6 +126,12 @@ fun DeviceOverviewScreen(
                             val value = if (isOn) device.maxValue else device.minValue
                             connectionManager.updateDeviceValue(device.id, value)
                         },
+                        onAction = {
+                            connectionManager.deviceStore.updateDeviceValue(
+                                device.id,
+                                device.minValue
+                            )
+                        },
                         elevation = 2.dp
                     )
                 }

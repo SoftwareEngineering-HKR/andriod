@@ -4,9 +4,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Lightbulb
-import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.QuestionMark
+import androidx.compose.material.icons.outlined.Lightbulb
+import androidx.compose.material.icons.outlined.Lock
+import androidx.compose.material.icons.rounded.MusicNote
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -23,6 +24,7 @@ import se.hkr.andriod.domain.model.device.Device
 import se.hkr.andriod.domain.model.device.DeviceType
 import se.hkr.andriod.ui.theme.GrayCardOverlay
 import se.hkr.andriod.ui.theme.cardBackground
+import se.hkr.andriod.ui.theme.disabledButtonBlue
 
 @Composable
 fun DeviceCardItem(
@@ -30,6 +32,7 @@ fun DeviceCardItem(
     device: Device,
     onClick: (() -> Unit)? = null,
     onSwitchToggle: ((Boolean) -> Unit)? = null,
+    onAction: (() -> Unit)? = null,
     elevation: Dp = 0.dp
 ) {
     val isSensor = device.deviceTypeEnum in listOf(
@@ -47,11 +50,14 @@ fun DeviceCardItem(
     val isSwitchDevice = device.deviceTypeEnum in listOf(
         DeviceType.LIGHT,
         DeviceType.LOCK,
-        DeviceType.BUZZ,
         DeviceType.FAN,
         DeviceType.SERVO,
         DeviceType.DOOR,
         DeviceType.WINDOW,
+    )
+
+    val isButtonDevice = device.deviceTypeEnum in listOf(
+        DeviceType.BUZZ
     )
 
     Card(
@@ -74,8 +80,8 @@ fun DeviceCardItem(
             ) {
                 // ICON
                 val icon = when (device.deviceTypeEnum) {
-                    DeviceType.LIGHT -> rememberVectorPainter(Icons.Default.Lightbulb)
-                    DeviceType.LOCK -> rememberVectorPainter(Icons.Default.Lock)
+                    DeviceType.LIGHT -> rememberVectorPainter(Icons.Outlined.Lightbulb)
+                    DeviceType.LOCK -> rememberVectorPainter(Icons.Outlined.Lock)
                     DeviceType.BUZZ -> painterResource(R.drawable.brand_awareness_24px)
                     DeviceType.FAN -> painterResource(R.drawable.mode_fan_24px)
                     DeviceType.SERVO -> painterResource(R.drawable.door_front_24px)
@@ -145,6 +151,23 @@ fun DeviceCardItem(
                         onCheckedChange = { if (device.online) onSwitchToggle(it) },
                         enabled = device.online
                     )
+                } else if (isButtonDevice && onAction != null) {
+                    FilledIconButton(
+                        onClick = { if (device.online) onAction() },
+                        enabled = device.online,
+                        modifier = Modifier.size(48.dp),
+                        colors = IconButtonDefaults.filledIconButtonColors(
+                            containerColor = MaterialTheme.colorScheme.primary,
+                            contentColor = MaterialTheme.colorScheme.onPrimary,
+                            disabledContainerColor = MaterialTheme.colorScheme.disabledButtonBlue,
+                            disabledContentColor = MaterialTheme.colorScheme.onPrimary
+                        )
+                    ) {
+                        Icon(
+                            imageVector = Icons.Rounded.MusicNote,
+                            contentDescription = "Music note icon"
+                        )
+                    }
                 } else if (isSensor) {
                     val valueText = when (device.deviceTypeEnum) {
                         DeviceType.HUMIDITY,

@@ -2,9 +2,9 @@ package se.hkr.andriod.ui.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Lightbulb
-import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.QuestionMark
+import androidx.compose.material.icons.outlined.Lightbulb
+import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -34,8 +34,8 @@ fun ScanDeviceCard(device: Device) {
         ) {
             // Temporary until the icons come from the backend
             val icon = when (device.deviceTypeEnum) {
-                DeviceType.LIGHT -> rememberVectorPainter(Icons.Default.Lightbulb)
-                DeviceType.LOCK -> rememberVectorPainter(Icons.Default.Lock)
+                DeviceType.LIGHT -> rememberVectorPainter(Icons.Outlined.Lightbulb)
+                DeviceType.LOCK -> rememberVectorPainter(Icons.Outlined.Lock)
                 DeviceType.BUZZ -> painterResource(R.drawable.brand_awareness_24px)
                 DeviceType.FAN -> painterResource(R.drawable.mode_fan_24px)
                 DeviceType.SERVO -> painterResource(R.drawable.door_front_24px)

@@ -74,6 +74,12 @@ fun DeviceCardScreen(
                 onSwitchToggle = { isOn ->
                     val value = if (isOn) liveDevice.maxValue else liveDevice.minValue
                     connectionManager.deviceStore.updateDeviceValue(liveDevice.id, value)
+                },
+                onAction = {
+                    connectionManager.deviceStore.updateDeviceValue(
+                        liveDevice.id,
+                        liveDevice.minValue
+                    )
                 }
             )
 

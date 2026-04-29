@@ -12,7 +12,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import se.hkr.andriod.R
 import se.hkr.andriod.ui.theme.cardBackground
 
 @Composable
@@ -28,7 +30,7 @@ fun DisplayValueComponent(
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = "Text on Display",
+                text = stringResource(R.string.text_on_display),
                 style = MaterialTheme.typography.titleMedium
             )
 

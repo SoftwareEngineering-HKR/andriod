@@ -71,6 +71,9 @@
     <string name="device_last_updated">%1$s</string>
     <string name="no_schedules_configured">Nincs beállított időzítés</string>
     <string name="add_new_schedule">+ Új időzítés hozzáadása</string>
+    <string name="text_on_display">Szöveg a kijelzőn</string>
+    <string name="display_text">Kijelző szövege</string>
+    <string name="send">Küldés</string>
 
     <!-- Mock Device -->
     <string name="brightness">Fényerő</string>

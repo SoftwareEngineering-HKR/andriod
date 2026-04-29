@@ -14,7 +14,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import se.hkr.andriod.R
 import se.hkr.andriod.domain.model.device.Device
 import se.hkr.andriod.ui.components.AppButton
 import se.hkr.andriod.ui.components.AppTextField
@@ -36,7 +38,7 @@ fun TextInputComponent(
     ) {
         AppTextField(
             modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp),
-            label = "Display Text",
+            label = stringResource(R.string.display_text),
             value = value,
             onValueChange = onValueChange,
         )
@@ -50,7 +52,7 @@ fun TextInputComponent(
             )
 
             AppButton(
-                text = "Send",
+                text = stringResource(R.string.send),
                 onClick = onSend,
                 enabled = device.online,
                 modifier = Modifier.width(120.dp).padding(end = 16.dp, bottom = 16.dp),

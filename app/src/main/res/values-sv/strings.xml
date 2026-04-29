@@ -74,6 +74,9 @@
     <string name="device_last_updated">%1$s</string>
     <string name="no_schedules_configured">Inga scheman inställda</string>
     <string name="add_new_schedule">+ Lägg till schema</string>
+    <string name="text_on_display">Text på displayen</string>
+    <string name="display_text">Displaytext</string>
+    <string name="send">Skicka</string>
 
     <!-- Mock Device -->
     <string name="brightness">Ljusstyrka</string>

@@ -107,7 +107,7 @@ class ConnectionManager(private val udpPort: Int = 4444) {
 
     fun updateDeviceValue(deviceId: String, value: Int) {
         Log.d("CONNECTION", "Updating device $deviceId : $value")
-        deviceStore.updateDeviceValue(deviceId, value)
+        deviceStore.updateDeviceValue(deviceId, value.toString())
     }
 
     fun disconnect() {

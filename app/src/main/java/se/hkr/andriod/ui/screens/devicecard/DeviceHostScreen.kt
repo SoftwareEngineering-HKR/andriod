@@ -10,6 +10,8 @@ import se.hkr.andriod.ui.devices.light.LightViewModel
 import se.hkr.andriod.ui.devices.lock.LockDeviceRenderer
 import se.hkr.andriod.ui.devices.lock.LockViewModel
 import se.hkr.andriod.data.network.ConnectionManager
+import se.hkr.andriod.ui.devices.display.DisplayDeviceRenderer
+import se.hkr.andriod.ui.devices.display.DisplayViewModel
 
 @Composable
 fun DeviceHostScreen(
@@ -41,6 +43,13 @@ fun DeviceHostScreen(
                     LockViewModel(deviceCardViewModel, liveDevice)
                 }
                 LockDeviceRenderer(lockViewModel)
+            }
+
+            DeviceType.DISPLAY -> {
+                val displayViewModel = remember(deviceCardViewModel) {
+                    DisplayViewModel(deviceCardViewModel, liveDevice, connectionManager)
+                }
+                DisplayDeviceRenderer(displayViewModel, liveDevice)
             }
 
             else -> {}

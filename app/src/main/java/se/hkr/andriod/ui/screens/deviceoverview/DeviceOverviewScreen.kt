@@ -129,7 +129,7 @@ fun DeviceOverviewScreen(
                         onAction = {
                             connectionManager.deviceStore.updateDeviceValue(
                                 device.id,
-                                device.minValue
+                                device.minValue.toString()
                             )
                         },
                         elevation = 2.dp

@@ -66,7 +66,7 @@ class LightViewModel(
         val max = device.maxValue
         val actualValue = (min + (brightness * (max - min))).toInt()
 
-        connectionManager.deviceStore.updateDeviceValue(device.id, actualValue)
+        connectionManager.deviceStore.updateDeviceValue(device.id, actualValue.toString())
     }
 
     // Updates color state

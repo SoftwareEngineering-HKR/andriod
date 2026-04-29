@@ -161,12 +161,12 @@ class DeviceStore(private val webSocketManager: WebSocketManager) {
     }
 
     // Public helper to send a value update
-    fun updateDeviceValue(deviceId: String, value: Int) {
+    fun updateDeviceValue(deviceId: String, value: String) {
         val message = JSONObject().apply {
             put("type", "update value")
             put("payload", JSONObject().apply {
                 put("id", deviceId)
-                put("value", value.toString())
+                put("value", value)
             })
         }
 

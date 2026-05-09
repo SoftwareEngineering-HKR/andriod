@@ -33,6 +33,7 @@ class DeviceStore(private val webSocketManager: WebSocketManager) {
                 "inital devices" -> handleInitialDevices(payload)
                 "update value" -> handleDeviceUpdate(payload)
                 "added new device" -> handleAddedNewDevice(payload)
+                "removed device from user" -> handleRemovedDevice(payload)
                 "update device onlinestate" -> handleDeviceOnlineState(payload)
                 "update device description" -> handleDeviceUpdateDescription(payload)
                 "device info" -> handleAllDeviceInfo(payload)
@@ -91,6 +92,17 @@ class DeviceStore(private val webSocketManager: WebSocketManager) {
         }
 
         Log.d("DEVICESTORE", "New device added: ${device.id}")
+    }
+
+    private fun handleRemovedDevice(payload: JSONObject) {
+        val deviceJson = payload.optJSONObject("content") ?: return
+        val device = Device.fromBackendJson(deviceJson)
+
+        scope.launch {
+            _devices.update { currentList -> currentList - device }
+        }
+
+        Log.d("DEVICESTORE", "Device removed from user: ${device.id}")
     }
 
     private fun handleDeviceOnlineState(payload: JSONObject) {

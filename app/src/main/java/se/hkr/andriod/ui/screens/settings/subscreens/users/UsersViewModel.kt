@@ -60,7 +60,15 @@ class UsersViewModel(
 
     fun onDeviceToggled(userId: UUID, deviceId: String) {
         viewModelScope.launch {
-            userStore.addUserToDevice(userId, deviceId)
+            val currentDevice = _uiState.value.devices.find { it.id == deviceId }
+
+            val userAlreadyHasDevice = currentDevice?.users?.any { it.id == userId } == true
+
+            if (userAlreadyHasDevice) {
+                userStore.removeUserFromDevice(userId, deviceId)
+            } else {
+                userStore.addUserToDevice(userId, deviceId)
+            }
 
             // Not a good solution but it works for now
             deviceStore.fetchAllDeviceInfo()

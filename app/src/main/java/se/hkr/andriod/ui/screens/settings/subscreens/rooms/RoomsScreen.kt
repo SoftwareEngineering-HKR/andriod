@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -55,169 +56,130 @@ fun RoomsScreen(
     val uiState by viewModel.uiState.collectAsState()
     var expanded by remember { mutableStateOf(false) }
 
-    Box(
+    LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.lightBlue)
-            .padding(top = 24.dp)
+            .padding(top = 24.dp),
+        contentPadding = PaddingValues(
+            start = 20.dp,
+            end = 20.dp,
+            top = 24.dp,
+            bottom = 32.dp
+        ),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(vertical = 24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            item {
-                CustomScreenHeader(
-                    title = stringResource(R.string.rooms),
-                    onBackClick = onBackClick
+        item {
+            CustomScreenHeader(
+                title = stringResource(R.string.rooms),
+                onBackClick = onBackClick
+            )
+        }
+
+        item {
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(20.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.cardBackground
                 )
-            }
+            ) {
+                Column(modifier = Modifier.padding(20.dp)) {
 
-            item {
-                Card(
-                    modifier = Modifier.fillMaxWidth(0.9f),
-                    shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.cardBackground
+                    Text(
+                        text = stringResource(R.string.room),
+                        style = MaterialTheme.typography.titleMedium
                     )
-                ) {
-                    Column(modifier = Modifier.padding(20.dp)) {
 
-                        Text(
-                            text = stringResource(R.string.room),
-                            style = MaterialTheme.typography.titleMedium
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    ExposedDropdownMenuBox(
+                        expanded = expanded,
+                        onExpandedChange = { expanded = !expanded }
+                    ) {
+                        OutlinedTextField(
+                            value = uiState.selectedRoom?.name ?: "",
+                            onValueChange = {},
+                            readOnly = true,
+                            modifier = Modifier
+                                .menuAnchor()
+                                .fillMaxWidth(),
+                            trailingIcon = {
+                                ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                            },
+                            shape = RoundedCornerShape(14.dp),
+                            singleLine = true
                         )
 
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        ExposedDropdownMenuBox(
+                        ExposedDropdownMenu(
                             expanded = expanded,
-                            onExpandedChange = { expanded = !expanded }
+                            onDismissRequest = { expanded = false }
                         ) {
-
-                            OutlinedTextField(
-                                value = uiState.selectedRoom?.name ?: "",
-                                onValueChange = {},
-                                readOnly = true,
-                                modifier = Modifier
-                                    .menuAnchor()
-                                    .fillMaxWidth(),
-                                trailingIcon = {
-                                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
-                                },
-                                shape = RoundedCornerShape(12.dp),
-                                singleLine = true
-                            )
-
-                            ExposedDropdownMenu(
-                                expanded = expanded,
-                                onDismissRequest = { expanded = false }
-                            ) {
-                                uiState.rooms.forEach { room ->
-                                    DropdownMenuItem(
-                                        text = { Text(room.name) },
-                                        onClick = {
-                                            viewModel.onRoomSelected(room)
-                                            expanded = false
-                                        }
-                                    )
-                                }
+                            uiState.rooms.forEach { room ->
+                                DropdownMenuItem(
+                                    text = { Text(room.name) },
+                                    onClick = {
+                                        viewModel.onRoomSelected(room)
+                                        expanded = false
+                                    }
+                                )
                             }
                         }
+                    }
 
-                        Spacer(modifier = Modifier.height(12.dp))
+                    Spacer(modifier = Modifier.height(12.dp))
 
-                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        IconButton(onClick = viewModel::showCreateDialog) {
+                            Icon(Icons.Rounded.Add, contentDescription = null)
+                        }
 
-                            IconButton(onClick = { viewModel.showCreateDialog() }) {
-                                Icon(Icons.Rounded.Add, contentDescription = null)
-                            }
+                        IconButton(onClick = viewModel::showRenameDialog) {
+                            Icon(Icons.Rounded.Edit, contentDescription = null)
+                        }
 
-                            IconButton(onClick = { viewModel.showRenameDialog() }) {
-                                Icon(Icons.Rounded.Edit, contentDescription = null)
-                            }
-
-                            IconButton(onClick = { viewModel.showDeleteDialog() }) {
-                                Icon(Icons.Rounded.Delete, contentDescription = null)
-                            }
+                        IconButton(onClick = viewModel::showDeleteDialog) {
+                            Icon(Icons.Rounded.Delete, contentDescription = null)
                         }
                     }
                 }
             }
+        }
 
-            item { Spacer(modifier = Modifier.height(16.dp)) }
+        item {
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(20.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.cardBackground
+                )
+            ) {
+                Column(modifier = Modifier.padding(20.dp)) {
 
-            item {
-                Card(
-                    modifier = Modifier.fillMaxWidth(0.9f),
-                    shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.cardBackground
+                    Text(
+                        text = stringResource(R.string.devices_in_room),
+                        style = MaterialTheme.typography.titleMedium
                     )
-                ) {
-                    Column(modifier = Modifier.padding(20.dp)) {
 
-                        Text(
-                            text = stringResource(R.string.devices_in_room),
-                            style = MaterialTheme.typography.titleMedium
-                        )
+                    Spacer(modifier = Modifier.height(12.dp))
 
-                        Spacer(modifier = Modifier.height(12.dp))
+                    uiState.devicesInRoom.forEach { device ->
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 8.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(device.displayName)
 
-                        uiState.devicesInRoom.forEach { device ->
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(vertical = 8.dp),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                            ) {
-                                Text(device.displayName)
-
-                                TextButton(onClick = {
+                            TextButton(
+                                onClick = {
                                     viewModel.removeDeviceFromRoom(device)
-                                }) {
-                                    Text(stringResource(R.string.remove))
                                 }
-                            }
-                        }
-                    }
-                }
-            }
-
-            item { Spacer(modifier = Modifier.height(16.dp)) }
-
-            item {
-                Card(
-                    modifier = Modifier.fillMaxWidth(0.9f),
-                    shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.cardBackground
-                    )
-                ) {
-                    Column(modifier = Modifier.padding(20.dp)) {
-
-                        Text(
-                            text = stringResource(R.string.add_device_to_room),
-                            style = MaterialTheme.typography.titleMedium
-                        )
-
-                        Spacer(modifier = Modifier.height(12.dp))
-
-                        uiState.availableDevices.forEach { device ->
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(vertical = 8.dp),
-                                horizontalArrangement = Arrangement.SpaceBetween,
                             ) {
-                                Text(device.displayName)
-
-                                TextButton(onClick = {
-                                    viewModel.addDeviceToRoom(device)
-                                }) {
-                                    Text(stringResource(R.string.add_device_to_room))
-                                }
+                                Text(stringResource(R.string.remove))
                             }
                         }
                     }
@@ -225,53 +187,93 @@ fun RoomsScreen(
             }
         }
 
-        if (uiState.showCreateDialog) {
-            InputDialog(
-                title = stringResource(R.string.create_room),
-                value = uiState.inputText,
-                onValueChange = viewModel::onInputChanged,
-                label = stringResource(R.string.room_name),
-                confirmText = stringResource(R.string.create),
-                dismissText = stringResource(R.string.cancel),
-                onConfirm = {
-                    viewModel.createRoom()
-                    viewModel.dismissDialogs()
-                },
-                onDismiss = viewModel::dismissDialogs
-            )
-        }
+        item {
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(20.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.cardBackground
+                )
+            ) {
+                Column(modifier = Modifier.padding(20.dp)) {
 
-        if (uiState.showRenameDialog) {
-            InputDialog(
-                title = stringResource(R.string.rename_room),
-                value = uiState.inputText,
-                onValueChange = viewModel::onInputChanged,
-                label = stringResource(R.string.new_name),
-                confirmText = stringResource(R.string.rename),
-                dismissText = stringResource(R.string.cancel),
-                onConfirm = {
-                    viewModel.renameRoom()
-                    viewModel.dismissDialogs()
-                },
-                onDismiss = viewModel::dismissDialogs
-            )
-        }
+                    Text(
+                        text = stringResource(R.string.add_device_to_room),
+                        style = MaterialTheme.typography.titleMedium
+                    )
 
-        if (uiState.showDeleteDialog) {
-            ConfirmDialog(
-                title = stringResource(R.string.delete_room),
-                message = stringResource(
-                    R.string.delete_confirmation_with_name,
-                    uiState.selectedRoom?.name ?: ""
-                ),
-                confirmText = stringResource(R.string.delete),
-                dismissText = stringResource(R.string.cancel),
-                onConfirm = {
-                    viewModel.deleteRoom()
-                    viewModel.dismissDialogs()
-                },
-                onDismiss = viewModel::dismissDialogs
-            )
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    uiState.availableDevices.forEach { device ->
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 8.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(device.displayName)
+
+                            TextButton(
+                                onClick = {
+                                    viewModel.addDeviceToRoom(device)
+                                }
+                            ) {
+                                Text(stringResource(R.string.add_device_to_room))
+                            }
+                        }
+                    }
+                }
+            }
         }
+    }
+
+    if (uiState.showCreateDialog) {
+        InputDialog(
+            title = stringResource(R.string.create_room),
+            value = uiState.inputText,
+            onValueChange = viewModel::onInputChanged,
+            label = stringResource(R.string.room_name),
+            confirmText = stringResource(R.string.create),
+            dismissText = stringResource(R.string.cancel),
+            onConfirm = {
+                viewModel.createRoom()
+                viewModel.dismissDialogs()
+            },
+            onDismiss = viewModel::dismissDialogs
+        )
+    }
+
+    if (uiState.showRenameDialog) {
+        InputDialog(
+            title = stringResource(R.string.rename_room),
+            value = uiState.inputText,
+            onValueChange = viewModel::onInputChanged,
+            label = stringResource(R.string.new_name),
+            confirmText = stringResource(R.string.rename),
+            dismissText = stringResource(R.string.cancel),
+            onConfirm = {
+                viewModel.renameRoom()
+                viewModel.dismissDialogs()
+            },
+            onDismiss = viewModel::dismissDialogs
+        )
+    }
+
+    if (uiState.showDeleteDialog) {
+        ConfirmDialog(
+            title = stringResource(R.string.delete_room),
+            message = stringResource(
+                R.string.delete_confirmation_with_name,
+                uiState.selectedRoom?.name ?: ""
+            ),
+            confirmText = stringResource(R.string.delete),
+            dismissText = stringResource(R.string.cancel),
+            onConfirm = {
+                viewModel.deleteRoom()
+                viewModel.dismissDialogs()
+            },
+            onDismiss = viewModel::dismissDialogs
+        )
     }
 }

@@ -4,11 +4,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Save
@@ -39,25 +41,30 @@ fun AccountInfoScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    Box(
+    LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.lightBlue)
-            .padding(top = 24.dp)
+            .padding(top = 24.dp),
+        contentPadding = PaddingValues(
+            start = 20.dp,
+            end = 20.dp,
+            top = 24.dp,
+            bottom = 32.dp
+        ),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(vertical = 24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
+        item {
             CustomScreenHeader(
                 title = stringResource(id = R.string.settings_account_info),
                 onBackClick = onBackClick
             )
+        }
 
+        item {
             Card(
-                modifier = Modifier.fillMaxWidth(0.9f),
+                modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(20.dp),
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.cardBackground
@@ -67,20 +74,20 @@ fun AccountInfoScreen(
                     modifier = Modifier.padding(20.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-
                     Text(
                         text = uiState.username,
                         style = MaterialTheme.typography.headlineMedium
                     )
-                    //Currently disabled
-                    //InfoRow(text = user?.role?.name.orEmpty())
+
+                    // Currently disabled
+                    // InfoRow(text = user?.role?.name.orEmpty())
                 }
             }
+        }
 
-            Spacer(modifier = Modifier.height(16.dp))
-
+        item {
             Card(
-                modifier = Modifier.fillMaxWidth(0.9f),
+                modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(20.dp),
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.cardBackground
@@ -95,8 +102,6 @@ fun AccountInfoScreen(
                         style = MaterialTheme.typography.titleMedium
                     )
 
-                    Spacer(modifier = Modifier.height(16.dp))
-
                     OutlinedTextField(
                         value = uiState.usernameInput,
                         onValueChange = viewModel::onUsernameChanged,
@@ -109,11 +114,11 @@ fun AccountInfoScreen(
                     )
                 }
             }
+        }
 
-            Spacer(modifier = Modifier.height(16.dp))
-
+        item {
             Card(
-                modifier = Modifier.fillMaxWidth(0.9f),
+                modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(20.dp),
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.cardBackground

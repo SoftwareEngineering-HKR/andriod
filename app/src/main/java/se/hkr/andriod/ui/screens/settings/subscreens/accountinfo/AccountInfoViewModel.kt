@@ -6,10 +6,12 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import se.hkr.andriod.data.network.AuthSession
+import se.hkr.andriod.domain.model.user.UserRole
 
 data class AccountInfoUiState(
     val username: String = "",
     val usernameInput: String = "",
+    val role: UserRole? = null,
     val isSaveEnabled: Boolean = false
 )
 
@@ -17,10 +19,17 @@ class AccountInfoViewModel : ViewModel() {
 
     private val sessionUsername = AuthSession.getUsername().orEmpty()
 
+    private val sessionRole: UserRole? =
+        when (AuthSession.getRole()?.lowercase()) {
+            "admin" -> UserRole.ADMIN
+            else -> UserRole.BASE
+        }
+
     private val _uiState = MutableStateFlow(
         AccountInfoUiState(
             username = sessionUsername,
             usernameInput = sessionUsername,
+            role = sessionRole,
             isSaveEnabled = false
         )
     )

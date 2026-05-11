@@ -214,7 +214,7 @@ fun RoomsScreen(
                                 Text(device.displayName)
 
                                 TextButton(onClick = {
-                                    viewModel.addDeviceToRoom(device)
+                                    viewModel.addDeviceToRoom(device, uiState.selectedRoom)
                                 }) {
                                     Text(stringResource(R.string.add_device_to_room))
                                 }

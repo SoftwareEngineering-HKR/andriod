@@ -147,8 +147,21 @@ class RoomsViewModel(
         }
     }
 
-    // TODO: implement when backend supports adding/removing devices to/from rooms
-    fun addDeviceToRoom(device: Device) {}
+    fun addDeviceToRoom(device: Device, room: Room?) {
+        if (room == null) return
 
-    fun removeDeviceFromRoom(device: Device) {}
+        deviceStore.updateDeviceRoom(
+            deviceId = device.id,
+            roomId = room.id,
+            roomName = room.name
+        )
+    }
+
+    fun removeDeviceFromRoom(device: Device) {
+        deviceStore.updateDeviceRoom(
+            deviceId = device.id,
+            roomId = "",
+            roomName = null
+        )
+    }
 }

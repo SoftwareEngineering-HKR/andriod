@@ -9,7 +9,7 @@ object Routes {
     const val MAIN = "main"
 
     const val DEVICE_OVERVIEW = "device_overview"
-    const val DEVICE_MANAGEMENT = "device_management"
+    const val ROOMS_OVERVIEW = "rooms_overview"
     const val SETTINGS = "settings"
 
     const val USERS = "users"

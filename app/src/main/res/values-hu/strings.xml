@@ -39,6 +39,12 @@
     <string name="device_overview">Eszközök áttekintése</string>
     <string name="search_placeholder">Keresés itt...</string>
 
+    <!-- Rooms overview -->
+    <plurals name="device_count">
+        <item quantity="one">%d eszköz</item>
+        <item quantity="other">%d eszköz</item>
+    </plurals>
+
     <!-- Device management -->
     <string name="device_management">Eszközkezelés</string>
 

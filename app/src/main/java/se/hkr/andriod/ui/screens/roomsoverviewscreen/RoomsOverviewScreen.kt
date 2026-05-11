@@ -17,12 +17,14 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -117,46 +119,53 @@ fun RoomsOverviewScreen(
         }
 
         // Rooms list
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(vertical = 16.dp)
-        ) {
-            items(sortedRooms) { room ->
-                val roomDevices = devicesByRoom[room] ?: emptyList()
-                val switchDevices = roomDevices.filter {
-                    isSwitchDevice(it)
-                }
-
-                // Room switch is ON if any switch device is ON
-                val roomEnabled = switchDevices.any {
-                    it.value > it.minValue
-                }
-
-                RoomCardItem(
-                    roomName = room,
-                    deviceCount = roomDevices.size,
-                    enabled = switchDevices.isNotEmpty(),
-                    checked = roomEnabled,
-                    onClick = { navController.navigate(Routes.roomDetails(room)) },
-                    onSwitchToggle = { turnOn ->
-                        switchDevices.forEach { device ->
-                            val value =
-                                if (turnOn)
-                                    device.maxValue
-                                else
-                                    device.minValue
-
-                            connectionManager.updateDeviceValue(
-                                device.id,
-                                value
-                            )
-                        }
-                    },
-                    elevation = 2.dp
+        if (devicesByRoom.isEmpty()) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = stringResource(R.string.no_rooms),
+                    style = MaterialTheme.typography.titleLarge
                 )
             }
-            item {
-                Spacer(modifier = Modifier.height(16.dp))
+        } else {
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(vertical = 16.dp)
+            ) {
+                items(sortedRooms) { room ->
+                    val roomDevices = devicesByRoom[room] ?: emptyList()
+                    val switchDevices = roomDevices.filter {
+                        isSwitchDevice(it)
+                    }
+
+                    // Room switch is ON if any switch device is ON
+                    val roomEnabled = switchDevices.any {
+                        it.value > it.minValue
+                    }
+
+                    RoomCardItem(
+                        roomName = room,
+                        deviceCount = roomDevices.size,
+                        enabled = switchDevices.isNotEmpty(),
+                        checked = roomEnabled,
+                        onClick = { navController.navigate(Routes.roomDetails(room)) },
+                        onSwitchToggle = { turnOn ->
+                            switchDevices.forEach { device ->
+                                val value =
+                                    if (turnOn) device.maxValue else device.minValue
+
+                                connectionManager.updateDeviceValue(device.id, value)
+                            }
+                        },
+                        elevation = 2.dp
+                    )
+                }
+
+                item {
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
             }
         }
 

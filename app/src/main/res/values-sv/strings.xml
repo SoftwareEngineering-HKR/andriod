@@ -41,8 +41,10 @@
     <!-- Device overview -->
     <string name="device_overview">Enhetsöversikt</string>
     <string name="search_placeholder">Sök här...</string>
+    <string name="no_devices">Inga enheter</string>
 
     <!-- Rooms overview -->
+    <string name="no_rooms">Inga rum</string>
     <plurals name="device_count">
         <item quantity="one">%d enhet</item>
         <item quantity="other">%d enheter</item>

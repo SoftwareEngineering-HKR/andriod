@@ -1,5 +1,6 @@
 package se.hkr.andriod.ui.screens.deviceoverview
 
+import android.text.TextUtils.isEmpty
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,6 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -101,44 +103,57 @@ fun DeviceOverviewScreen(
             .filter { it != "No Room" }.sorted() +
                 devicesByRoom.keys.filter { it == "No Room" }
 
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(vertical = 16.dp)
-        ) {
-            sortedRooms.forEach { room ->
-                // Room header
-                item {
-                    Text(
-                        text = room,
-                        style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 8.dp)
-                    )
-                }
+        if (devicesByRoom.isEmpty()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = stringResource(R.string.no_devices),
+                    style = MaterialTheme.typography.titleLarge
+                )
+            }
+        } else {
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(vertical = 16.dp)
+            ) {
+                sortedRooms.forEach { room ->
+                    // Room header
+                    item {
+                        Text(
+                            text = room,
+                            style = MaterialTheme.typography.titleMedium,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp, vertical = 8.dp)
+                        )
+                    }
 
-                // Devices in this room
-                items(devicesByRoom[room]!!) { device ->
-                    DeviceCardItem(
-                        device = device,
-                        onClick = { navController.navigate(Routes.deviceCard(device)) },
-                        onSwitchToggle = { isOn ->
-                            val value = if (isOn) device.maxValue else device.minValue
-                            connectionManager.updateDeviceValue(device.id, value)
-                        },
-                        onAction = {
-                            connectionManager.deviceStore.updateDeviceValue(
-                                device.id,
-                                device.minValue.toString()
-                            )
-                        },
-                        elevation = 2.dp
-                    )
-                }
+                    // Devices in this room
+                    items(devicesByRoom[room]!!) { device ->
+                        DeviceCardItem(
+                            device = device,
+                            onClick = { navController.navigate(Routes.deviceCard(device)) },
+                            onSwitchToggle = { isOn ->
+                                val value = if (isOn) device.maxValue else device.minValue
+                                connectionManager.updateDeviceValue(device.id, value)
+                            },
+                            onAction = {
+                                connectionManager.deviceStore.updateDeviceValue(
+                                    device.id,
+                                    device.minValue.toString()
+                                )
+                            },
+                            elevation = 2.dp
+                        )
+                    }
 
-                // Space after each room section
-                item {
-                    Spacer(modifier = Modifier.height(16.dp))
+                    // Space after each room section
+                    item {
+                        Spacer(modifier = Modifier.height(16.dp))
+                    }
                 }
             }
         }

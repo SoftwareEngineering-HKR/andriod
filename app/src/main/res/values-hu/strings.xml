@@ -38,8 +38,10 @@
     <!-- Device overview -->
     <string name="device_overview">Eszközök áttekintése</string>
     <string name="search_placeholder">Keresés itt...</string>
+    <string name="no_devices">Nincsenek eszközök</string>
 
     <!-- Rooms overview -->
+    <string name="no_rooms">Nincsenek helyiségek</string>
     <plurals name="device_count">
         <item quantity="one">%d eszköz</item>
         <item quantity="other">%d eszköz</item>

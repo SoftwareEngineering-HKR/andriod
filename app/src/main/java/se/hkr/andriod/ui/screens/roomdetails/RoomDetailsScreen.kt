@@ -10,11 +10,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import se.hkr.andriod.data.network.ConnectionManager
 import se.hkr.andriod.ui.components.DeviceCardItem
 import se.hkr.andriod.ui.theme.lightBlue
+import se.hkr.andriod.R
 
 @Composable
 fun RoomDetailsScreen(
@@ -46,7 +48,11 @@ fun RoomDetailsScreen(
             Spacer(modifier = Modifier.height(4.dp))
 
             Text(
-                text = "${roomDevices.size} devices",
+                text = pluralStringResource(
+                    R.plurals.device_count,
+                    roomDevices.size,
+                    roomDevices.size
+                ),
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )

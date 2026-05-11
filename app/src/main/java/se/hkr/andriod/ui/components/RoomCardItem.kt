@@ -6,9 +6,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import se.hkr.andriod.ui.theme.cardBackground
+import se.hkr.andriod.R
 
 @Composable
 fun RoomCardItem(
@@ -54,7 +56,11 @@ fun RoomCardItem(
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-                    text = "$deviceCount devices",
+                    text = pluralStringResource(
+                        id = R.plurals.device_count,
+                        count = deviceCount,
+                        deviceCount
+                    ),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )

@@ -20,9 +20,12 @@ object Routes {
     const val ACCOUNT = "account"
 
     const val DEVICE_CARD = "device_card/{type}/{id}"
-
     fun deviceCard(device: Device): String {
         return "device_card/${device.deviceTypeEnum.name}/${device.id}"
     }
 
+    const val ROOM_DETAILS = "room_details/{roomName}"
+    fun roomDetails(roomName: String): String {
+        return "room_details/$roomName"
+    }
 }

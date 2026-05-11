@@ -31,6 +31,7 @@ import se.hkr.andriod.R
 import se.hkr.andriod.data.network.ConnectionManager
 import se.hkr.andriod.domain.model.device.Device
 import se.hkr.andriod.domain.model.device.DeviceType
+import se.hkr.andriod.navigation.Routes
 import se.hkr.andriod.ui.components.AddDeviceBottomSheet
 import se.hkr.andriod.ui.components.AppHomeTopBar
 import se.hkr.andriod.ui.components.AppTextField
@@ -136,7 +137,7 @@ fun RoomsOverviewScreen(
                     deviceCount = roomDevices.size,
                     enabled = switchDevices.isNotEmpty(),
                     checked = roomEnabled,
-                    onClick = { /* todo: navigate to room overview */},
+                    onClick = { navController.navigate(Routes.roomDetails(room)) },
                     onSwitchToggle = { turnOn ->
                         switchDevices.forEach { device ->
                             val value =

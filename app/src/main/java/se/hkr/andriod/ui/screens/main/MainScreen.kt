@@ -30,6 +30,7 @@ import se.hkr.andriod.data.network.NetworkModule
 import se.hkr.andriod.data.network.PersistentCookieJar
 import se.hkr.andriod.navigation.BottomNavItem
 import se.hkr.andriod.ui.screens.devicecard.DeviceHostScreen
+import se.hkr.andriod.ui.screens.roomdetails.RoomDetailsScreen
 import se.hkr.andriod.ui.screens.roomsoverviewscreen.RoomsOverviewScreen
 import se.hkr.andriod.ui.screens.settings.subscreens.accountinfo.AccountInfoScreen
 import se.hkr.andriod.ui.screens.settings.subscreens.language.LanguageScreen
@@ -174,6 +175,16 @@ fun MainScreen(
                 )
             }
 
+            composable(
+                route = Routes.ROOM_DETAILS,
+                arguments = listOf(
+                    navArgument("roomName") { type = NavType.StringType }
+                )
+            ) { backStackEntry ->
+                val roomName =
+                    backStackEntry.arguments?.getString("roomName")
+                        ?: error("Missing room name")
+            }
 
             navigation(
                 startDestination = Routes.SETTINGS,

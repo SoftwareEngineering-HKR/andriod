@@ -184,6 +184,12 @@ fun MainScreen(
                 val roomName =
                     backStackEntry.arguments?.getString("roomName")
                         ?: error("Missing room name")
+
+                RoomDetailsScreen(
+                    navController = navController,
+                    connectionManager = connectionManager,
+                    roomName = roomName
+                )
             }
 
             navigation(

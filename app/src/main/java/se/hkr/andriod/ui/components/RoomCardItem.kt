@@ -1,5 +1,6 @@
 package se.hkr.andriod.ui.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -17,12 +18,18 @@ fun RoomCardItem(
     enabled: Boolean,
     checked: Boolean,
     onSwitchToggle: (Boolean) -> Unit,
+    onClick: (() -> Unit)? = null,
     elevation: Dp = 0.dp
 ) {
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .then(
+                if (onClick != null)
+                    Modifier.clickable { onClick() }
+                else Modifier
+            ),
         shape = MaterialTheme.shapes.medium,
         elevation = CardDefaults.cardElevation(defaultElevation = elevation),
         colors = CardDefaults.cardColors(

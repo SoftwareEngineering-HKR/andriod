@@ -136,6 +136,7 @@ fun RoomsOverviewScreen(
                     deviceCount = roomDevices.size,
                     enabled = switchDevices.isNotEmpty(),
                     checked = roomEnabled,
+                    onClick = { /* todo: navigate to room overview */},
                     onSwitchToggle = { turnOn ->
                         switchDevices.forEach { device ->
                             val value =

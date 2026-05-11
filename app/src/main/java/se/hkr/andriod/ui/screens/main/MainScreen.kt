@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import se.hkr.andriod.navigation.Routes
-import se.hkr.andriod.ui.screens.devicemanagement.DeviceManagementScreen
 import se.hkr.andriod.ui.screens.deviceoverview.DeviceOverviewScreen
 import se.hkr.andriod.ui.screens.settings.SettingsScreen
 import androidx.compose.material3.*
@@ -31,6 +30,8 @@ import se.hkr.andriod.data.network.NetworkModule
 import se.hkr.andriod.data.network.PersistentCookieJar
 import se.hkr.andriod.navigation.BottomNavItem
 import se.hkr.andriod.ui.screens.devicecard.DeviceHostScreen
+import se.hkr.andriod.ui.screens.roomdetails.RoomDetailsScreen
+import se.hkr.andriod.ui.screens.roomsoverviewscreen.RoomsOverviewScreen
 import se.hkr.andriod.ui.screens.settings.subscreens.accountinfo.AccountInfoScreen
 import se.hkr.andriod.ui.screens.settings.subscreens.language.LanguageScreen
 import se.hkr.andriod.ui.screens.settings.subscreens.rooms.RoomsScreen
@@ -149,8 +150,11 @@ fun MainScreen(
                 )
             }
 
-            composable(Routes.DEVICE_MANAGEMENT) {
-                DeviceManagementScreen()
+            composable(Routes.ROOMS_OVERVIEW) {
+                RoomsOverviewScreen(
+                    navController = navController,
+                    connectionManager = connectionManager
+                )
             }
 
             composable(
@@ -171,6 +175,22 @@ fun MainScreen(
                 )
             }
 
+            composable(
+                route = Routes.ROOM_DETAILS,
+                arguments = listOf(
+                    navArgument("roomName") { type = NavType.StringType }
+                )
+            ) { backStackEntry ->
+                val roomName =
+                    backStackEntry.arguments?.getString("roomName")
+                        ?: error("Missing room name")
+
+                RoomDetailsScreen(
+                    navController = navController,
+                    connectionManager = connectionManager,
+                    roomName = roomName
+                )
+            }
 
             navigation(
                 startDestination = Routes.SETTINGS,

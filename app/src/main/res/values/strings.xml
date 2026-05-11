@@ -38,6 +38,12 @@
     <string name="device_overview">Device Overview</string>
     <string name="search_placeholder">Search here...</string>
 
+    <!-- Rooms overview -->
+    <plurals name="device_count">
+        <item quantity="one">%d device</item>
+        <item quantity="other">%d devices</item>
+    </plurals>
+
     <!-- Device management -->
     <string name="device_management">Device Management</string>
 

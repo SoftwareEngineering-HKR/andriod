@@ -42,6 +42,12 @@
     <string name="device_overview">Enhetsöversikt</string>
     <string name="search_placeholder">Sök här...</string>
 
+    <!-- Rooms overview -->
+    <plurals name="device_count">
+        <item quantity="one">%d enhet</item>
+        <item quantity="other">%d enheter</item>
+    </plurals>
+
     <!-- Device management -->
     <string name="device_management">Enhetshantering</string>
 

@@ -108,12 +108,45 @@ class DevicesViewModel(
 
     fun showChangeRoomDialog() {
         _uiState.update { state ->
-            val selectedDevice = state.selectedDevice ?: return@update state
+            val selectedDevice = state.selectedDevice
+                ?: return@update state
+
+            // Find room by matching the device room name
+            val selectedRoomId = state.rooms
+                .firstOrNull { room ->
+                    room.name == selectedDevice.room
+                }
+                ?.id
+                .orEmpty()
+
             state.copy(
                 showChangeRoomDialog = true,
-                selectedRoomIdForDialog = selectedDevice.room.orEmpty()
+                selectedRoomIdForDialog = selectedRoomId
             )
         }
+    }
+
+    fun updateSelectedDeviceRoom() {
+        val state = _uiState.value
+        val selectedDevice = state.selectedDevice ?: return
+        val selectedRoom = state.rooms.firstOrNull { it.id == state.selectedRoomIdForDialog }
+
+        // Remove room
+        if (selectedRoom == null) {
+            deviceStore.updateDeviceRoom(
+                deviceId = selectedDevice.id,
+                roomId = "",
+                roomName = null
+            )
+        } else {
+            // Assign/change room
+            deviceStore.updateDeviceRoom(
+                deviceId = selectedDevice.id,
+                roomId = selectedRoom.id,
+                roomName = selectedRoom.name
+            )
+        }
+        dismissDialogs()
     }
 
     fun renameSelectedDevice() {

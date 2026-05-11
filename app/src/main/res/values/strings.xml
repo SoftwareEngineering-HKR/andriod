@@ -138,6 +138,7 @@
     <string name="device_type_temperature">Temperature</string>
     <string name="device_type_tilt">Tilt</string>
     <string name="device_value_percent">%d%%</string>
+    <string name="no_room">No room</string>
 
     <!-- Settings - Rooms -->
     <string name="rooms">Rooms</string>

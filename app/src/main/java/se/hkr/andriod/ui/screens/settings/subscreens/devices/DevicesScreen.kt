@@ -290,7 +290,12 @@ fun DevicesScreen(
         if (uiState.showChangeRoomDialog && selectedDevice != null) {
             SingleChoiceDialog(
                 title = stringResource(R.string.change_room),
-                options = uiState.availableRooms.map { room ->
+                options = listOf(
+                    DialogOption(
+                        id = "",
+                        title = stringResource(R.string.no_room)
+                    )
+                ) + uiState.availableRooms.map { room ->
                     DialogOption(
                         id = room.id,
                         title = room.name

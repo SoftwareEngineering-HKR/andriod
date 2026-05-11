@@ -301,7 +301,7 @@ fun DevicesScreen(
                 dismissText = stringResource(R.string.cancel),
                 onOptionSelected = viewModel::onRoomSelectedForDialog,
                 onConfirm = {
-                    viewModel.dismissDialogs()
+                    viewModel.updateSelectedDeviceRoom()
                 },
                 onDismiss = viewModel::dismissDialogs
             )

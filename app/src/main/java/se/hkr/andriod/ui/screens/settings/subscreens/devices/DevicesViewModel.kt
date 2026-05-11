@@ -126,6 +126,29 @@ class DevicesViewModel(
         }
     }
 
+    fun updateSelectedDeviceRoom() {
+        val state = _uiState.value
+        val selectedDevice = state.selectedDevice ?: return
+        val selectedRoom = state.rooms.firstOrNull { it.id == state.selectedRoomIdForDialog }
+
+        // Remove room
+        if (selectedRoom == null) {
+            deviceStore.updateDeviceRoom(
+                deviceId = selectedDevice.id,
+                roomId = "",
+                roomName = null
+            )
+        } else {
+            // Assign/change room
+            deviceStore.updateDeviceRoom(
+                deviceId = selectedDevice.id,
+                roomId = selectedRoom.id,
+                roomName = selectedRoom.name
+            )
+        }
+        dismissDialogs()
+    }
+
     fun renameSelectedDevice() {
         val state = _uiState.value
         val selectedDevice = state.selectedDevice ?: return

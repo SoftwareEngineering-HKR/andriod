@@ -51,12 +51,9 @@ class DevicesViewModel(
                         .takeIf { id -> devices.any { it.id == id } }
                         ?: devices.firstOrNull()?.id.orEmpty()
 
-                    val selectedDevice = devices.firstOrNull { it.id == selectedId }
-
                     state.copy(
                         devices = devices,
                         selectedDeviceId = selectedId,
-                        selectedRoomIdForDialog = selectedDevice?.room.orEmpty()
                     )
                 }
             }
@@ -113,9 +110,7 @@ class DevicesViewModel(
 
             // Find room by matching the device room name
             val selectedRoomId = state.rooms
-                .firstOrNull { room ->
-                    room.name == selectedDevice.room
-                }
+                .firstOrNull { it.name == selectedDevice.room }
                 ?.id
                 .orEmpty()
 

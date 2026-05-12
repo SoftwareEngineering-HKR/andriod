@@ -19,7 +19,6 @@ class ConnectionManager(private val udpPort: Int = 4444) {
         actionHandler
     )
 
-    private var isListening = false
     private var backendIp: String? = null
 
     // Prevent infinite refresh loops
@@ -91,12 +90,11 @@ class ConnectionManager(private val udpPort: Int = 4444) {
         }
 
         // Normal message listener
-        if (!isListening) {
-            webSocketManager.addMessageListener { message ->
-                Log.d("CONNECTION", "Received message: $message")
-                messageRouter.handle(message)
-            }
-            isListening = true
+        webSocketManager.clearMessageListeners()
+
+        webSocketManager.addMessageListener { message ->
+            Log.d("CONNECTION", "Received message: $message")
+            messageRouter.handle(message)
         }
     }
 
@@ -113,11 +111,21 @@ class ConnectionManager(private val udpPort: Int = 4444) {
     fun disconnect() {
         Log.d("CONNECTION", "Disconnecting from backend")
         webSocketManager.disconnect()
-        isListening = false
+        // Clear stores
+        deviceStore.clear()
+        userStore.clear()
+        roomStore.clear()
+
         hasTriedRefresh = false // reset for next session
     }
 
     fun getBackendIp(): String? {
         return backendIp
+    }
+
+    fun reconnectWebSocket(context: Context) {
+        Log.d("CONNECTION", "Manual reconnect triggered")
+        disconnect()
+        connectWebSocket(context)
     }
 }

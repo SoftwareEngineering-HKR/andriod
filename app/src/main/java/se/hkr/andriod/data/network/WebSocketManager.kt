@@ -44,12 +44,10 @@ class WebSocketManager {
             override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
                 Log.d("WEBSOCKET", "Closing: $code / $reason")
                 webSocket.close(1000, null)
-                onFailureListener?.invoke()
             }
 
             override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
                 Log.d("WEBSOCKET", "Closed: $code / $reason")
-                onFailureListener?.invoke()
             }
 
             override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
@@ -68,9 +66,14 @@ class WebSocketManager {
         }
     }
 
+    fun clearMessageListeners() {
+        messageListeners.clear()
+    }
+
     fun disconnect() {
         webSocket?.close(1000, "App closed")
         webSocket = null
+        clearMessageListeners()
     }
 
     // Allow external classes to listen for messages

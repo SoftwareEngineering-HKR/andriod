@@ -141,6 +141,7 @@
     <string name="device_type_motion">Rörelse</string>
     <string name="device_type_temperature">Temperatur</string>
     <string name="device_type_tilt">Lutning</string>
+    <string name="device_type_button">Knapp</string>
     <string name="device_value_percent">%d%%</string>
     <string name="no_room">Inget rum</string>
 

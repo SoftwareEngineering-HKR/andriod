@@ -79,6 +79,7 @@ fun DeviceType.toTextRes(): Int {
         DeviceType.MOTION -> R.string.device_type_motion
         DeviceType.TEMPERATURE -> R.string.device_type_temperature
         DeviceType.TILT -> R.string.device_type_tilt
+        DeviceType.BUTTON -> R.string.device_type_button
         DeviceType.UNKNOWN -> R.string.device_type_unknown
     }
 }

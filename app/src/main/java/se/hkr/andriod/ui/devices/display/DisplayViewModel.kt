@@ -17,7 +17,7 @@ class DisplayViewModel(
 ) : ViewModel() {
 
     data class DisplayUiState(
-        val text: String = ""
+        val deviceValue: String = ""
     )
 
     private val _state = MutableStateFlow(DisplayUiState())
@@ -25,7 +25,7 @@ class DisplayViewModel(
 
     init {
         _state.value = DisplayUiState(
-            text = device.value.toString()
+            deviceValue = device.value.toString()
         )
 
         // Listen for backend updates
@@ -34,21 +34,16 @@ class DisplayViewModel(
                 val updated = devices.firstOrNull { it.id == device.id } ?: return@collect
 
                 _state.update {
-                    it.copy(text = updated.value.toString())
+                    it.copy(deviceValue = updated.value.toString())
                 }
             }
         }
     }
 
-    fun setText(newText: String) {
-        val trimmed = newText.take(32)
-        _state.update { it.copy(text = trimmed) }
-    }
-
-    fun commitText() {
+    fun commitText(text: String) {
         connectionManager.deviceStore.updateDeviceValue(
             device.id,
-            _state.value.text
+            text
         )
     }
 }

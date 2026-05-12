@@ -18,6 +18,11 @@ class UserStore(private val webSocketManager: WebSocketManager) {
 
     private val scope = CoroutineScope(Dispatchers.Main)
 
+
+    fun clear () {
+        _users.value = emptyList()
+    }
+
     fun handleMessage(json: JSONObject) {
         try {
             val type = json.getString("type").lowercase()

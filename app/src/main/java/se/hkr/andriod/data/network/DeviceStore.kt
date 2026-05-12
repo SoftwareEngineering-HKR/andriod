@@ -24,6 +24,12 @@ class DeviceStore(private val webSocketManager: WebSocketManager) {
     // Coroutine scope for updates
     private val scope = CoroutineScope(Dispatchers.Main)
 
+
+    fun clear () {
+        _devices.value = emptyList()
+        _allDevices.value = emptyList()
+    }
+
     fun handleMessage(json: JSONObject) {
         try {
             val type = json.getString("type")

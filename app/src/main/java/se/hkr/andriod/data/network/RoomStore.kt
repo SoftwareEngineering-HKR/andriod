@@ -21,6 +21,11 @@ class RoomStore(private val webSocketManager: WebSocketManager) {
 
     private val scope = CoroutineScope(Dispatchers.Main)
 
+
+    fun clear () {
+        _rooms.value = emptyList()
+    }
+
     fun handleMessage(json: JSONObject) {
         try {
             val type = json.getString("type")

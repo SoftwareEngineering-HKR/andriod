@@ -111,6 +111,11 @@ class ConnectionManager(private val udpPort: Int = 4444) {
     fun disconnect() {
         Log.d("CONNECTION", "Disconnecting from backend")
         webSocketManager.disconnect()
+        // Clear stores
+        deviceStore.clear()
+        userStore.clear()
+        roomStore.clear()
+
         hasTriedRefresh = false // reset for next session
     }
 

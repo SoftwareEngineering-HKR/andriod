@@ -24,6 +24,12 @@ class DeviceStore(private val webSocketManager: WebSocketManager) {
     // Coroutine scope for updates
     private val scope = CoroutineScope(Dispatchers.Main)
 
+
+    fun clear () {
+        _devices.value = emptyList()
+        _allDevices.value = emptyList()
+    }
+
     fun handleMessage(json: JSONObject) {
         try {
             val type = json.getString("type")
@@ -204,6 +210,28 @@ class DeviceStore(private val webSocketManager: WebSocketManager) {
                 put("id", deviceId)
                 put("name", name)
                 put("description", description)
+            })
+        }
+
+        webSocketManager.sendMessage(message.toString())
+    }
+
+    // Update a device room assignment
+    fun updateDeviceRoom(deviceId: String, roomId: String? = "", roomName: String?) {
+        val updateRoom: (Device) -> Device = { device ->
+            if (device.id == deviceId) {
+                device.copy(room = roomName)
+            } else device
+        }
+
+        _devices.update { list -> list.map(updateRoom) }
+        _allDevices.update { list -> list.map(updateRoom) }
+
+        val message = JSONObject().apply {
+            put("type", "update device room")
+            put("payload", JSONObject().apply {
+                put("deviceId", deviceId)
+                put("roomId", roomId)
             })
         }
 

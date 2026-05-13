@@ -41,6 +41,14 @@
     <!-- Device overview -->
     <string name="device_overview">Enhetsöversikt</string>
     <string name="search_placeholder">Sök här...</string>
+    <string name="no_devices">Inga enheter</string>
+
+    <!-- Rooms overview -->
+    <string name="no_rooms">Inga rum</string>
+    <plurals name="device_count">
+        <item quantity="one">%d enhet</item>
+        <item quantity="other">%d enheter</item>
+    </plurals>
 
     <!-- Device management -->
     <string name="device_management">Enhetshantering</string>
@@ -133,7 +141,9 @@
     <string name="device_type_motion">Rörelse</string>
     <string name="device_type_temperature">Temperatur</string>
     <string name="device_type_tilt">Lutning</string>
+    <string name="device_type_button">Knapp</string>
     <string name="device_value_percent">%d%%</string>
+    <string name="no_room">Inget rum</string>
 
     <!-- Settings - Rooms -->
     <string name="rooms">Rum</string>

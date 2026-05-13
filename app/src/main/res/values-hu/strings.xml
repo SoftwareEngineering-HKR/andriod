@@ -38,6 +38,14 @@
     <!-- Device overview -->
     <string name="device_overview">Eszközök áttekintése</string>
     <string name="search_placeholder">Keresés itt...</string>
+    <string name="no_devices">Nincsenek eszközök</string>
+
+    <!-- Rooms overview -->
+    <string name="no_rooms">Nincsenek helyiségek</string>
+    <plurals name="device_count">
+        <item quantity="one">%d eszköz</item>
+        <item quantity="other">%d eszköz</item>
+    </plurals>
 
     <!-- Device management -->
     <string name="device_management">Eszközkezelés</string>
@@ -130,7 +138,9 @@
     <string name="device_type_motion">Mozgás</string>
     <string name="device_type_temperature">Hőmérséklet</string>
     <string name="device_type_tilt">Dőlés</string>
+    <string name="device_type_button">Gomb</string>
     <string name="device_value_percent">%d%%</string>
+    <string name="no_room">Nincs szoba</string>
 
     <!-- Settings - Rooms -->
     <string name="rooms">Szobák</string>

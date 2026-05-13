@@ -37,6 +37,14 @@
     <!-- Device overview -->
     <string name="device_overview">Device Overview</string>
     <string name="search_placeholder">Search here...</string>
+    <string name="no_devices">No devices</string>
+
+    <!-- Rooms overview -->
+    <string name="no_rooms">No rooms</string>
+    <plurals name="device_count">
+        <item quantity="one">%d device</item>
+        <item quantity="other">%d devices</item>
+    </plurals>
 
     <!-- Device management -->
     <string name="device_management">Device Management</string>
@@ -129,7 +137,9 @@
     <string name="device_type_motion">Motion</string>
     <string name="device_type_temperature">Temperature</string>
     <string name="device_type_tilt">Tilt</string>
+    <string name="device_type_button">Button</string>
     <string name="device_value_percent">%d%%</string>
+    <string name="no_room">No room</string>
 
     <!-- Settings - Rooms -->
     <string name="rooms">Rooms</string>

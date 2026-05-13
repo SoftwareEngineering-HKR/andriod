@@ -13,13 +13,13 @@ fun DisplayDeviceRenderer(
     val state by viewModel.state.collectAsState()
 
     DisplayValueComponent(
-        value = state.text
+        value = state.deviceValue
     )
 
     TextInputComponent(
-        value = state.text,
-        onValueChange = viewModel::setText,
-        onSend = { viewModel.commitText() },
+        onSend = { text ->
+            viewModel.commitText(text)
+        },
         device = device
     )
 }

@@ -19,7 +19,6 @@ class ConnectionManager(private val udpPort: Int = 4444) {
         actionHandler
     )
 
-    private var isListening = false
     private var backendIp: String? = null
 
     // Prevent infinite refresh loops
@@ -52,52 +51,66 @@ class ConnectionManager(private val udpPort: Int = 4444) {
             return
         }
 
-        val token = AuthSession.getToken()
+        val token = AuthSession.getToken() ?: return
 
-        if (token == null) {
-            Log.d("CONNECTION", "No token available, cannot connect")
+        Log.d("CONNECTION", "Connecting WebSocket")
+
+        hasTriedRefresh = false
+
+        webSocketManager.clearMessageListeners()
+
+        webSocketManager.setOnOpenListener {
+            Log.d("CONNECTION", "Socket opened")
+        }
+
+        webSocketManager.setOnFailureListener {
+            Log.d("CONNECTION", "WebSocket failed")
+            handleConnectionLost(context)
+        }
+
+        webSocketManager.addMessageListener { message ->
+            Log.d("CONNECTION", "Received message: $message")
+            messageRouter.handle(message)
+        }
+
+        webSocketManager.connect(ip)
+    }
+
+    private fun handleConnectionLost(context: Context) {
+        if (hasTriedRefresh) {
+            Log.d("CONNECTION", "Already tried refresh, giving up")
             return
         }
 
-        Log.d("CONNECTION", "Connecting WebSocket with token")
+        hasTriedRefresh = true
 
-        webSocketManager.connect(ip)
+        val ip = backendIp ?: return
+        val authService = AuthService(context)
 
-        // Failure message listener
-        webSocketManager.setOnFailureListener {
-            Log.d("CONNECTION", "WebSocket failed")
+        Log.d("CONNECTION", "Refreshing token...")
 
-            if (!hasTriedRefresh) {
-                Log.d("CONNECTION", "Trying refresh...")
+        authService.refresh(ip) { success, newToken ->
 
-                hasTriedRefresh = true
+            if (success && newToken != null) {
 
-                val authService = AuthService(context)
+                AuthSession.saveToken(context, newToken)
 
-                authService.refresh(ip) { success, newToken ->
-                    if (success && newToken != null) {
-                        Log.d("CONNECTION", "Refresh successful, retrying connection")
+                Log.d("CONNECTION", "Refresh success: reconnecting")
 
-                        AuthSession.saveToken(context, newToken)
-                        connectWebSocket(context) // retry
-                    } else {
-                        Log.d("CONNECTION", "Refresh failed, user must log in again")
-                        onAuthFailure?.invoke()
-                    }
-                }
+                webSocketManager.disconnect()
+                connectWebSocket(context)
+
             } else {
-                Log.d("CONNECTION", "Already tried refresh, giving up")
+                Log.d("CONNECTION", "Refresh failed")
+                onAuthFailure?.invoke()
             }
         }
+    }
 
-        // Normal message listener
-        if (!isListening) {
-            webSocketManager.addMessageListener { message ->
-                Log.d("CONNECTION", "Received message: $message")
-                messageRouter.handle(message)
-            }
-            isListening = true
-        }
+    fun reconnectWebSocket(context: Context) {
+        Log.d("CONNECTION", "Manual reconnect")
+        webSocketManager.disconnect()
+        connectWebSocket(context)
     }
 
     fun sendMessage(message: String) {
@@ -113,11 +126,13 @@ class ConnectionManager(private val udpPort: Int = 4444) {
     fun disconnect() {
         Log.d("CONNECTION", "Disconnecting from backend")
         webSocketManager.disconnect()
-        isListening = false
+        // Clear stores
+        deviceStore.clear()
+        userStore.clear()
+        roomStore.clear()
+
         hasTriedRefresh = false // reset for next session
     }
 
-    fun getBackendIp(): String? {
-        return backendIp
-    }
+    fun getBackendIp(): String? = backendIp
 }

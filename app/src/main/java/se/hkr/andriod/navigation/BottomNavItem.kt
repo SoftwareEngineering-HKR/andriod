@@ -20,8 +20,8 @@ sealed class BottomNavItem(
     )
 
     object Management : BottomNavItem(
-        route = Routes.DEVICE_MANAGEMENT,
-        labelRes = R.string.nav_manage_devices,
+        route = Routes.ROOMS_OVERVIEW,
+        labelRes = R.string.rooms,
         icon = Icons.Rounded.Widgets
     )
 

@@ -10,7 +10,12 @@ import se.hkr.andriod.ui.screens.settings.SettingsScreen
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -23,6 +28,8 @@ import androidx.navigation.compose.*
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
 import se.hkr.andriod.data.language.LanguageStorage
 import se.hkr.andriod.data.network.AuthSession
 import se.hkr.andriod.data.network.ConnectionManager
@@ -55,6 +62,8 @@ fun MainScreen(
     val navController = rememberNavController()
 
     val connectionManager = remember { ConnectionManager() }
+    var hasFinishedInitialLoad by remember { mutableStateOf(false) }
+    val devices by connectionManager.deviceStore.devices.collectAsState()
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
@@ -83,6 +92,23 @@ fun MainScreen(
                 onLogout() // navigate back to login
             }
         }
+    }
+
+    LaunchedEffect(Unit) {
+        val startTime = System.currentTimeMillis()
+
+        // wait until first data arrives
+        snapshotFlow { devices }
+            .first()
+
+        val elapsed = System.currentTimeMillis() - startTime
+        val minDelay = 500L
+
+        if (elapsed < minDelay) {
+            delay(minDelay - elapsed)
+        }
+
+        hasFinishedInitialLoad = true
     }
 
     val items = listOf(
@@ -146,7 +172,8 @@ fun MainScreen(
             composable(Routes.DEVICE_OVERVIEW) {
                 DeviceOverviewScreen(
                     navController = navController,
-                    connectionManager = connectionManager
+                    connectionManager = connectionManager,
+                    isInitialLoadingDone = hasFinishedInitialLoad
                 )
             }
 

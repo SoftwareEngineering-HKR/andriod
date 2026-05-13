@@ -51,51 +51,66 @@ class ConnectionManager(private val udpPort: Int = 4444) {
             return
         }
 
-        val token = AuthSession.getToken()
+        val token = AuthSession.getToken() ?: return
 
-        if (token == null) {
-            Log.d("CONNECTION", "No token available, cannot connect")
-            return
+        Log.d("CONNECTION", "Connecting WebSocket")
+
+        hasTriedRefresh = false
+
+        webSocketManager.clearMessageListeners()
+
+        webSocketManager.setOnOpenListener {
+            Log.d("CONNECTION", "Socket opened")
         }
 
-        Log.d("CONNECTION", "Connecting WebSocket with token")
-
-        webSocketManager.connect(ip)
-
-        // Failure message listener
         webSocketManager.setOnFailureListener {
             Log.d("CONNECTION", "WebSocket failed")
-
-            if (!hasTriedRefresh) {
-                Log.d("CONNECTION", "Trying refresh...")
-
-                hasTriedRefresh = true
-
-                val authService = AuthService(context)
-
-                authService.refresh(ip) { success, newToken ->
-                    if (success && newToken != null) {
-                        Log.d("CONNECTION", "Refresh successful, retrying connection")
-
-                        AuthSession.saveToken(context, newToken)
-                        connectWebSocket(context) // retry
-                    } else {
-                        Log.d("CONNECTION", "Refresh failed, user must log in again")
-                        onAuthFailure?.invoke()
-                    }
-                }
-            } else {
-                Log.d("CONNECTION", "Already tried refresh, giving up")
-            }
+            handleConnectionLost(context)
         }
-
-        // Normal message listener
-        webSocketManager.clearMessageListeners()
 
         webSocketManager.addMessageListener { message ->
             Log.d("CONNECTION", "Received message: $message")
             messageRouter.handle(message)
         }
+
+        webSocketManager.connect(ip)
+    }
+
+    private fun handleConnectionLost(context: Context) {
+        if (hasTriedRefresh) {
+            Log.d("CONNECTION", "Already tried refresh, giving up")
+            return
+        }
+
+        hasTriedRefresh = true
+
+        val ip = backendIp ?: return
+        val authService = AuthService(context)
+
+        Log.d("CONNECTION", "Refreshing token...")
+
+        authService.refresh(ip) { success, newToken ->
+
+            if (success && newToken != null) {
+
+                AuthSession.saveToken(context, newToken)
+
+                Log.d("CONNECTION", "Refresh success: reconnecting")
+
+                webSocketManager.disconnect()
+                connectWebSocket(context)
+
+            } else {
+                Log.d("CONNECTION", "Refresh failed")
+                onAuthFailure?.invoke()
+            }
+        }
+    }
+
+    fun reconnectWebSocket(context: Context) {
+        Log.d("CONNECTION", "Manual reconnect")
+        webSocketManager.disconnect()
+        connectWebSocket(context)
     }
 
     fun sendMessage(message: String) {
@@ -119,13 +134,5 @@ class ConnectionManager(private val udpPort: Int = 4444) {
         hasTriedRefresh = false // reset for next session
     }
 
-    fun getBackendIp(): String? {
-        return backendIp
-    }
-
-    fun reconnectWebSocket(context: Context) {
-        Log.d("CONNECTION", "Manual reconnect triggered")
-        disconnect()
-        connectWebSocket(context)
-    }
+    fun getBackendIp(): String? = backendIp
 }

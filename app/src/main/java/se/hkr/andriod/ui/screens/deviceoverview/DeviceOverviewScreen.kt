@@ -8,6 +8,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -43,7 +44,8 @@ import se.hkr.andriod.ui.theme.cardBackground
 @Composable
 fun DeviceOverviewScreen(
     navController: NavController,
-    connectionManager: ConnectionManager
+    connectionManager: ConnectionManager,
+    isInitialLoadingDone: Boolean
 ) {
     var showAddSheet by remember { mutableStateOf(false) }
     var showScanModal by remember { mutableStateOf(false) }
@@ -125,7 +127,14 @@ fun DeviceOverviewScreen(
                 }
             }
         ) {
-            if (devicesByRoom.isEmpty()) {
+            if (!isInitialLoadingDone) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            } else if (devicesByRoom.isEmpty()) {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally,

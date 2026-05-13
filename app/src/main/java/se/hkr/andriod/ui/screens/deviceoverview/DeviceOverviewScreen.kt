@@ -93,6 +93,8 @@ fun DeviceOverviewScreen(
         }
 
         // Group devices by room, using "No Room" for unassigned
+        val noRoomText = stringResource(R.string.no_room)
+
         val devicesByRoom = devices
             .filter { device ->
                 val query = search.value.trim()
@@ -103,13 +105,13 @@ fun DeviceOverviewScreen(
             }
             .groupBy { device ->
                 val room = device.room
-                if (room.isNullOrBlank() || room == "null") "No Room" else room
+                if (room.isNullOrBlank() || room == "null") noRoomText else room
             }
 
         // Sort rooms alphabetically, but put "No Room" last
         val sortedRooms = devicesByRoom.keys
-            .filter { it != "No Room" }.sorted() +
-                devicesByRoom.keys.filter { it == "No Room" }
+            .filter { it != noRoomText }.sorted() +
+                devicesByRoom.keys.filter { it == noRoomText }
 
         PullToRefreshBox(
             isRefreshing = isRefreshing,

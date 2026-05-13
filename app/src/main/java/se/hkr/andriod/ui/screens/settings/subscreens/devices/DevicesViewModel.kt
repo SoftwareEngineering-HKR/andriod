@@ -2,6 +2,7 @@ package se.hkr.andriod.ui.screens.settings.subscreens.devices
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -19,6 +20,7 @@ data class DevicesUiState(
     val showDeleteDialog: Boolean = false,
     val showChangeRoomDialog: Boolean = false,
     val inputText: String = "",
+    val isLoaded: Boolean = false,
     val selectedRoomIdForDialog: String = ""
 ) {
     val selectedDevice: Device?
@@ -37,38 +39,29 @@ class DevicesViewModel(
     val uiState: StateFlow<DevicesUiState> = _uiState
 
     init {
-        roomStore.getRooms()
-        deviceStore.fetchAllDeviceInfo()
-        observeStores()
+        viewModelScope.launch {
+            roomStore.getRooms()
+            deviceStore.fetchAllDeviceInfo()
+
+            delay(500)
+
+            loadSnapshot()
+        }
     }
 
-    private fun observeStores() {
-        // Observe devices
-        viewModelScope.launch {
-            deviceStore.allDevices.collect { devices ->
-                _uiState.update { state ->
-                    val selectedId = state.selectedDeviceId
-                        .takeIf { id -> devices.any { it.id == id } }
-                        ?: devices.firstOrNull()?.id.orEmpty()
+    private fun loadSnapshot() {
+        val devices = deviceStore.allDevices.value
+        val rooms = roomStore.rooms.value
 
-                    val selectedDevice = devices.firstOrNull { it.id == selectedId }
+        val selectedId = devices.firstOrNull()?.id.orEmpty()
 
-                    state.copy(
-                        devices = devices,
-                        selectedDeviceId = selectedId,
-                        selectedRoomIdForDialog = selectedDevice?.room.orEmpty()
-                    )
-                }
-            }
-        }
-
-        // Observe rooms
-        viewModelScope.launch {
-            roomStore.rooms.collect { rooms ->
-                _uiState.update { state ->
-                    state.copy(rooms = rooms)
-                }
-            }
+        _uiState.update {
+            it.copy(
+                devices = devices,
+                rooms = rooms,
+                selectedDeviceId = selectedId,
+                isLoaded = true
+            )
         }
     }
 
@@ -113,9 +106,7 @@ class DevicesViewModel(
 
             // Find room by matching the device room name
             val selectedRoomId = state.rooms
-                .firstOrNull { room ->
-                    room.name == selectedDevice.room
-                }
+                .firstOrNull { it.name == selectedDevice.room }
                 ?.id
                 .orEmpty()
 
@@ -147,6 +138,11 @@ class DevicesViewModel(
             )
         }
         dismissDialogs()
+
+        viewModelScope.launch {
+            delay(200)
+            loadSnapshot()
+        }
     }
 
     fun renameSelectedDevice() {
@@ -166,6 +162,11 @@ class DevicesViewModel(
         )
 
         dismissDialogs()
+
+        viewModelScope.launch {
+            delay(200)
+            loadSnapshot()
+        }
     }
 
     fun deleteSelectedDevice() {
@@ -174,6 +175,11 @@ class DevicesViewModel(
         deviceStore.deleteDevice(selectedDevice.id)
 
         dismissDialogs()
+
+        viewModelScope.launch {
+            delay(200)
+            loadSnapshot()
+        }
     }
 
     fun dismissDialogs() {

@@ -167,19 +167,21 @@ fun RoomsOverviewScreen(
                             isSwitchDevice(it)
                         }
 
-                        // Room switch is ON if any switch device is ON
-                        val roomEnabled = switchDevices.any {
+                        val onlineSwitchDevices = switchDevices.filter { it.online }
+
+                        // Room switch is ON if any online switch device is ON
+                        val roomEnabled = onlineSwitchDevices.any {
                             it.value > it.minValue
                         }
 
                         RoomCardItem(
                             roomName = room,
                             deviceCount = roomDevices.size,
-                            enabled = switchDevices.isNotEmpty(),
+                            enabled = onlineSwitchDevices.isNotEmpty(),
                             checked = roomEnabled,
                             onClick = { navController.navigate(Routes.roomDetails(room)) },
                             onSwitchToggle = { turnOn ->
-                                switchDevices.forEach { device ->
+                                onlineSwitchDevices.forEach { device ->
                                     val value =
                                         if (turnOn) device.maxValue else device.minValue
 

@@ -31,6 +31,7 @@ import se.hkr.andriod.R
 import se.hkr.andriod.ui.components.CustomScreenHeader
 import se.hkr.andriod.ui.screens.settings.components.ActionRow
 import se.hkr.andriod.ui.screens.settings.components.InfoRow
+import se.hkr.andriod.ui.screens.settings.subscreens.users.toRoleTextRes
 import se.hkr.andriod.ui.theme.cardBackground
 import se.hkr.andriod.ui.theme.lightBlue
 
@@ -79,8 +80,9 @@ fun AccountInfoScreen(
                         style = MaterialTheme.typography.headlineMedium
                     )
 
-                    // Currently disabled
-                    // InfoRow(text = user?.role?.name.orEmpty())
+                    uiState.role?.let { role ->
+                        InfoRow(text = stringResource(id = role.toRoleTextRes()))
+                    }
                 }
             }
         }

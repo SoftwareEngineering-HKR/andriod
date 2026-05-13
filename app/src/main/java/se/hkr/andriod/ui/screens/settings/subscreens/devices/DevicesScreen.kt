@@ -66,7 +66,7 @@ fun DevicesScreen(
 
     if (!uiState.isLoaded) {
         Box(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.lightBlue),
             contentAlignment = Alignment.Center
         ) {
             CircularProgressIndicator()

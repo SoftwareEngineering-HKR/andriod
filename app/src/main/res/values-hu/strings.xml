@@ -183,6 +183,8 @@
     <string name="device_state_no_motion">Nincs mozgás</string>
     <string name="device_state_locked">Zárolva</string>
     <string name="device_state_unlocked">Feloldva</string>
+    <string name="device_state_pushed">Lenyomva</string>
+    <string name="device_state_not_pushed">Nincs lenyomva</string>
     <string name="current_value">Jelenlegi érték</string>
 
     <!-- Settings - Account Info -->

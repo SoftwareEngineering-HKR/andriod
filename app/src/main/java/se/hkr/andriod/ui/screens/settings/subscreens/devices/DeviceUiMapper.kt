@@ -64,17 +64,23 @@ fun mapDeviceToInfoUi(
 
             DeviceType.SENSOR,
             DeviceType.GAS,
-            DeviceType.HUMIDITY,
-            DeviceType.STEAM,
-            DeviceType.PHOTO,
-            DeviceType.BRIGHTNESS,
-            DeviceType.TEMPERATURE -> {
+            DeviceType.STEAM -> {
                 if (!d.scaleName.isNullOrBlank()) {
                     stringResource(R.string.device_value_with_scale, d.value, d.scaleName!!)
                 } else {
                     d.value.toString()
                 }
             }
+
+            DeviceType.DISPLAY -> "${device.value}"
+
+            DeviceType.HUMIDITY,
+            DeviceType.PHOTO,
+            DeviceType.BRIGHTNESS -> "${device.value}%"
+
+            DeviceType.TEMPERATURE -> "${device.value}°C"
+
+            DeviceType.DISTANCE -> "${device.value} mm"
 
             DeviceType.SERVO,
             DeviceType.WINDOW,
@@ -83,6 +89,14 @@ fun mapDeviceToInfoUi(
                     stringResource(R.string.device_state_open)
                 } else {
                     stringResource(R.string.device_state_closed)
+                }
+            }
+
+            DeviceType.BUTTON -> { // Pushed/Not pushed devices
+                if (d.value > d.minValue) {
+                    stringResource(R.string.device_state_pushed)
+                } else {
+                    stringResource(R.string.device_state_not_pushed)
                 }
             }
 

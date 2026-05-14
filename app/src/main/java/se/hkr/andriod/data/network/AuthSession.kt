@@ -90,8 +90,10 @@ object AuthSession {
     fun getUser(): User {
         val role = UserRole.fromBackendType(role ?: "user")
 
+        // Return a dummy user with no permissions if session is cleared
+        // This prevents crashes during logout transitions in the ui
         return User(
-            id = userId ?: error("No userId in session"),
+            id = userId ?: UUID(0L, 0L),
             username = username ?: "",
             role = role
         )

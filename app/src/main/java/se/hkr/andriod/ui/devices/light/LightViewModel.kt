@@ -26,33 +26,27 @@ class LightViewModel(
     val lightState: StateFlow<LightUiState> = _lightState
 
     init {
-        // Initialize slider from the device value
-        val min = device.minValue
-        val max = device.maxValue
-        val current = device.value
-
-        val normalized = if (max > min) {
-            (current - min).toFloat() / (max - min)
-        } else 0f
-
-        _lightState.value = LightUiState(brightness = normalized)
+        updateFromDevice(device)
 
         // Collect live updates from the backend
         viewModelScope.launch {
             connectionManager.deviceStore.devices.collect { devices ->
                 val updated = devices.firstOrNull { it.id == device.id } ?: return@collect
-
-                val min = updated.minValue
-                val max = updated.maxValue
-                val current = updated.value
-
-                val normalized = if (max > min) {
-                    (current - min).toFloat() / (max - min)
-                } else 0f
-
-                _lightState.update { it.copy(brightness = normalized) }
+                updateFromDevice(updated)
             }
         }
+    }
+
+    private fun updateFromDevice(d: Device) {
+        val min = d.minValue
+        val max = d.maxValue
+        val current = d.value
+
+        val normalized = if (max > min) {
+            ((current - min).toFloat() / (max - min).toFloat()).coerceIn(0f, 1f)
+        } else 0f
+
+        _lightState.update { it.copy(brightness = normalized) }
     }
 
     // Updates brightness state

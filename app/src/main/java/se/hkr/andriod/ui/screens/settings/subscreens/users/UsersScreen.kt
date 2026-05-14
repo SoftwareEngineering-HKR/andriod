@@ -47,83 +47,38 @@ fun UsersScreen(
 
     var userDropdownExpanded by remember { mutableStateOf(false) }
 
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.lightBlue)
-            .padding(top = 24.dp),
-        contentPadding = PaddingValues(
-            start = 20.dp,
-            end = 20.dp,
-            top = 24.dp,
-            bottom = 32.dp
-        ),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-
-        item {
-            CustomScreenHeader(
-                title = stringResource(R.string.settings_users_devices),
-                onBackClick = onBackClick
-            )
+    if (!uiState.isLoaded) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.lightBlue),
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator()
         }
+    } else {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.lightBlue)
+                .padding(top = 24.dp),
+            contentPadding = PaddingValues(
+                start = 20.dp,
+                end = 20.dp,
+                top = 24.dp,
+                bottom = 32.dp
+            ),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
 
-        // Users
-        item {
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(20.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.cardBackground
+            item {
+                CustomScreenHeader(
+                    title = stringResource(R.string.settings_users_devices),
+                    onBackClick = onBackClick
                 )
-            ) {
-                Column(Modifier.padding(20.dp)) {
-
-                    Text(
-                        text = stringResource(R.string.user),
-                        style = MaterialTheme.typography.titleMedium
-                    )
-
-                    Spacer(Modifier.height(16.dp))
-
-                    ExposedDropdownMenuBox(
-                        expanded = userDropdownExpanded,
-                        onExpandedChange = { userDropdownExpanded = it }
-                    ) {
-                        OutlinedTextField(
-                            value = selectedUser?.username.orEmpty(),
-                            onValueChange = {},
-                            readOnly = true,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .menuAnchor(),
-                            trailingIcon = {
-                                ExposedDropdownMenuDefaults.TrailingIcon(userDropdownExpanded)
-                            },
-                            shape = RoundedCornerShape(14.dp)
-                        )
-
-                        ExposedDropdownMenu(
-                            expanded = userDropdownExpanded,
-                            onDismissRequest = { userDropdownExpanded = false }
-                        ) {
-                            uiState.users.forEach { user ->
-                                DropdownMenuItem(
-                                    text = { Text(user.username) },
-                                    onClick = {
-                                        viewModel.onUserSelected(user.id)
-                                        userDropdownExpanded = false
-                                    }
-                                )
-                            }
-                        }
-                    }
-                }
             }
-        }
 
-        // User info
-        if (selectedUser != null) {
+            // Users
             item {
                 Card(
                     modifier = Modifier.fillMaxWidth(),
@@ -135,129 +90,185 @@ fun UsersScreen(
                     Column(Modifier.padding(20.dp)) {
 
                         Text(
-                            text = selectedUser.username,
-                            style = MaterialTheme.typography.headlineSmall,
-                            fontWeight = FontWeight.Bold
+                            text = stringResource(R.string.user),
+                            style = MaterialTheme.typography.titleMedium
                         )
-
-                        Spacer(Modifier.height(12.dp))
-
-                        RoleSelector(
-                            selectedRole = selectedUser.role,
-                            onRoleSelected = { role ->
-                                viewModel.onUserRoleChanged(selectedUser.username, role)
-                            }
-                        )
-                    }
-                }
-            }
-
-            // Delete user
-            item {
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(20.dp),
-                    colors = CardDefaults.cardColors(MaterialTheme.colorScheme.cardBackground)
-                ) {
-                    Column(Modifier.padding(vertical = 8.dp)) {
-
-                        ActionRow(
-                            title = stringResource(R.string.delete_user_title),
-                            icon = {
-                                Icon(Icons.Rounded.Delete, contentDescription = null)
-                            },
-                            onClick = viewModel::showDeleteUserDialog
-                        )
-                    }
-                }
-            }
-
-            // Devices
-            item {
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(20.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.cardBackground
-                    )
-                ) {
-                    Column(Modifier.padding(20.dp)) {
-
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(Icons.Rounded.Devices, contentDescription = null)
-
-                            Spacer(Modifier.width(10.dp))
-
-                            Text(
-                                text = stringResource(R.string.assigned_devices),
-                                style = MaterialTheme.typography.titleMedium,
-                                fontWeight = FontWeight.SemiBold
-                            )
-                        }
 
                         Spacer(Modifier.height(16.dp))
 
-                        uiState.devices.forEachIndexed { index, device ->
-
-                            val isAssigned =
-                                device.users.any { it.id == selectedUser.id }
-
-                            Row(
+                        ExposedDropdownMenuBox(
+                            expanded = userDropdownExpanded,
+                            onExpandedChange = { userDropdownExpanded = it }
+                        ) {
+                            OutlinedTextField(
+                                value = selectedUser?.username.orEmpty(),
+                                onValueChange = {},
+                                readOnly = true,
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .clickable {
-                                        viewModel.onDeviceToggled(
-                                            selectedUser.id,
-                                            device.id
-                                        )
-                                    }
-                                    .padding(vertical = 12.dp),
-                                verticalAlignment = Alignment.CenterVertically
+                                    .menuAnchor(),
+                                trailingIcon = {
+                                    ExposedDropdownMenuDefaults.TrailingIcon(userDropdownExpanded)
+                                },
+                                shape = RoundedCornerShape(14.dp)
+                            )
+
+                            ExposedDropdownMenu(
+                                expanded = userDropdownExpanded,
+                                onDismissRequest = { userDropdownExpanded = false }
                             ) {
-
-                                Column(Modifier.weight(1f)) {
-
-                                    Text(
-                                        text = device.displayName(),
-                                        style = MaterialTheme.typography.titleSmall,
-                                        fontWeight = FontWeight.SemiBold
-                                    )
-
-                                    Spacer(Modifier.height(4.dp))
-
-                                    val typeText = stringResource(device.deviceTypeEnum.toTextRes())
-                                    val roomName = device.room
-
-                                    Text(
-                                        text = if (!roomName.isNullOrBlank() && roomName != "null") {
-                                            "$typeText • $roomName"
-                                        } else {
-                                            typeText
-                                        },
-                                        style = MaterialTheme.typography.bodyMedium
-                                    )
-
-                                    Spacer(Modifier.height(4.dp))
-
-                                    Text(
-                                        text = stringResource(deviceStatusToTextRes(device.online)),
-                                        style = MaterialTheme.typography.bodySmall
+                                uiState.users.forEach { user ->
+                                    DropdownMenuItem(
+                                        text = { Text(user.username) },
+                                        onClick = {
+                                            viewModel.onUserSelected(user.id)
+                                            userDropdownExpanded = false
+                                        }
                                     )
                                 }
+                            }
+                        }
+                    }
+                }
+            }
 
-                                Checkbox(
-                                    checked = isAssigned,
-                                    onCheckedChange = {
-                                        viewModel.onDeviceToggled(
-                                            selectedUser.id,
-                                            device.id
-                                        )
-                                    }
+            // User info
+            if (selectedUser != null) {
+                item {
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(20.dp),
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.cardBackground
+                        )
+                    ) {
+                        Column(Modifier.padding(20.dp)) {
+
+                            Text(
+                                text = selectedUser.username,
+                                style = MaterialTheme.typography.headlineSmall,
+                                fontWeight = FontWeight.Bold
+                            )
+
+                            Spacer(Modifier.height(12.dp))
+
+                            RoleSelector(
+                                selectedRole = selectedUser.role,
+                                onRoleSelected = { role ->
+                                    viewModel.onUserRoleChanged(selectedUser.username, role)
+                                }
+                            )
+                        }
+                    }
+                }
+
+                // Delete user
+                item {
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(20.dp),
+                        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.cardBackground)
+                    ) {
+                        Column(Modifier.padding(vertical = 8.dp)) {
+
+                            ActionRow(
+                                title = stringResource(R.string.delete_user_title),
+                                icon = {
+                                    Icon(Icons.Rounded.Delete, contentDescription = null)
+                                },
+                                onClick = viewModel::showDeleteUserDialog
+                            )
+                        }
+                    }
+                }
+
+                // Devices
+                item {
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(20.dp),
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.cardBackground
+                        )
+                    ) {
+                        Column(Modifier.padding(20.dp)) {
+
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Icon(Icons.Rounded.Devices, contentDescription = null)
+
+                                Spacer(Modifier.width(10.dp))
+
+                                Text(
+                                    text = stringResource(R.string.assigned_devices),
+                                    style = MaterialTheme.typography.titleMedium,
+                                    fontWeight = FontWeight.SemiBold
                                 )
                             }
 
-                            if (index != uiState.devices.lastIndex) {
-                                Divider()
+                            Spacer(Modifier.height(16.dp))
+
+                            uiState.devices.forEachIndexed { index, device ->
+
+                                val isAssigned =
+                                    device.users.any { it.id == selectedUser.id }
+
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .clickable {
+                                            viewModel.onDeviceToggled(
+                                                selectedUser.id,
+                                                device.id
+                                            )
+                                        }
+                                        .padding(vertical = 12.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+
+                                    Column(Modifier.weight(1f)) {
+
+                                        Text(
+                                            text = device.displayName(),
+                                            style = MaterialTheme.typography.titleSmall,
+                                            fontWeight = FontWeight.SemiBold
+                                        )
+
+                                        Spacer(Modifier.height(4.dp))
+
+                                        val typeText = stringResource(device.deviceTypeEnum.toTextRes())
+                                        val roomName = device.room
+
+                                        Text(
+                                            text = if (!roomName.isNullOrBlank() && roomName != "null") {
+                                                "$typeText • $roomName"
+                                            } else {
+                                                typeText
+                                            },
+                                            style = MaterialTheme.typography.bodyMedium
+                                        )
+
+                                        Spacer(Modifier.height(4.dp))
+
+                                        Text(
+                                            text = stringResource(deviceStatusToTextRes(device.online)),
+                                            style = MaterialTheme.typography.bodySmall
+                                        )
+                                    }
+
+                                    Checkbox(
+                                        checked = isAssigned,
+                                        onCheckedChange = {
+                                            viewModel.onDeviceToggled(
+                                                selectedUser.id,
+                                                device.id
+                                            )
+                                        }
+                                    )
+                                }
+
+                                if (index != uiState.devices.lastIndex) {
+                                    Divider()
+                                }
                             }
                         }
                     }

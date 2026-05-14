@@ -16,6 +16,7 @@ data class UsersUiState(
     val users: List<User> = emptyList(),
     val devices: List<Device> = emptyList(),
     val selectedUserId: UUID? = null,
+    val isLoaded: Boolean = false,
     val showDeleteUserDialog: Boolean = false
 )
 
@@ -27,10 +28,34 @@ class UsersViewModel(
     private val _uiState = MutableStateFlow(UsersUiState())
     val uiState: StateFlow<UsersUiState> = _uiState.asStateFlow()
 
+    private var minimumLoadingFinished = false
+
     init {
         userStore.fetchUsers()
         deviceStore.fetchAllDeviceInfo()
+
+        startMinimumLoadingTimer()
         observeStores()
+    }
+
+    private fun startMinimumLoadingTimer() {
+        viewModelScope.launch {
+            delay(500)
+            minimumLoadingFinished = true
+
+            // Re-check after delay finishes
+            checkIfLoaded()
+        }
+    }
+
+    private fun checkIfLoaded() {
+        val hasUsers = _uiState.value.users.isNotEmpty()
+
+        if (hasUsers && minimumLoadingFinished) {
+            _uiState.update {
+                it.copy(isLoaded = true)
+            }
+        }
     }
 
     private fun observeStores() {
@@ -45,11 +70,12 @@ class UsersViewModel(
                     users = users,
                     devices = devices,
                     selectedUserId = selectedUserId ?: users.firstOrNull()?.id,
-                    // preserve dialog state across refresh
+                    isLoaded = _uiState.value.isLoaded,
                     showDeleteUserDialog = _uiState.value.showDeleteUserDialog
                 )
             }.collect { state ->
                 _uiState.value = state
+                checkIfLoaded()
             }
         }
     }

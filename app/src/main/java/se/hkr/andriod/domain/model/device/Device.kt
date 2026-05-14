@@ -37,6 +37,7 @@ data class Device(
             "temperature" -> DeviceType.TEMPERATURE
             "tilt" -> DeviceType.TILT
             "button" -> DeviceType.BUTTON
+            "distance" -> DeviceType.DISTANCE
             else -> DeviceType.UNKNOWN // Fallback
         }
 

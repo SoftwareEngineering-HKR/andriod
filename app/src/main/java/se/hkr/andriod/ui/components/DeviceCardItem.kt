@@ -46,7 +46,8 @@ fun DeviceCardItem(
         DeviceType.MOTION,
         DeviceType.TEMPERATURE,
         DeviceType.TILT,
-        DeviceType.BUTTON
+        DeviceType.BUTTON,
+        DeviceType.DISTANCE,
     )
 
     val isSwitchDevice = device.deviceTypeEnum in listOf(
@@ -99,6 +100,7 @@ fun DeviceCardItem(
                     DeviceType.TEMPERATURE -> painterResource(R.drawable.thermometer_24px)
                     DeviceType.TILT -> painterResource(R.drawable.diagonal_line_24px)
                     DeviceType.BUTTON -> rememberVectorPainter(Icons.Outlined.RadioButtonChecked)
+                    DeviceType.DISTANCE -> painterResource(R.drawable.arrow_range_24px)
                     else -> rememberVectorPainter(Icons.Default.QuestionMark)
                 }
 
@@ -199,6 +201,8 @@ fun DeviceCardItem(
                             DeviceType.PHOTO -> "${device.value}%"
 
                             DeviceType.TEMPERATURE -> "${device.value}°C"
+
+                            DeviceType.DISTANCE -> "${device.value} mm"
 
                             else -> device.value.toString()
                         }

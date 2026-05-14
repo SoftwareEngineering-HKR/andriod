@@ -1,7 +1,9 @@
 package se.hkr.andriod.ui.screens.main
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import se.hkr.andriod.navigation.Routes
@@ -16,6 +18,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -32,7 +35,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import se.hkr.andriod.data.language.LanguageStorage
 import se.hkr.andriod.data.network.AuthSession
-import se.hkr.andriod.data.network.ConnectionManager
 import se.hkr.andriod.data.network.NetworkModule
 import se.hkr.andriod.data.network.PersistentCookieJar
 import se.hkr.andriod.navigation.BottomNavItem
@@ -45,12 +47,9 @@ import se.hkr.andriod.ui.screens.settings.subscreens.rooms.RoomsScreen
 import se.hkr.andriod.ui.screens.settings.subscreens.SchedulesScreen
 import se.hkr.andriod.ui.screens.settings.subscreens.users.UsersScreen
 import se.hkr.andriod.ui.screens.settings.subscreens.devices.DevicesScreen
-import se.hkr.andriod.ui.screens.settings.subscreens.devices.DevicesViewModel
 import se.hkr.andriod.ui.screens.settings.subscreens.devices.DevicesViewModelFactory
 import se.hkr.andriod.ui.screens.settings.subscreens.language.LanguageViewModel
-import se.hkr.andriod.ui.screens.settings.subscreens.users.UsersViewModel
 import se.hkr.andriod.ui.screens.settings.subscreens.users.UsersViewModelFactory
-import se.hkr.andriod.ui.screens.settings.subscreens.rooms.RoomsViewModel
 import se.hkr.andriod.ui.screens.settings.subscreens.rooms.RoomsViewModelFactory
 import se.hkr.andriod.ui.theme.cardBackground
 import se.hkr.andriod.ui.theme.lightBlue
@@ -59,22 +58,16 @@ import se.hkr.andriod.ui.theme.lightBlue
 fun MainScreen(
     onLogout: () -> Unit
 ) {
+    val mainViewModel: MainViewModel = viewModel()
+    val connectionManager = mainViewModel.connectionManager
     val navController = rememberNavController()
-
-    val connectionManager = remember { ConnectionManager() }
-    var hasFinishedInitialLoad by remember { mutableStateOf(false) }
-    val devices by connectionManager.deviceStore.devices.collectAsState()
     val context = LocalContext.current
 
+    var hasFinishedInitialLoad by remember { mutableStateOf(false) }
+    val devices by connectionManager.deviceStore.devices.collectAsState()
+
     LaunchedEffect(Unit) {
-        val token = AuthSession.getToken()
-        if (token != null) {
-            connectionManager.startConnection { ip ->
-                if (ip != null) {
-                    connectionManager.connectWebSocket(context)
-                }
-            }
-        }
+        mainViewModel.initConnection(context)
     }
 
     // Force logout in auth failure (if token refresh fails)
@@ -87,35 +80,19 @@ fun MainScreen(
             AuthSession.clear(context)
             cookieJar.clear()
             connectionManager.disconnect()
-
-            android.os.Handler(android.os.Looper.getMainLooper()).post {
-                onLogout() // navigate back to login
-            }
+            onLogout() // navigate back to login
         }
     }
 
     LaunchedEffect(Unit) {
-        val startTime = System.currentTimeMillis()
-
-        // wait until first data arrives
-        snapshotFlow { devices }
-            .first()
-
-        val elapsed = System.currentTimeMillis() - startTime
-        val minDelay = 500L
-
-        if (elapsed < minDelay) {
-            delay(minDelay - elapsed)
+        if (devices.isNotEmpty()) {
+            hasFinishedInitialLoad = true
+        } else {
+            snapshotFlow { devices }.first { it.isNotEmpty() }
+            delay(500)
+            hasFinishedInitialLoad = true
         }
-
-        hasFinishedInitialLoad = true
     }
-
-    val items = listOf(
-        BottomNavItem.Overview,
-        BottomNavItem.Management,
-        BottomNavItem.Settings
-    )
 
     Scaffold(
         contentWindowInsets = WindowInsets(0),
@@ -126,10 +103,14 @@ fun MainScreen(
                     .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)),
                 containerColor = MaterialTheme.colorScheme.cardBackground
             ) {
-                val currentDestination =
-                    navController.currentBackStackEntryAsState().value?.destination
+                val navBackStackEntry by navController.currentBackStackEntryAsState()
+                val currentDestination = navBackStackEntry?.destination
 
-                items.forEach { screen ->
+                listOf(
+                    BottomNavItem.Overview,
+                    BottomNavItem.Management,
+                    BottomNavItem.Settings
+                ).forEach { screen ->
                     NavigationBarItem(
                         colors = NavigationBarItemDefaults.colors(
                             selectedIconColor = MaterialTheme.colorScheme.primary,
@@ -170,18 +151,11 @@ fun MainScreen(
         ) {
 
             composable(Routes.DEVICE_OVERVIEW) {
-                DeviceOverviewScreen(
-                    navController = navController,
-                    connectionManager = connectionManager,
-                    isInitialLoadingDone = hasFinishedInitialLoad
-                )
+                DeviceOverviewScreen(navController, connectionManager, hasFinishedInitialLoad)
             }
 
             composable(Routes.ROOMS_OVERVIEW) {
-                RoomsOverviewScreen(
-                    navController = navController,
-                    connectionManager = connectionManager
-                )
+                RoomsOverviewScreen(navController, connectionManager)
             }
 
             composable(
@@ -191,15 +165,16 @@ fun MainScreen(
                     navArgument("id") { type = NavType.StringType }
                 )
             ) { backStackEntry ->
-                val deviceId = backStackEntry.arguments?.getString("id") ?: error("Missing device ID")
+                val deviceId = backStackEntry.arguments?.getString("id") ?: ""
                 val device = connectionManager.deviceStore.getDeviceById(deviceId)
-                    ?: error("Device not found: $deviceId")
 
-                DeviceHostScreen(
-                    device = device,
-                    connectionManager = connectionManager,
-                    onBackClick = { navController.navigateUp() }
-                )
+                if (device == null) {
+                    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        CircularProgressIndicator()
+                    }
+                } else {
+                    DeviceHostScreen(device, connectionManager) { navController.navigateUp() }
+                }
             }
 
             composable(
@@ -208,15 +183,8 @@ fun MainScreen(
                     navArgument("roomName") { type = NavType.StringType }
                 )
             ) { backStackEntry ->
-                val roomName =
-                    backStackEntry.arguments?.getString("roomName")
-                        ?: error("Missing room name")
-
-                RoomDetailsScreen(
-                    navController = navController,
-                    connectionManager = connectionManager,
-                    roomName = roomName
-                )
+                val roomName = backStackEntry.arguments?.getString("roomName") ?: ""
+                RoomDetailsScreen(navController, connectionManager, roomName)
             }
 
             navigation(
@@ -233,65 +201,42 @@ fun MainScreen(
                 }
 
                 composable(Routes.USERS) {
-                    val viewModel: UsersViewModel = viewModel(
-                        factory = UsersViewModelFactory(
-                            connectionManager.userStore, connectionManager.deviceStore
-                        )
-                    )
-
                     UsersScreen(
-                        viewModel = viewModel,
-                        onBackClick = { navController.navigateUp() }
+                        viewModel(factory = UsersViewModelFactory(connectionManager.userStore, connectionManager.deviceStore)),
+                        { navController.navigateUp() }
                     )
                 }
 
                 composable(Routes.DEVICES) {
-                    val viewModel: DevicesViewModel = viewModel(
-                        factory = DevicesViewModelFactory(
-                            connectionManager.deviceStore, connectionManager.roomStore
-                        )
-                    )
-
                     DevicesScreen(
-                        viewModel = viewModel,
-                        onBackClick = { navController.navigateUp() }
+                        viewModel(factory = DevicesViewModelFactory(connectionManager.deviceStore, connectionManager.roomStore)),
+                        { navController.navigateUp() }
                     )
                 }
 
                 composable(Routes.ROOMS) {
-                    val viewModel: RoomsViewModel = viewModel(
-                        factory = RoomsViewModelFactory(
-                            connectionManager.roomStore, connectionManager.deviceStore
-                        )
-                    )
-
                     RoomsScreen(
-                        viewModel = viewModel,
-                        onBackClick = { navController.navigateUp() }
+                        viewModel(factory = RoomsViewModelFactory(connectionManager.roomStore, connectionManager.deviceStore)),
+                        { navController.navigateUp() }
                     )
                 }
 
                 composable(Routes.SCHEDULES) { SchedulesScreen() }
 
                 composable(Routes.LANGUAGE) {
-                    val context = LocalContext.current.applicationContext
-
-                    val languageViewModel = remember {
-                        LanguageViewModel(
-                            languageStorage = LanguageStorage(context)
-                        )
-                    }
-
+                    val langContext = LocalContext.current.applicationContext
                     LanguageScreen(
-                        viewModel = languageViewModel,
+                        viewModel = viewModel(factory = object : androidx.lifecycle.ViewModelProvider.Factory {
+                            override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
+                                return LanguageViewModel(LanguageStorage(langContext)) as T
+                            }
+                        }),
                         onBackClick = { navController.navigateUp() }
                     )
                 }
-
-                composable(Routes.ACCOUNT) { AccountInfoScreen(
-                    viewModel = viewModel(),
-                    onBackClick = { navController.navigateUp() }
-                ) }
+                composable(Routes.ACCOUNT) {
+                    AccountInfoScreen(viewModel(), { navController.navigateUp() })
+                }
             }
         }
     }

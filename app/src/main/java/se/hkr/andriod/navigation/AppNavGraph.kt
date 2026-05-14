@@ -25,9 +25,14 @@ fun AppNavGraph() {
     LaunchedEffect(Unit) {
         AuthSession.loadSession(context)
 
+        // Only navigate to MAIN if we are logged in AND not already on the MAIN screen
+        // This prevents the reset during rotation
         if (AuthSession.isLoggedIn()) {
-            navController.navigate(Routes.MAIN) {
-                popUpTo(Routes.LOGIN) { inclusive = true }
+            val currentRoute = navController.currentBackStackEntry?.destination?.route
+            if (currentRoute != Routes.MAIN) {
+                navController.navigate(Routes.MAIN) {
+                    popUpTo(Routes.LOGIN) { inclusive = true }
+                }
             }
         }
     }

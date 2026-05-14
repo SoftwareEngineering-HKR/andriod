@@ -9,7 +9,9 @@ import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.CalendarToday
 import androidx.compose.material.icons.rounded.ExpandLess
@@ -48,6 +50,8 @@ fun DeviceCardScreen(
     val devices by connectionManager.deviceStore.devices.collectAsState()
     val liveDevice = devices.firstOrNull { it.id == device.id } ?: device
 
+    val scrollState = rememberScrollState()
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -57,6 +61,7 @@ fun DeviceCardScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .verticalScroll(scrollState)
                 .padding(vertical = 24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -88,30 +93,20 @@ fun DeviceCardScreen(
             // Dynamic components
             deviceComponent(liveDevice)
 
-            // Schedule selection TODO
+            Spacer(modifier = Modifier.height(16.dp))
+
             Card(
                 modifier = Modifier
                     .fillMaxWidth(0.9f)
-                    .clickable {
-                        viewModel.toggleSchedule()
-                    },
+                    .clickable { viewModel.toggleSchedule() },
                 shape = RoundedCornerShape(16.dp),
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.cardBackground
                 )
             ) {
-                Column(
-                    modifier = Modifier.padding(20.dp)
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            Icons.Rounded.CalendarToday,
-                            null,
-                            modifier = Modifier.size(36.dp)
-                        )
-
+                Column(modifier = Modifier.padding(20.dp)) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(Icons.Rounded.CalendarToday, null, modifier = Modifier.size(36.dp))
                         Spacer(modifier = Modifier.width(12.dp))
 
                         Text(
@@ -162,13 +157,16 @@ fun DeviceCardScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.height(32.dp))
 
             // Footer
             Text(
                 text = uiState.lastUpdatedText,
                 style = MaterialTheme.typography.bodySmall
             )
+
+            // Extra padding at the bottom so elements aren't cut off by the navigation bar
+            Spacer(modifier = Modifier.height(24.dp))
         }
     }
 }

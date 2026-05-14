@@ -186,6 +186,8 @@
     <string name="device_state_no_motion">Ingen rörelse</string>
     <string name="device_state_locked">Låst</string>
     <string name="device_state_unlocked">Upplåst</string>
+    <string name="device_state_pushed">Tryckt</string>
+    <string name="device_state_not_pushed">Inte tryckt</string>
     <string name="current_value">Nuvarande värde</string>
 
     <!-- Settings - Account Info -->

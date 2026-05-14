@@ -182,6 +182,8 @@
     <string name="device_state_no_motion">No motion</string>
     <string name="device_state_locked">Locked</string>
     <string name="device_state_unlocked">Unlocked</string>
+    <string name="device_state_pushed">Pushed</string>
+    <string name="device_state_not_pushed">Not pushed</string>
     <string name="current_value">Current value</string>
 
     <!-- Settings - Account Info -->

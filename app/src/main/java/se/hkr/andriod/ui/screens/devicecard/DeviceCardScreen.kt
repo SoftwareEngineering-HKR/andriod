@@ -156,17 +156,7 @@ fun DeviceCardScreen(
                     }
                 }
             }
-
             Spacer(modifier = Modifier.height(32.dp))
-
-            // Footer
-            Text(
-                text = uiState.lastUpdatedText,
-                style = MaterialTheme.typography.bodySmall
-            )
-
-            // Extra padding at the bottom so elements aren't cut off by the navigation bar
-            Spacer(modifier = Modifier.height(24.dp))
         }
     }
 }

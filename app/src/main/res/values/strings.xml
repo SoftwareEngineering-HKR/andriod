@@ -138,6 +138,7 @@
     <string name="device_type_temperature">Temperature</string>
     <string name="device_type_tilt">Tilt</string>
     <string name="device_type_button">Button</string>
+    <string name="device_type_distance">Distance</string>
     <string name="device_value_percent">%d%%</string>
     <string name="no_room">No room</string>
 

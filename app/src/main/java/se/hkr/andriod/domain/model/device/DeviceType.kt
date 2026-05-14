@@ -19,5 +19,6 @@ enum class DeviceType {
     TEMPERATURE,
     TILT,
     BUTTON,
+    DISTANCE,
     UNKNOWN,
 }

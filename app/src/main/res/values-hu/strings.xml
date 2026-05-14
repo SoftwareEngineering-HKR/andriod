@@ -139,6 +139,7 @@
     <string name="device_type_temperature">Hőmérséklet</string>
     <string name="device_type_tilt">Dőlés</string>
     <string name="device_type_button">Gomb</string>
+    <string name="device_type_distance">Távolság</string>
     <string name="device_value_percent">%d%%</string>
     <string name="no_room">Nincs szoba</string>
 

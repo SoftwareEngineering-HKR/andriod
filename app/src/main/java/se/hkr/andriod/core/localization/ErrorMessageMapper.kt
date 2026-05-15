@@ -1,8 +1,10 @@
 package se.hkr.andriod.core.localization
 
+import androidx.annotation.StringRes
 import se.hkr.andriod.R
 
 object ErrorMessageMapper {
+    @StringRes
     fun map(message: String): Int {
         return when {
             // Room

@@ -227,4 +227,26 @@
     <string name="language_hungarian_native">Magyar</string>
     <string name="language_hungarian_display">Ungerska</string>
 
+    <!-- Errors -->
+    <string name="error_generic">Ett oväntat fel inträffade.</string>
+    <string name="error_access_denied">Du har inte åtkomst till den här enheten.</string>
+    <string name="error_rooms_fetch_failed">Kunde inte hämta alla rum.</string>
+    <string name="error_room_create_failed">Det gick inte att skapa rummet!</string>
+    <string name="error_room_update_failed">Det gick inte att uppdatera rummet!</string>
+    <string name="error_room_delete_failed">Det gick inte att ta bort rummet!</string>
+    <string name="error_device_info_failed">Kunde inte hämta enhetsinformation.</string>
+    <string name="error_bluetooth_scan_failed">Bluetooth-skanning misslyckades.</string>
+    <string name="error_bluetooth_connect_failed">Bluetooth-anslutning till enheten misslyckades.</string>
+    <string name="error_device_update_failed">Det gick inte att uppdatera enheten!</string>
+    <string name="error_device_update_room_failed">Det gick inte att uppdatera enhetens rum!</string>
+    <string name="error_device_delete_failed">Det gick inte att ta bort enheten!</string>
+    <string name="error_device_remove_self_failed">Det gick inte att ta bort användaren från enheten.</string>
+    <string name="error_device_contact_failed">Kunde inte kontakta enheten.</string>
+    <string name="error_users_fetch_failed">Det gick inte att hämta användare.</string>
+    <string name="error_user_role_update_failed">Fel, kunde inte uppdatera användaren till önskad roll!</string>
+    <string name="error_user_delete_failed">Fel vid borttagning av användare!</string>
+    <string name="error_device_assign_user_failed">Det gick inte att koppla användaren till enheten.</string>
+    <string name="error_user_device_unassign_failed">Det gick inte att ta bort användaren från enheten.</string>
+    <string name="error_unknown_error">Ett okänt fel inträffade.</string>
+
 </resources>

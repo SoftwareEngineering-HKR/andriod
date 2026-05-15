@@ -223,4 +223,26 @@
     <string name="language_hungarian_native">Magyar</string>
     <string name="language_hungarian_display">Hungarian</string>
 
+    <!-- Errors -->
+    <string name="error_generic">An unexpected error occurred.</string>
+    <string name="error_access_denied">You do not have access to this device.</string>
+    <string name="error_rooms_fetch_failed">Could not get all rooms.</string>
+    <string name="error_room_create_failed">Failed to create room!</string>
+    <string name="error_room_update_failed">Failed to update room!</string>
+    <string name="error_room_delete_failed">Failed to delete room!</string>
+    <string name="error_device_info_failed">Could not get device info.</string>
+    <string name="error_bluetooth_scan_failed">Bluetooth scan failed.</string>
+    <string name="error_bluetooth_connect_failed">Bluetooth connection to device failed.</string>
+    <string name="error_device_update_failed">Failed to update device!</string>
+    <string name="error_device_update_room_failed">Failed to update device room!</string>
+    <string name="error_device_delete_failed">Failed to delete device!</string>
+    <string name="error_device_remove_self_failed">Failed to remove user from device.</string>
+    <string name="error_device_contact_failed">Device could not be contacted.</string>
+    <string name="error_users_fetch_failed">Failed to get users.</string>
+    <string name="error_user_role_update_failed">Error, could not update the user to desired role!</string>
+    <string name="error_user_delete_failed">Error in deleting user!</string>
+    <string name="error_device_assign_user_failed">Failed to connect user to device</string>
+    <string name="error_user_device_unassign_failed">Failed to remove user from device.</string>
+    <string name="error_unknown_error">An unknown error occurred.</string>
+
 </resources>

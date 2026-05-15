@@ -222,4 +222,27 @@
     <string name="language_english_display">Angol</string>
     <string name="language_hungarian_native">Magyar</string>
     <string name="language_hungarian_display">Magyar</string>
+
+    <!-- Errors -->
+    <string name="error_generic">Váratlan hiba történt.</string>
+    <string name="error_access_denied">Nincs hozzáférése ehhez az eszközhöz.</string>
+    <string name="error_rooms_fetch_failed">Nem sikerült lekérni az összes szobát.</string>
+    <string name="error_room_create_failed">Nem sikerült létrehozni a szobát!</string>
+    <string name="error_room_update_failed">Nem sikerült frissíteni a szobát!</string>
+    <string name="error_room_delete_failed">Nem sikerült törölni a szobát!</string>
+    <string name="error_device_info_failed">Nem sikerült lekérni az eszköz adatait.</string>
+    <string name="error_bluetooth_scan_failed">A Bluetooth keresés sikertelen volt.</string>
+    <string name="error_bluetooth_connect_failed">Nem sikerült Bluetooth kapcsolódni az eszközhöz.</string>
+    <string name="error_device_update_failed">Nem sikerült frissíteni az eszközt!</string>
+    <string name="error_device_update_room_failed">Nem sikerült frissíteni az eszköz szobáját!</string>
+    <string name="error_device_delete_failed">Nem sikerült törölni az eszközt!</string>
+    <string name="error_device_remove_self_failed">Nem sikerült eltávolítani a felhasználót az eszközről.</string>
+    <string name="error_device_contact_failed">Nem sikerült kapcsolatba lépni az eszközzel.</string>
+    <string name="error_users_fetch_failed">Nem sikerült lekérni a felhasználókat.</string>
+    <string name="error_user_role_update_failed">Hiba, nem sikerült a felhasználó szerepkörét frissíteni!</string>
+    <string name="error_user_delete_failed">Hiba történt a felhasználó törlése során!</string>
+    <string name="error_device_assign_user_failed">Nem sikerült a felhasználót az eszközhöz kapcsolni.</string>
+    <string name="error_user_device_unassign_failed">Nem sikerült eltávolítani a felhasználót az eszközről.</string>
+    <string name="error_unknown_error">Ismeretlen hiba történt.</string>
+
 </resources>

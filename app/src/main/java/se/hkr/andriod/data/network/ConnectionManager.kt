@@ -2,15 +2,19 @@ package se.hkr.andriod.data.network
 
 import android.content.Context
 import android.util.Log
+import se.hkr.andriod.core.events.ErrorDispatcher
 
-class ConnectionManager(private val udpPort: Int = 4444) {
+class ConnectionManager(
+    private val udpPort: Int = 4444,
+    private val errorDispatcher: ErrorDispatcher
+) {
     private val udpDiscovery = UdpDiscovery()
     private val webSocketManager = WebSocketManager()
 
     val deviceStore = DeviceStore(webSocketManager)
     val userStore = UserStore(webSocketManager)
     val roomStore = RoomStore(webSocketManager)
-    val actionHandler = ActionResponseHandler()
+    val actionHandler = ActionResponseHandler(errorDispatcher)
 
     private val messageRouter = MessageRouter(
         deviceStore,

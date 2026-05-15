@@ -2,11 +2,14 @@ package se.hkr.andriod.ui.screens.main
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
+import se.hkr.andriod.core.events.ErrorDispatcher
 import se.hkr.andriod.data.network.AuthSession
 import se.hkr.andriod.data.network.ConnectionManager
 
-class MainViewModel : ViewModel() {
-    val connectionManager = ConnectionManager()
+class MainViewModel(
+    private val errorDispatcher: ErrorDispatcher
+) : ViewModel() {
+    val connectionManager = ConnectionManager(errorDispatcher = errorDispatcher)
     private var isInitialized = false
 
     fun initConnection(context: Context) {

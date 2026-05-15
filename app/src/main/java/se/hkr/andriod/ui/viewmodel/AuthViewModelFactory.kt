@@ -3,18 +3,20 @@ package se.hkr.andriod.ui.viewmodel
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import se.hkr.andriod.core.events.ErrorDispatcher
 import se.hkr.andriod.data.network.AuthService
 import se.hkr.andriod.data.network.ConnectionManager
 import se.hkr.andriod.ui.screens.login.LoginViewModel
 import se.hkr.andriod.ui.screens.signup.SignUpViewModel
 
 class AuthViewModelFactory(
-    private val context: Context
+    private val context: Context,
+    private val errorDispatcher: ErrorDispatcher
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
 
         val authService = AuthService(context.applicationContext)
-        val connectionManager = ConnectionManager()
+        val connectionManager = ConnectionManager(errorDispatcher = errorDispatcher)
 
         return when {
             modelClass.isAssignableFrom(LoginViewModel::class.java) -> {

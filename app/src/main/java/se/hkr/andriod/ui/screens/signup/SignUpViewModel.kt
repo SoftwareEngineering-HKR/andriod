@@ -23,7 +23,7 @@ data class SignupUiState(
 )
 
 class SignUpViewModel(
-    private val connectionManager: ConnectionManager = ConnectionManager(),
+    private val connectionManager: ConnectionManager,
     private val authService: AuthService
 ) : ViewModel() {
 

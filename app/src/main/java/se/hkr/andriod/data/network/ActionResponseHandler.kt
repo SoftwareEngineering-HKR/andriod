@@ -4,14 +4,16 @@ import android.util.Log
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import org.json.JSONObject
+import se.hkr.andriod.core.events.ErrorDispatcher
 
 data class ActionResponse(
     val statusCode: Int,
     val message: String
 )
 
-class ActionResponseHandler {
-
+class ActionResponseHandler (
+    private val errorDispatcher: ErrorDispatcher
+) {
     private val _responses = MutableSharedFlow<ActionResponse>()
     val responses: SharedFlow<ActionResponse> = _responses
 
@@ -26,5 +28,7 @@ class ActionResponseHandler {
         Log.d("ACTION_RESPONSE", "${response.statusCode} - ${response.message}")
 
         _responses.emit(response)
+
+        errorDispatcher.handle(response)
     }
 }

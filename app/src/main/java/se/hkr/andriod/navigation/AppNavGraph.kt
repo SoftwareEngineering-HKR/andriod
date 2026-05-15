@@ -8,7 +8,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import se.hkr.andriod.core.events.ErrorDispatcher
 import se.hkr.andriod.data.network.AuthSession
+import se.hkr.andriod.ui.components.GlobalErrorSnackbarHost
 import se.hkr.andriod.ui.screens.login.LoginScreen
 import se.hkr.andriod.ui.screens.login.LoginViewModel
 import se.hkr.andriod.ui.screens.main.MainScreen
@@ -17,7 +19,7 @@ import se.hkr.andriod.ui.screens.signup.SignUpViewModel
 import se.hkr.andriod.ui.viewmodel.AuthViewModelFactory
 
 @Composable
-fun AppNavGraph() {
+fun AppNavGraph(errorDispatcher: ErrorDispatcher) {
     val navController = rememberNavController()
     val context = LocalContext.current
 
@@ -42,7 +44,7 @@ fun AppNavGraph() {
         startDestination = Routes.LOGIN
     ) {
         composable(Routes.LOGIN) {
-            val factory = remember { AuthViewModelFactory(context) }
+            val factory = remember { AuthViewModelFactory(context, errorDispatcher) }
             val loginViewModel: LoginViewModel = viewModel(factory = factory)
 
             LoginScreen(
@@ -59,7 +61,7 @@ fun AppNavGraph() {
         }
 
         composable(Routes.SIGN_UP) {
-            val factory = remember { AuthViewModelFactory(context) }
+            val factory = remember { AuthViewModelFactory(context, errorDispatcher) }
             val registerViewModel: SignUpViewModel = viewModel(factory = factory)
 
             SignUpScreen(
@@ -83,8 +85,10 @@ fun AppNavGraph() {
                     navController.navigate(Routes.LOGIN) {
                         popUpTo(Routes.MAIN) { inclusive = true }
                     }
-                }
+                },
+                errorDispatcher = errorDispatcher
             )
         }
     }
+    GlobalErrorSnackbarHost(errorDispatcher)
 }

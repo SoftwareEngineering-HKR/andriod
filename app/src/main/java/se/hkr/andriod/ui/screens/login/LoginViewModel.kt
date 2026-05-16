@@ -47,7 +47,7 @@ class LoginViewModel(
             hasError = true
         }
 
-        if (currentState.password.length < 4) {
+        if (currentState.password.length < 8) {
             passwordErrorId = R.string.error_password_short
             hasError = true
         }

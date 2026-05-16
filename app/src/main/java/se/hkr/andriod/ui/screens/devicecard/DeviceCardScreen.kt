@@ -27,6 +27,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import se.hkr.andriod.R
+import se.hkr.andriod.data.network.AuthSession.getUser
 import se.hkr.andriod.domain.model.device.Device
 import se.hkr.andriod.data.network.ConnectionManager
 import se.hkr.andriod.ui.components.DeviceCardItem
@@ -54,6 +55,8 @@ fun DeviceCardScreen(
     val liveDevice = devices.firstOrNull { it.id == device.id } ?: device
 
     val scrollState = rememberScrollState()
+
+    val currentUser = getUser()
 
     Box(
         modifier = Modifier
@@ -151,13 +154,15 @@ fun DeviceCardScreen(
 
                             Spacer(modifier = Modifier.height(20.dp))
 
-                            AppButton(
-                                text = stringResource(R.string.add_new_schedule),
-                                onClick = {
-                                    navController.popBackStack()
-                                    navController.goToSchedules()
-                                }
-                            )
+                            if (currentUser.canManageSchedules()) {
+                                AppButton(
+                                    text = stringResource(R.string.add_new_schedule),
+                                    onClick = {
+                                        navController.popBackStack()
+                                        navController.goToSchedules()
+                                    }
+                                )
+                            }
                         }
                     }
                 }

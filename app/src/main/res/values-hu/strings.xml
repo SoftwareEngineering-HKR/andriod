@@ -244,5 +244,13 @@
     <string name="error_device_assign_user_failed">Nem sikerült a felhasználót az eszközhöz kapcsolni.</string>
     <string name="error_user_device_unassign_failed">Nem sikerült eltávolítani a felhasználót az eszközről.</string>
     <string name="error_unknown_error">Ismeretlen hiba történt.</string>
+    <string name="error_cannot_connect">Nem sikerült csatlakozni a szerverhez</string>
+    <string name="error_invalid_credentials">Helytelen felhasználónév vagy jelszó</string>
+    <string name="error_request_failed">A kérés meghiúsult</string>
+    <string name="error_empty_response">Üres válasz</string>
+    <string name="error_register_failed">A regisztráció meghiúsult</string>
+    <string name="error_logout_failed">A kijelentkezés meghiúsult</string>
+    <string name="logout_success">Sikeres kijelentkezés</string>
+    <string name="error_refresh_failed">A frissítés meghiúsult</string>
 
 </resources>

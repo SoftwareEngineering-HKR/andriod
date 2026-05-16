@@ -5,6 +5,7 @@ import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
+import se.hkr.andriod.R
 import java.io.IOException
 
 class AuthService(private val context: Context) {
@@ -26,14 +27,24 @@ class AuthService(private val context: Context) {
         client.newCall(request).enqueue(object : Callback {
 
             override fun onFailure(call: Call, e: IOException) {
-                onResult(false, e.message)
+                onResult(false, context.getString(R.string.error_cannot_connect))
             }
 
             override fun onResponse(call: Call, response: Response) {
                 val responseBody = response.body?.string()
 
-                if (!response.isSuccessful || responseBody == null) {
-                    onResult(false, "Request failed")
+                if (!response.isSuccessful) {
+                    val message = try {
+                        JSONObject(responseBody ?: "").getString("message")
+                    } catch (e: Exception) {
+                        null
+                    }
+                    onResult(false, message ?: context.getString(R.string.error_request_failed))
+                    return
+                }
+
+                if (responseBody == null) {
+                    onResult(false, context.getString(R.string.error_empty_response))
                     return
                 }
 
@@ -55,15 +66,20 @@ class AuthService(private val context: Context) {
             put("password", password)
         }
 
-        postRequest(url, json) { success, response ->
+        postRequest(url, json) { success, result ->
 
-            if (!success || response == null) {
-                onResult(false, "Incorrect username or password")
+            if (!success) {
+                val error = if (result == context.getString(R.string.error_cannot_connect)) {
+                    result
+                } else {
+                    context.getString(R.string.error_invalid_credentials)
+                }
+                onResult(false, error)
                 return@postRequest
             }
 
             try {
-                val jsonResponse = JSONObject(response)
+                val jsonResponse = JSONObject(result!!)
                 val token = jsonResponse.getString("accessToken")
 
                 AuthSession.saveSession(
@@ -93,15 +109,15 @@ class AuthService(private val context: Context) {
             put("password", password)
         }
 
-        postRequest(url, json) { success, response ->
+        postRequest(url, json) { success, result ->
 
-            if (!success || response == null) {
-                onResult(false, "Register failed")
+            if (!success) {
+                onResult(false, result ?: context.getString(R.string.error_register_failed))
                 return@postRequest
             }
 
             try {
-                val jsonResponse = JSONObject(response)
+                val jsonResponse = JSONObject(result!!)
                 val token = jsonResponse.getString("accessToken")
 
                 AuthSession.saveSession(
@@ -136,18 +152,23 @@ class AuthService(private val context: Context) {
         client.newCall(request).enqueue(object : Callback {
 
             override fun onFailure(call: Call, e: IOException) {
-                onResult(false, e.message)
+                onResult(false, context.getString(R.string.error_cannot_connect))
             }
 
             override fun onResponse(call: Call, response: Response) {
-                val body = response.body?.string()
+                val responseBody = response.body?.string()
 
                 if (!response.isSuccessful) {
-                    onResult(false, body ?: "Logout failed")
+                    val message = try {
+                        JSONObject(responseBody ?: "").getString("message")
+                    } catch (e: Exception) {
+                        null
+                    }
+                    onResult(false, message ?: context.getString(R.string.error_logout_failed))
                     return
                 }
 
-                onResult(true, "Logged out")
+                onResult(true, context.getString(R.string.logout_success))
             }
         })
     }
@@ -166,19 +187,24 @@ class AuthService(private val context: Context) {
         client.newCall(request).enqueue(object : Callback {
 
             override fun onFailure(call: Call, e: IOException) {
-                onResult(false, e.message)
+                onResult(false, context.getString(R.string.error_cannot_connect))
             }
 
             override fun onResponse(call: Call, response: Response) {
                 val responseBody = response.body?.string()
 
-                if (!response.isSuccessful || responseBody == null) {
-                    onResult(false, "Refresh failed")
+                if (!response.isSuccessful) {
+                    val message = try {
+                        JSONObject(responseBody ?: "").getString("message")
+                    } catch (e: Exception) {
+                        null
+                    }
+                    onResult(false, message ?: context.getString(R.string.error_refresh_failed))
                     return
                 }
 
                 try {
-                    val json = JSONObject(responseBody)
+                    val json = JSONObject(responseBody!!)
                     val newToken = json.getString("accessToken")
 
                     AuthSession.saveToken(context, newToken)

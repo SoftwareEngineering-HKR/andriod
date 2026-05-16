@@ -244,5 +244,13 @@
     <string name="error_device_assign_user_failed">Failed to connect user to device</string>
     <string name="error_user_device_unassign_failed">Failed to remove user from device.</string>
     <string name="error_unknown_error">An unknown error occurred.</string>
+    <string name="error_cannot_connect">Can not connect to server</string>
+    <string name="error_invalid_credentials">Incorrect username or password</string>
+    <string name="error_request_failed">Request failed</string>
+    <string name="error_empty_response">Empty response</string>
+    <string name="error_register_failed">Register failed</string>
+    <string name="error_logout_failed">Logout failed</string>
+    <string name="logout_success">Logged out</string>
+    <string name="error_refresh_failed">Refresh failed</string>
 
 </resources>

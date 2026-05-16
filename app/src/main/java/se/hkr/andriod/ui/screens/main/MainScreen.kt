@@ -177,7 +177,7 @@ fun MainScreen(
                         CircularProgressIndicator()
                     }
                 } else {
-                    DeviceHostScreen(device, connectionManager) { navController.navigateUp() }
+                    DeviceHostScreen(device, connectionManager, navController) { navController.navigateUp() }
                 }
             }
 

@@ -5,6 +5,7 @@ import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import se.hkr.andriod.domain.model.device.Device
 import se.hkr.andriod.domain.model.device.DeviceType
 import se.hkr.andriod.ui.devices.light.LightDeviceRenderer
@@ -38,6 +39,7 @@ class DeviceViewModelFactory(
 fun DeviceHostScreen(
     device: Device,
     connectionManager: ConnectionManager,
+    navController: NavController,
     onBackClick: () -> Unit
 ) {
     val deviceCardViewModel: DeviceCardViewModel = viewModel()
@@ -46,6 +48,7 @@ fun DeviceHostScreen(
         device = device,
         viewModel = deviceCardViewModel,
         connectionManager = connectionManager,
+        navController = navController,
         onBackClick = onBackClick
     ) { liveDevice ->
         val factory = remember(device.id) {

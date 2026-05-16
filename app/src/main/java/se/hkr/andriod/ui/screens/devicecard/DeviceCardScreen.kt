@@ -25,12 +25,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import se.hkr.andriod.R
+import se.hkr.andriod.data.network.AuthSession.getUser
 import se.hkr.andriod.domain.model.device.Device
 import se.hkr.andriod.data.network.ConnectionManager
 import se.hkr.andriod.ui.components.DeviceCardItem
 import se.hkr.andriod.ui.components.AppButton
 import se.hkr.andriod.ui.components.CustomScreenHeader
+import se.hkr.andriod.ui.screens.main.goToSchedules
 import se.hkr.andriod.ui.theme.cardBackground
 import se.hkr.andriod.ui.theme.lightBlue
 
@@ -39,6 +42,7 @@ fun DeviceCardScreen(
     device: Device,
     viewModel: DeviceCardViewModel,
     connectionManager: ConnectionManager,
+    navController: NavController,
     onBackClick: () -> Unit,
 
     // Dynamic device specific content injected from device layer
@@ -51,6 +55,8 @@ fun DeviceCardScreen(
     val liveDevice = devices.firstOrNull { it.id == device.id } ?: device
 
     val scrollState = rememberScrollState()
+
+    val currentUser = getUser()
 
     Box(
         modifier = Modifier
@@ -148,10 +154,15 @@ fun DeviceCardScreen(
 
                             Spacer(modifier = Modifier.height(20.dp))
 
-                            AppButton(
-                                text = stringResource(R.string.add_new_schedule),
-                                onClick = { /*TODO*/ }
-                            )
+                            if (currentUser.canManageSchedules()) {
+                                AppButton(
+                                    text = stringResource(R.string.add_new_schedule),
+                                    onClick = {
+                                        navController.popBackStack()
+                                        navController.goToSchedules()
+                                    }
+                                )
+                            }
                         }
                     }
                 }

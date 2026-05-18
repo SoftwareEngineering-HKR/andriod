@@ -95,11 +95,6 @@ class UsersViewModel(
             } else {
                 userStore.addUserToDevice(userId, deviceId)
             }
-
-            // Not a good solution but it works for now
-            deviceStore.fetchAllDeviceInfo()
-            delay(100)
-            deviceStore.fetchAllDeviceInfo()
         }
     }
 
@@ -107,8 +102,6 @@ class UsersViewModel(
         val backendRole = role.toBackendType()
         viewModelScope.launch {
             userStore.updateUserRole(userName, backendRole)
-            delay(100)
-            userStore.fetchUsers()
         }
     }
 

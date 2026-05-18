@@ -20,6 +20,9 @@ class MainViewModel(
             connectionManager.startConnection { ip ->
                 if (ip != null) {
                     connectionManager.connectWebSocket(context)
+                }else {
+                    // Trigger logout if discovery fails
+                    connectionManager.triggerAuthFailure()
                 }
             }
         }

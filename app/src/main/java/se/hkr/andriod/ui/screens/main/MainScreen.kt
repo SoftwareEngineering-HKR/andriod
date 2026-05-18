@@ -33,9 +33,9 @@ import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
-import se.hkr.andriod.core.events.ErrorDispatcher
 import se.hkr.andriod.data.language.LanguageStorage
 import se.hkr.andriod.data.network.AuthSession
+import se.hkr.andriod.data.network.ConnectionManager
 import se.hkr.andriod.data.network.NetworkModule
 import se.hkr.andriod.data.network.PersistentCookieJar
 import se.hkr.andriod.navigation.BottomNavItem
@@ -58,12 +58,11 @@ import se.hkr.andriod.ui.theme.lightBlue
 @Composable
 fun MainScreen(
     onLogout: () -> Unit,
-    errorDispatcher: ErrorDispatcher
+    connectionManager: ConnectionManager,
 ) {
     val mainViewModel: MainViewModel = viewModel(
-        factory = MainViewModelFactory(errorDispatcher)
+        factory = MainViewModelFactory(connectionManager)
     )
-    val connectionManager = mainViewModel.connectionManager
     val navController = rememberNavController()
     val context = LocalContext.current
 

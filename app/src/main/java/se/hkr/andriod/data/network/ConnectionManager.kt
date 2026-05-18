@@ -34,12 +34,23 @@ class ConnectionManager(
         onAuthFailure = listener
     }
 
+    fun triggerAuthFailure() {
+        onAuthFailure?.invoke()
+    }
+
     fun startConnection(onResult: (String?) -> Unit) {
+        // If we already have an IP, don't perform UDP discovery again.
+        backendIp?.let {
+            Log.d("CONNECTION", "Using existing backend IP: $it")
+            onResult(it)
+            return
+        }
+
+        Log.d("CONNECTION", "No backend IP, starting UDP discovery")
         udpDiscovery.discoverServer(port = udpPort) { ip ->
             if (ip != null) {
                 Log.d("CONNECTION", "Backend discovered at $ip")
                 backendIp = ip
-
                 onResult(ip)
             } else {
                 Log.d("CONNECTION", "Backend discovery failed")
@@ -135,7 +146,9 @@ class ConnectionManager(
         userStore.clear()
         roomStore.clear()
 
-        hasTriedRefresh = false // reset for next session
+        // Reset for next session
+        backendIp = null
+        hasTriedRefresh = false
     }
 
     fun getBackendIp(): String? = backendIp

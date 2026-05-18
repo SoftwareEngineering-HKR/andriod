@@ -7,9 +7,8 @@ import se.hkr.andriod.data.network.AuthSession
 import se.hkr.andriod.data.network.ConnectionManager
 
 class MainViewModel(
-    private val errorDispatcher: ErrorDispatcher
+    val connectionManager: ConnectionManager
 ) : ViewModel() {
-    val connectionManager = ConnectionManager(errorDispatcher = errorDispatcher)
     private var isInitialized = false
 
     fun initConnection(context: Context) {
@@ -21,6 +20,9 @@ class MainViewModel(
             connectionManager.startConnection { ip ->
                 if (ip != null) {
                     connectionManager.connectWebSocket(context)
+                }else {
+                    // Trigger logout if discovery fails
+                    connectionManager.triggerAuthFailure()
                 }
             }
         }

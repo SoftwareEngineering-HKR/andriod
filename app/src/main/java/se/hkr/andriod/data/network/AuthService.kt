@@ -1,6 +1,8 @@
 package se.hkr.andriod.data.network
 
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -10,6 +12,7 @@ import java.io.IOException
 
 class AuthService(private val context: Context) {
     private val client = NetworkModule.getClient(context)
+    private val mainHandler = Handler(Looper.getMainLooper())
 
     private fun postRequest(
         url: String,
@@ -27,7 +30,9 @@ class AuthService(private val context: Context) {
         client.newCall(request).enqueue(object : Callback {
 
             override fun onFailure(call: Call, e: IOException) {
-                onResult(false, context.getString(R.string.error_cannot_connect))
+                mainHandler.post {
+                    onResult(false, context.getString(R.string.error_cannot_connect))
+                }
             }
 
             override fun onResponse(call: Call, response: Response) {
@@ -39,16 +44,22 @@ class AuthService(private val context: Context) {
                     } catch (e: Exception) {
                         null
                     }
-                    onResult(false, message ?: context.getString(R.string.error_request_failed))
+                    mainHandler.post {
+                        onResult(false, message ?: context.getString(R.string.error_request_failed))
+                    }
                     return
                 }
 
                 if (responseBody == null) {
-                    onResult(false, context.getString(R.string.error_empty_response))
+                    mainHandler.post {
+                        onResult(false, context.getString(R.string.error_empty_response))
+                    }
                     return
                 }
 
-                onResult(true, responseBody)
+                mainHandler.post {
+                    onResult(true, responseBody)
+                }
             }
         })
     }
@@ -152,7 +163,9 @@ class AuthService(private val context: Context) {
         client.newCall(request).enqueue(object : Callback {
 
             override fun onFailure(call: Call, e: IOException) {
-                onResult(false, context.getString(R.string.error_cannot_connect))
+                mainHandler.post {
+                    onResult(false, context.getString(R.string.error_cannot_connect))
+                }
             }
 
             override fun onResponse(call: Call, response: Response) {
@@ -164,11 +177,15 @@ class AuthService(private val context: Context) {
                     } catch (e: Exception) {
                         null
                     }
-                    onResult(false, message ?: context.getString(R.string.error_logout_failed))
+                    mainHandler.post {
+                        onResult(false, message ?: context.getString(R.string.error_logout_failed))
+                    }
                     return
                 }
 
-                onResult(true, context.getString(R.string.logout_success))
+                mainHandler.post {
+                    onResult(true, context.getString(R.string.logout_success))
+                }
             }
         })
     }
@@ -187,7 +204,9 @@ class AuthService(private val context: Context) {
         client.newCall(request).enqueue(object : Callback {
 
             override fun onFailure(call: Call, e: IOException) {
-                onResult(false, context.getString(R.string.error_cannot_connect))
+                mainHandler.post {
+                    onResult(false, context.getString(R.string.error_cannot_connect))
+                }
             }
 
             override fun onResponse(call: Call, response: Response) {
@@ -199,7 +218,9 @@ class AuthService(private val context: Context) {
                     } catch (e: Exception) {
                         null
                     }
-                    onResult(false, message ?: context.getString(R.string.error_refresh_failed))
+                    mainHandler.post {
+                        onResult(false, message ?: context.getString(R.string.error_refresh_failed))
+                    }
                     return
                 }
 
@@ -209,10 +230,14 @@ class AuthService(private val context: Context) {
 
                     AuthSession.saveToken(context, newToken)
 
-                    onResult(true, newToken)
+                    mainHandler.post {
+                        onResult(true, newToken)
+                    }
 
                 } catch (e: Exception) {
-                    onResult(false, e.message)
+                    mainHandler.post {
+                        onResult(false, e.message)
+                    }
                 }
             }
         })

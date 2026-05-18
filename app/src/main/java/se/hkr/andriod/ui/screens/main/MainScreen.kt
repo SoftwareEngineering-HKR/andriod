@@ -66,8 +66,12 @@ fun MainScreen(
     val navController = rememberNavController()
     val context = LocalContext.current
 
+    val hasReceivedInitialDevices by connectionManager
+        .deviceStore
+        .hasReceivedInitialDevices
+        .collectAsState()
+
     var hasFinishedInitialLoad by remember { mutableStateOf(false) }
-    val devices by connectionManager.deviceStore.devices.collectAsState()
 
     LaunchedEffect(Unit) {
         mainViewModel.initConnection(context)
@@ -87,13 +91,12 @@ fun MainScreen(
         }
     }
 
-    LaunchedEffect(Unit) {
-        if (devices.isNotEmpty()) {
-            hasFinishedInitialLoad = true
-        } else {
-            snapshotFlow { devices }.first { it.isNotEmpty() }
+    LaunchedEffect(hasReceivedInitialDevices) {
+        if (hasReceivedInitialDevices) {
             delay(500)
             hasFinishedInitialLoad = true
+        } else {
+            hasFinishedInitialLoad = false
         }
     }
 

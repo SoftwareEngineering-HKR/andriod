@@ -21,13 +21,17 @@ class DeviceStore(private val webSocketManager: WebSocketManager) {
     private val _allDevices = MutableStateFlow<List<Device>>(emptyList())
     val allDevices: StateFlow<List<Device>> get() = _allDevices
 
+    private val _hasReceivedInitialDevices = MutableStateFlow(false)
+    val hasReceivedInitialDevices: StateFlow<Boolean> get() = _hasReceivedInitialDevices
+
     // Coroutine scope for updates
     private val scope = CoroutineScope(Dispatchers.Main)
 
 
-    fun clear () {
+    fun clear() {
         _devices.value = emptyList()
         _allDevices.value = emptyList()
+        _hasReceivedInitialDevices.value = false
     }
 
     fun handleMessage(json: JSONObject) {
@@ -60,7 +64,10 @@ class DeviceStore(private val webSocketManager: WebSocketManager) {
             newDevices.add(device)
         }
 
-        scope.launch { _devices.value = newDevices }
+        scope.launch {
+            _devices.value = newDevices
+            _hasReceivedInitialDevices.value = true
+        }
         Log.d("DEVICESTORE", "Initial devices loaded: ${newDevices.size}")
     }
 

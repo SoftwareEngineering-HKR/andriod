@@ -167,6 +167,16 @@ The user interface is fully localized and currently supports multiple languages,
 </p>
 
 
+## Future Work
+- Allowing Users to Change Username
+- Allowing Users to Reset Their Password
+- Support for Scheduling Devices (Based on Time or Sensor Values)
+- Support for Additional Device Types
+- Functional Hue Selector for Lights
+- High Contrast Theme
+- Additional Languages
+
+
 ## License
 
 This project is licensed under the GNU General Public License v3.0.

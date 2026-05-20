@@ -63,6 +63,10 @@ fun DeviceCardItem(
         DeviceType.BUZZ
     )
 
+    val isDisplay = device.deviceTypeEnum in listOf(
+        DeviceType.DISPLAY
+    )
+
     Card(
         modifier = modifier
             .fillMaxWidth()
@@ -217,7 +221,7 @@ fun DeviceCardItem(
                             )
                         }
                     }
-                }
+                } else if (isDisplay){ /* Leave the space blank. */ }
             }
 
             // Gray overlay when offline

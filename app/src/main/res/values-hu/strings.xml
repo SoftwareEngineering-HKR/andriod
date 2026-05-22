@@ -82,6 +82,7 @@
     <string name="text_on_display">Szöveg a kijelzőn</string>
     <string name="display_text">Kijelző szövege</string>
     <string name="send">Küldés</string>
+    <string name="remove_device">Távolítsa el az eszközt</string>
 
     <!-- Mock Device -->
     <string name="brightness">Fényerő</string>

@@ -117,6 +117,17 @@ class UserStore(private val webSocketManager: WebSocketManager) {
         webSocketManager.sendMessage(message.toString())
     }
 
+    fun removeOwnUserFromDevice(deviceId: String) {
+        val message = JSONObject().apply {
+            put("type", "delete yourself from device")
+            put("payload", JSONObject().apply {
+                put("deviceId", deviceId)
+            })
+        }
+
+        webSocketManager.sendMessage(message.toString())
+    }
+
     private fun String.toUUIDOrNull(): UUID? {
         return try {
             UUID.fromString(this)

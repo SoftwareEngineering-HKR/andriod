@@ -65,11 +65,7 @@ fun mapDeviceToInfoUi(
             DeviceType.SENSOR,
             DeviceType.GAS,
             DeviceType.STEAM -> {
-                if (!d.scaleName.isNullOrBlank()) {
-                    stringResource(R.string.device_value_with_scale, d.value, d.scaleName!!)
-                } else {
-                    d.value.toString()
-                }
+                d.value.toString()
             }
 
             DeviceType.DISPLAY -> "${device.value}"

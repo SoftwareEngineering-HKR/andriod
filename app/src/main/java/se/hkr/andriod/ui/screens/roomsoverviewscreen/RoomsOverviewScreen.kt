@@ -171,7 +171,7 @@ fun RoomsOverviewScreen(
 
                         // Room switch is ON if any online switch device is ON
                         val roomEnabled = onlineSwitchDevices.any {
-                            it.value > it.minValue
+                            it.intValue > it.minValue
                         }
 
                         RoomCardItem(

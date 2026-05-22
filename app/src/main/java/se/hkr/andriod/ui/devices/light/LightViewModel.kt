@@ -40,7 +40,7 @@ class LightViewModel(
     private fun updateFromDevice(d: Device) {
         val min = d.minValue
         val max = d.maxValue
-        val current = d.value
+        val current = d.intValue
 
         val normalized = if (max > min) {
             ((current - min).toFloat() / (max - min).toFloat()).coerceIn(0f, 1f)

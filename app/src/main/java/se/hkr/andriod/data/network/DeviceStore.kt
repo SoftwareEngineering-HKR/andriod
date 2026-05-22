@@ -101,7 +101,6 @@ class DeviceStore(private val webSocketManager: WebSocketManager) {
 
         scope.launch {
             _devices.update { currentList -> currentList + device }
-            _allDevices.update { currentList -> currentList + device }
         }
 
         Log.d("DEVICESTORE", "New device added: ${device.id}")

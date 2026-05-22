@@ -14,6 +14,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.CalendarToday
+import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.ExpandLess
 import androidx.compose.material.icons.rounded.ExpandMore
 import androidx.compose.material3.*
@@ -168,6 +169,16 @@ fun DeviceCardScreen(
                 }
             }
             Spacer(modifier = Modifier.height(32.dp))
+
+            AppButton(
+                modifier = Modifier.fillMaxWidth(0.7f),
+                text = stringResource(R.string.remove_device),
+                icon = Icons.Rounded.Delete,
+                onClick = {
+                    navController.popBackStack()
+                    connectionManager.userStore.removeOwnUserFromDevice(device.id)
+                }
+            )
         }
     }
 }

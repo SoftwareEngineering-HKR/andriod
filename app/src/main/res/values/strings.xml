@@ -81,6 +81,7 @@
     <string name="text_on_display">Text on Display</string>
     <string name="display_text">Display Text</string>
     <string name="send">Send</string>
+    <string name="remove_device">Remove device</string>
 
     <!-- Mock Device -->
     <string name="brightness">Brightness</string>

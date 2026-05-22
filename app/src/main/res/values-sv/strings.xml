@@ -85,6 +85,7 @@
     <string name="text_on_display">Text på displayen</string>
     <string name="display_text">Displaytext</string>
     <string name="send">Skicka</string>
+    <string name="remove_device">Ta bort enheten</string>
 
     <!-- Mock Device -->
     <string name="brightness">Ljusstyrka</string>

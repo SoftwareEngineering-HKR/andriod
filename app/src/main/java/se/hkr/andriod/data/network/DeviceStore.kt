@@ -73,8 +73,8 @@ class DeviceStore(private val webSocketManager: WebSocketManager) {
 
     private fun handleDeviceUpdate(payload: JSONObject) {
         val deviceId = payload.optString("deviceID")
-        val newValue = payload.optInt("content", -1)
-        if (deviceId.isEmpty() || newValue == -1) return
+        val newValue = payload.optString("content", "")
+        if (deviceId.isEmpty()) return
 
         scope.launch {
             _devices.update { currentList ->

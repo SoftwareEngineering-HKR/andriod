@@ -154,7 +154,7 @@ fun DeviceCardItem(
                 }
 
                 if (isSwitchDevice && onSwitchToggle != null) {
-                    val checked = device.value > device.minValue
+                    val checked = device.intValue > device.minValue
                     Switch(
                         checked = checked,
                         onCheckedChange = { if (device.online) onSwitchToggle(it) },
@@ -179,7 +179,7 @@ fun DeviceCardItem(
                     }
                 } else if (isSensor) {
                     if (device.deviceTypeEnum == DeviceType.BUTTON) {
-                        val isPressed = device.value > device.minValue
+                        val isPressed = device.intValue > device.minValue
 
                         Box(
                             modifier = Modifier.padding(end = 12.dp),
@@ -208,7 +208,7 @@ fun DeviceCardItem(
 
                             DeviceType.DISTANCE -> "${device.value} mm"
 
-                            else -> device.value.toString()
+                            else -> device.value
                         }
 
                         Box(

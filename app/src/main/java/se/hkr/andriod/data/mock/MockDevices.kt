@@ -25,7 +25,7 @@ object MockDevices {
         ip = "192.168.0.10",
         name = "Ceiling Light",
         description = "Main living room light",
-        value = 1,
+        value = "1",
         minValue = 0,
         maxValue = 1,
         scaleName = null
@@ -39,7 +39,7 @@ object MockDevices {
         ip = "192.168.0.11",
         name = "Light 2",
         description = "Secondary living room light",
-        value = 0,
+        value = "0",
         minValue = 0,
         maxValue = 1,
         scaleName = null
@@ -53,7 +53,7 @@ object MockDevices {
         ip = "192.168.0.12",
         name = "Light 3",
         description = "Corner light",
-        value = 0,
+        value = "0",
         minValue = 0,
         maxValue = 1,
         scaleName = null
@@ -67,7 +67,7 @@ object MockDevices {
         ip = "192.168.0.13",
         name = "Light 4",
         description = "Reading light",
-        value = 0,
+        value = "0",
         minValue = 0,
         maxValue = 1,
         scaleName = null
@@ -81,7 +81,7 @@ object MockDevices {
         ip = "192.168.0.20",
         name = "Front Door Lock",
         description = "Smart lock on the front door",
-        value = 0,
+        value = "0",
         minValue = 0,
         maxValue = 1,
         scaleName = null
@@ -95,7 +95,7 @@ object MockDevices {
         ip = "192.168.0.30",
         name = "Temperature Sensor",
         description = "Living room temperature sensor",
-        value = 21,
+        value = "21",
         minValue = -50,
         maxValue = 50,
         scaleName = "°C"
@@ -109,7 +109,7 @@ object MockDevices {
         ip = "192.168.0.31",
         name = "Motion Sensor",
         description = "Detects motion in the kitchen",
-        value = 0,
+        value = "0",
         minValue = 0,
         maxValue = 1,
         scaleName = null

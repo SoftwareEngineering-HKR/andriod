@@ -11,7 +11,7 @@ data class Device(
     val ip: String?,
     var name: String?,
     var description: String?,
-    var value: Int = 0,
+    var value: String = "0",
     var maxValue: Int = 1,
     var minValue: Int = 0,
     var scaleName: String? = null,
@@ -41,6 +41,10 @@ data class Device(
             else -> DeviceType.UNKNOWN // Fallback
         }
 
+    // Helper to treat value as Int if possible
+    val intValue: Int
+        get() = value.toIntOrNull() ?: 0
+
     // Clean display name: ignore null, blank, or "null" strings
     val displayName: String
         get() = name?.takeIf { it.isNotBlank() && it.lowercase() != "null" } ?: "Unknown Device"
@@ -59,7 +63,7 @@ data class Device(
                 ip = json.optString("ip", null),
                 name = json.optString("name", null),
                 description = json.optString("description", null),
-                value = json.optInt("value", 0),
+                value = json.optString("value", "0"),
                 maxValue = json.optInt("max_value", 1),
                 minValue = json.optInt("min_value", 0),
                 scaleName = json.optString("scale_name", null),

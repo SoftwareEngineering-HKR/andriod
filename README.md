@@ -178,6 +178,14 @@ The user interface is fully localized and currently supports multiple languages,
 - Additional Languages
 
 
+## Contributors
+
+|||
+|-|-|
+| <img src="https://github.com/MaxDahlberg.png" width="80"/> | **Max Dahlberg** <br>[@MaxDahlberg](https://github.com/MaxDahlberg) |
+| <img src="https://github.com/Btibor02.png" width="80"/> | **Tibor Blascsok** <br>[@Btibor02](https://github.com/Btibor02) |
+
+
 ## License
 
 This project is licensed under the GNU General Public License v3.0.

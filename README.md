@@ -12,6 +12,7 @@ This project is part of a larger smart home ecosystem consisting of multiple rep
 - [Backend Service](https://github.com/SoftwareEngineering-HKR/backend)
 - [Web Application](https://github.com/SoftwareEngineering-HKR/frontend)
 - [Device Integration](https://github.com/SoftwareEngineering-HKR/IOT)
+- [Assistive Control System](https://github.com/SoftwareEngineering-HKR/feature_development)
 
 
 ## Features
@@ -175,6 +176,14 @@ The user interface is fully localized and currently supports multiple languages,
 - Functional Hue Selector for Lights
 - High Contrast Theme
 - Additional Languages
+
+
+## Contributors
+
+|||
+|-|-|
+| <img src="https://github.com/MaxDahlberg.png" width="80"/> | **Max Dahlberg** <br>[@MaxDahlberg](https://github.com/MaxDahlberg) |
+| <img src="https://github.com/Btibor02.png" width="80"/> | **Tibor Blascsok** <br>[@Btibor02](https://github.com/Btibor02) |
 
 
 ## License

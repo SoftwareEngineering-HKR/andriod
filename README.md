@@ -12,6 +12,7 @@ This project is part of a larger smart home ecosystem consisting of multiple rep
 - [Backend Service](https://github.com/SoftwareEngineering-HKR/backend)
 - [Web Application](https://github.com/SoftwareEngineering-HKR/frontend)
 - [Device Integration](https://github.com/SoftwareEngineering-HKR/IOT)
+- [Assistive Control System](https://github.com/SoftwareEngineering-HKR/feature_development)
 
 
 ## Features

@@ -46,6 +46,8 @@ fun mapDeviceToInfoUi(
         DeviceType.MOTION -> stringResource(R.string.device_type_motion)
         DeviceType.TEMPERATURE -> stringResource(R.string.device_type_temperature)
         DeviceType.TILT -> stringResource(R.string.device_type_tilt)
+        DeviceType.BUTTON -> stringResource(R.string.device_type_button)
+        DeviceType.DISTANCE -> stringResource(R.string.device_type_distance)
         DeviceType.UNKNOWN, null -> notAvailable
     }
 
@@ -53,7 +55,7 @@ fun mapDeviceToInfoUi(
         when (d.deviceTypeEnum) {
             DeviceType.LIGHT -> {
                 if (d.maxValue > 0) {
-                    val brightnessPercent = (d.value.toFloat() / d.maxValue.toFloat() * 100).toInt()
+                    val brightnessPercent = (d.intValue.toFloat() / d.maxValue.toFloat() * 100).toInt()
                     stringResource(R.string.device_value_percent, brightnessPercent)
                 } else {
                     stringResource(R.string.device_state_off)
@@ -62,30 +64,40 @@ fun mapDeviceToInfoUi(
 
             DeviceType.SENSOR,
             DeviceType.GAS,
-            DeviceType.HUMIDITY,
-            DeviceType.STEAM,
-            DeviceType.PHOTO,
-            DeviceType.BRIGHTNESS,
-            DeviceType.TEMPERATURE -> {
-                if (!d.scaleName.isNullOrBlank()) {
-                    stringResource(R.string.device_value_with_scale, d.value, d.scaleName!!)
-                } else {
-                    d.value.toString()
-                }
+            DeviceType.STEAM -> {
+                d.value
             }
+
+            DeviceType.DISPLAY -> d.value
+
+            DeviceType.HUMIDITY,
+            DeviceType.PHOTO,
+            DeviceType.BRIGHTNESS -> "${d.value}%"
+
+            DeviceType.TEMPERATURE -> "${d.value}°C"
+
+            DeviceType.DISTANCE -> "${d.value} mm"
 
             DeviceType.SERVO,
             DeviceType.WINDOW,
             DeviceType.DOOR -> { // Open/Closed devices
-                if (d.value > d.minValue) {
+                if (d.intValue > d.minValue) {
                     stringResource(R.string.device_state_open)
                 } else {
                     stringResource(R.string.device_state_closed)
                 }
             }
 
+            DeviceType.BUTTON -> { // Pushed/Not pushed devices
+                if (d.intValue > d.minValue) {
+                    stringResource(R.string.device_state_pushed)
+                } else {
+                    stringResource(R.string.device_state_not_pushed)
+                }
+            }
+
             DeviceType.TILT -> { // Tilted/Flat devices
-                if (d.value > d.minValue) {
+                if (d.intValue > d.minValue) {
                     stringResource(R.string.device_state_tilted)
                 } else {
                     stringResource(R.string.device_state_flat)
@@ -93,7 +105,7 @@ fun mapDeviceToInfoUi(
             }
 
             DeviceType.MOTION -> { // Motion/No motion devices
-                if (d.value > d.minValue) {
+                if (d.intValue > d.minValue) {
                     stringResource(R.string.device_state_motion)
                 } else {
                     stringResource(R.string.device_state_no_motion)
@@ -101,7 +113,7 @@ fun mapDeviceToInfoUi(
             }
 
             else -> { // On/Off devices
-                if (d.value > d.minValue) {
+                if (d.intValue > d.minValue) {
                     stringResource(R.string.device_state_on)
                 } else {
                     stringResource(R.string.device_state_off)

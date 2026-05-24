@@ -217,13 +217,4 @@
     <string name="language_english_display">Angol</string>
     <string name="language_hungarian_native">Magyar</string>
     <string name="language_hungarian_display">Magyar</string>
-
-    <!-- Schedules -->
-    <string name="schedules_title">Ütemezések</string>
-    <string name="add_schedule">Ütemezés hozzáadása</string>
-    <string name="save_schedule">Ütemezés mentése</string>
-    <string name="schedule_name">Ütemezés neve</string>
-    <string name="automate_devices">Automatizálja okoseszközeit</string>
-    <string name="active_schedules">Aktív ütemezések</string>
-    <string name="device_count">%1$d eszköz</string>
 </resources>

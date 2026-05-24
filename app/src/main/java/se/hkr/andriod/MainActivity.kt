@@ -8,6 +8,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.lifecycle.viewmodel.compose.viewModel
+import se.hkr.andriod.core.events.ErrorViewModel
 import se.hkr.andriod.navigation.AppNavGraph
 import se.hkr.andriod.ui.theme.AndriodTheme
 import se.hkr.andriod.data.theme.ThemeStorage
@@ -21,6 +23,9 @@ class MainActivity : AppCompatActivity() {
         setContent {
             val themeStorage = remember { ThemeStorage(applicationContext) }
 
+            val errorViewModel: ErrorViewModel = viewModel()
+            val errorDispatcher = errorViewModel.dispatcher
+
             val selectedTheme by themeStorage.selectedThemeFlow
                 .collectAsState(initial = AppTheme.SYSTEM)
 
@@ -33,7 +38,9 @@ class MainActivity : AppCompatActivity() {
             AndriodTheme(
                 darkTheme = isDarkTheme
             ) {
-                AppNavGraph()
+                AppNavGraph(
+                    errorDispatcher = errorDispatcher
+                )
             }
         }
     }

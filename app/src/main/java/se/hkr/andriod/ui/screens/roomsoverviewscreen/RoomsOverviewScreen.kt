@@ -1,6 +1,7 @@
 package se.hkr.andriod.ui.screens.roomsoverviewscreen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -16,8 +17,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -26,9 +29,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import se.hkr.andriod.R
 import se.hkr.andriod.data.network.ConnectionManager
 import se.hkr.andriod.domain.model.device.Device
@@ -43,6 +49,7 @@ import se.hkr.andriod.ui.screens.main.goToSchedules
 import se.hkr.andriod.ui.theme.cardBackground
 import se.hkr.andriod.ui.theme.lightBlue
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RoomsOverviewScreen(
     navController: NavController,
@@ -53,6 +60,9 @@ fun RoomsOverviewScreen(
     val devices by connectionManager.deviceStore.devices.collectAsState()
 
     val search = remember { mutableStateOf("") }
+
+    val context = LocalContext.current
+    var isRefreshing by remember { mutableStateOf(false) }
 
     val onlineCount = devices.count { it.online }
     val offlineCount = devices.count { !it.online }
@@ -119,52 +129,72 @@ fun RoomsOverviewScreen(
         }
 
         // Rooms list
-        if (devicesByRoom.isEmpty()) {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = stringResource(R.string.no_rooms),
-                    style = MaterialTheme.typography.titleLarge
-                )
-            }
-        } else {
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(vertical = 16.dp)
-            ) {
-                items(sortedRooms) { room ->
-                    val roomDevices = devicesByRoom[room] ?: emptyList()
-                    val switchDevices = roomDevices.filter {
-                        isSwitchDevice(it)
-                    }
+        PullToRefreshBox(
+            isRefreshing = isRefreshing,
+            onRefresh = {
+                isRefreshing = true
+                connectionManager.reconnectWebSocket(context)
 
-                    // Room switch is ON if any switch device is ON
-                    val roomEnabled = switchDevices.any {
-                        it.value > it.minValue
-                    }
-
-                    RoomCardItem(
-                        roomName = room,
-                        deviceCount = roomDevices.size,
-                        enabled = switchDevices.isNotEmpty(),
-                        checked = roomEnabled,
-                        onClick = { navController.navigate(Routes.roomDetails(room)) },
-                        onSwitchToggle = { turnOn ->
-                            switchDevices.forEach { device ->
-                                val value =
-                                    if (turnOn) device.maxValue else device.minValue
-
-                                connectionManager.updateDeviceValue(device.id, value)
-                            }
-                        },
-                        elevation = 2.dp
-                    )
+                kotlinx.coroutines.CoroutineScope(
+                    kotlinx.coroutines.Dispatchers.Main
+                ).launch {
+                    delay(600)
+                    isRefreshing = false
                 }
+            }
+        ) {
+            if (devicesByRoom.isEmpty()) {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    item {
+                        Text(
+                            text = stringResource(R.string.no_rooms),
+                            style = MaterialTheme.typography.titleLarge
+                        )
+                    }
+                }
+            } else {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(vertical = 16.dp)
+                ) {
+                    items(sortedRooms) { room ->
+                        val roomDevices = devicesByRoom[room] ?: emptyList()
+                        val switchDevices = roomDevices.filter {
+                            isSwitchDevice(it)
+                        }
 
-                item {
-                    Spacer(modifier = Modifier.height(16.dp))
+                        val onlineSwitchDevices = switchDevices.filter { it.online }
+
+                        // Room switch is ON if any online switch device is ON
+                        val roomEnabled = onlineSwitchDevices.any {
+                            it.intValue > it.minValue
+                        }
+
+                        RoomCardItem(
+                            roomName = room,
+                            deviceCount = roomDevices.size,
+                            enabled = onlineSwitchDevices.isNotEmpty(),
+                            checked = roomEnabled,
+                            onClick = { navController.navigate(Routes.roomDetails(room)) },
+                            onSwitchToggle = { turnOn ->
+                                onlineSwitchDevices.forEach { device ->
+                                    val value =
+                                        if (turnOn) device.maxValue else device.minValue
+
+                                    connectionManager.updateDeviceValue(device.id, value)
+                                }
+                            },
+                            elevation = 2.dp
+                        )
+                    }
+
+                    item {
+                        Spacer(modifier = Modifier.height(16.dp))
+                    }
                 }
             }
         }

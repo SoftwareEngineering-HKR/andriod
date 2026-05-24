@@ -21,8 +21,18 @@ class DeviceStore(private val webSocketManager: WebSocketManager) {
     private val _allDevices = MutableStateFlow<List<Device>>(emptyList())
     val allDevices: StateFlow<List<Device>> get() = _allDevices
 
+    private val _hasReceivedInitialDevices = MutableStateFlow(false)
+    val hasReceivedInitialDevices: StateFlow<Boolean> get() = _hasReceivedInitialDevices
+
     // Coroutine scope for updates
     private val scope = CoroutineScope(Dispatchers.Main)
+
+
+    fun clear() {
+        _devices.value = emptyList()
+        _allDevices.value = emptyList()
+        _hasReceivedInitialDevices.value = false
+    }
 
     fun handleMessage(json: JSONObject) {
         try {
@@ -54,14 +64,17 @@ class DeviceStore(private val webSocketManager: WebSocketManager) {
             newDevices.add(device)
         }
 
-        scope.launch { _devices.value = newDevices }
+        scope.launch {
+            _devices.value = newDevices
+            _hasReceivedInitialDevices.value = true
+        }
         Log.d("DEVICESTORE", "Initial devices loaded: ${newDevices.size}")
     }
 
     private fun handleDeviceUpdate(payload: JSONObject) {
         val deviceId = payload.optString("deviceID")
-        val newValue = payload.optInt("content", -1)
-        if (deviceId.isEmpty() || newValue == -1) return
+        val newValue = payload.optString("content", "")
+        if (deviceId.isEmpty()) return
 
         scope.launch {
             _devices.update { currentList ->
@@ -88,7 +101,6 @@ class DeviceStore(private val webSocketManager: WebSocketManager) {
 
         scope.launch {
             _devices.update { currentList -> currentList + device }
-            _allDevices.update { currentList -> currentList + device }
         }
 
         Log.d("DEVICESTORE", "New device added: ${device.id}")
@@ -204,6 +216,28 @@ class DeviceStore(private val webSocketManager: WebSocketManager) {
                 put("id", deviceId)
                 put("name", name)
                 put("description", description)
+            })
+        }
+
+        webSocketManager.sendMessage(message.toString())
+    }
+
+    // Update a device room assignment
+    fun updateDeviceRoom(deviceId: String, roomId: String? = "", roomName: String?) {
+        val updateRoom: (Device) -> Device = { device ->
+            if (device.id == deviceId) {
+                device.copy(room = roomName)
+            } else device
+        }
+
+        _devices.update { list -> list.map(updateRoom) }
+        _allDevices.update { list -> list.map(updateRoom) }
+
+        val message = JSONObject().apply {
+            put("type", "update device room")
+            put("payload", JSONObject().apply {
+                put("deviceId", deviceId)
+                put("roomId", roomId)
             })
         }
 

@@ -1,5 +1,7 @@
 package se.hkr.andriod.data.network
 
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import se.hkr.andriod.utils.DeviceUtils
 import java.net.DatagramPacket
@@ -8,13 +10,15 @@ import java.net.InetAddress
 
 class UdpDiscovery {
     fun discoverServer(port: Int = 4444, onResult: (String?) -> Unit) {
+        val mainHandler = Handler(Looper.getMainLooper())
+
         Thread {
             try {
                 if (DeviceUtils.isEmulator()) {
                     // Emulator: skip UDP broadcast
                     val ip = "10.0.2.2"
                     Log.d("UDP", "Running on emulator, using IP: $ip")
-                    onResult(ip)
+                    mainHandler.post { onResult(ip) }
                     return@Thread
                 }
 
@@ -49,16 +53,14 @@ class UdpDiscovery {
                 Log.d("UDP", "Received UDP response from $serverIp: $responseMessage")
 
                 socket.close()
-                if (serverIp != null) {
-                    onResult(serverIp)
-                }
+                mainHandler.post { onResult(serverIp) }
 
             } catch (e: java.net.SocketTimeoutException) {
                 Log.d("UDP", "UDP discovery timed out")
-                onResult(null)
+                mainHandler.post { onResult(null) }
             } catch (e: Exception) {
-                e.printStackTrace()
-                onResult("Error: ${e.message}")
+                Log.e("UDP", "UDP discovery error", e)
+                mainHandler.post { onResult(null) }
             }
         }.start()
     }

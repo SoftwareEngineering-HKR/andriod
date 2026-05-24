@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- TODO Check translation whether it's correct -->
 
     <string name="app_name">Interaktivt Hem</string>
 
@@ -45,6 +44,7 @@
 
     <!-- Rooms overview -->
     <string name="no_rooms">Inga rum</string>
+
     <plurals name="device_count">
         <item quantity="one">%d enhet</item>
         <item quantity="other">%d enheter</item>
@@ -85,6 +85,7 @@
     <string name="text_on_display">Text på displayen</string>
     <string name="display_text">Displaytext</string>
     <string name="send">Skicka</string>
+    <string name="remove_device">Ta bort enheten</string>
 
     <!-- Mock Device -->
     <string name="brightness">Ljusstyrka</string>
@@ -141,7 +142,10 @@
     <string name="device_type_motion">Rörelse</string>
     <string name="device_type_temperature">Temperatur</string>
     <string name="device_type_tilt">Lutning</string>
+    <string name="device_type_button">Knapp</string>
+    <string name="device_type_distance">Avstånd</string>
     <string name="device_value_percent">%d%%</string>
+    <string name="no_room">Inget rum</string>
 
     <!-- Settings - Rooms -->
     <string name="rooms">Rum</string>
@@ -183,6 +187,8 @@
     <string name="device_state_no_motion">Ingen rörelse</string>
     <string name="device_state_locked">Låst</string>
     <string name="device_state_unlocked">Upplåst</string>
+    <string name="device_state_pushed">Tryckt</string>
+    <string name="device_state_not_pushed">Inte tryckt</string>
     <string name="current_value">Nuvarande värde</string>
 
     <!-- Settings - Account Info -->
@@ -202,7 +208,6 @@
 
     <string name="admin">Admin</string>
     <string name="base_user">Standardanvändare</string>
-
 
     <!-- Settings - Theme -->
     <string name="theme_light">Ljust</string>
@@ -229,6 +234,35 @@
     <string name="schedule_name">Schemanamn</string>
     <string name="automate_devices">Automatisera dina smarta enheter</string>
     <string name="active_schedules">Aktiva scheman</string>
-    <string name="device_count">%1$d enheter</string>
+
+    <!-- Errors -->
+    <string name="error_generic">Ett oväntat fel inträffade.</string>
+    <string name="error_access_denied">Du har inte åtkomst till den här enheten.</string>
+    <string name="error_rooms_fetch_failed">Kunde inte hämta alla rum.</string>
+    <string name="error_room_create_failed">Det gick inte att skapa rummet!</string>
+    <string name="error_room_update_failed">Det gick inte att uppdatera rummet!</string>
+    <string name="error_room_delete_failed">Det gick inte att ta bort rummet!</string>
+    <string name="error_device_info_failed">Kunde inte hämta enhetsinformation.</string>
+    <string name="error_bluetooth_scan_failed">Bluetooth-skanning misslyckades.</string>
+    <string name="error_bluetooth_connect_failed">Bluetooth-anslutning till enheten misslyckades.</string>
+    <string name="error_device_update_failed">Det gick inte att uppdatera enheten!</string>
+    <string name="error_device_update_room_failed">Det gick inte att uppdatera enhetens rum!</string>
+    <string name="error_device_delete_failed">Det gick inte att ta bort enheten!</string>
+    <string name="error_device_remove_self_failed">Det gick inte att ta bort användaren från enheten.</string>
+    <string name="error_device_contact_failed">Kunde inte kontakta enheten.</string>
+    <string name="error_users_fetch_failed">Det gick inte att hämta användare.</string>
+    <string name="error_user_role_update_failed">Fel, kunde inte uppdatera användaren till önskad roll!</string>
+    <string name="error_user_delete_failed">Fel vid borttagning av användare!</string>
+    <string name="error_device_assign_user_failed">Det gick inte att koppla användaren till enheten.</string>
+    <string name="error_user_device_unassign_failed">Det gick inte att ta bort användaren från enheten.</string>
+    <string name="error_unknown_error">Ett okänt fel inträffade.</string>
+    <string name="error_cannot_connect">Kunde inte ansluta till servern</string>
+    <string name="error_invalid_credentials">Felaktigt användarnamn eller lösenord</string>
+    <string name="error_request_failed">Begäran misslyckades</string>
+    <string name="error_empty_response">Tomt svar</string>
+    <string name="error_register_failed">Registreringen misslyckades</string>
+    <string name="error_logout_failed">Utloggningen misslyckades</string>
+    <string name="logout_success">Utloggad</string>
+    <string name="error_refresh_failed">Uppdateringen misslyckades</string>
 
 </resources>

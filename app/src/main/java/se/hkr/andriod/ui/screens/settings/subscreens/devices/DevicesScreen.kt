@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -19,6 +21,7 @@ import androidx.compose.material.icons.rounded.Edit
 import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -62,196 +65,212 @@ fun DevicesScreen(
 
     var expanded by remember { mutableStateOf(false) }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.lightBlue)
-            .padding(top = 24.dp)
-    ) {
-        Column(
+    if (!uiState.isLoaded) {
+        Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(vertical = 24.dp),
+                .background(MaterialTheme.colorScheme.lightBlue),
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator()
+        }
+    } else {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.lightBlue)
+                .padding(top = 24.dp),
+            contentPadding = PaddingValues(
+                start = 20.dp,
+                end = 20.dp,
+                top = 24.dp,
+                bottom = 32.dp
+            ),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            CustomScreenHeader(
-                title = stringResource(R.string.devices),
-                onBackClick = onBackClick
-            )
-
-            Card(
-                modifier = Modifier.fillMaxWidth(0.9f),
-                shape = RoundedCornerShape(20.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.cardBackground
+            item {
+                CustomScreenHeader(
+                    title = stringResource(R.string.devices),
+                    onBackClick = onBackClick
                 )
-            ) {
-                Column(
-                    modifier = Modifier.padding(20.dp)
-                ) {
-                    Text(
-                        text = stringResource(R.string.device),
-                        style = MaterialTheme.typography.titleMedium
+            }
+
+            item {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(20.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.cardBackground
                     )
-
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    ExposedDropdownMenuBox(
-                        expanded = expanded,
-                        onExpandedChange = { expanded = !expanded }
+                ) {
+                    Column(
+                        modifier = Modifier.padding(20.dp)
                     ) {
-                        OutlinedTextField(
-                            value = selectedDevice?.displayName.orEmpty(),
-                            onValueChange = {},
-                            readOnly = true,
-                            modifier = Modifier
-                                .menuAnchor()
-                                .fillMaxWidth(),
-                            trailingIcon = {
-                                ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
-                            },
-                            shape = RoundedCornerShape(14.dp),
-                            singleLine = true
+                        Text(
+                            text = stringResource(R.string.device),
+                            style = MaterialTheme.typography.titleMedium
                         )
 
-                        ExposedDropdownMenu(
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        ExposedDropdownMenuBox(
                             expanded = expanded,
-                            onDismissRequest = { expanded = false }
+                            onExpandedChange = { expanded = !expanded }
                         ) {
-                            uiState.devices.forEach { device ->
-                                DropdownMenuItem(
-                                    text = { Text(device.displayName) },
-                                    onClick = {
-                                        viewModel.onDeviceSelected(device.id)
-                                        expanded = false
-                                    }
-                                )
+                            OutlinedTextField(
+                                value = selectedDevice?.displayName.orEmpty(),
+                                onValueChange = {},
+                                readOnly = true,
+                                modifier = Modifier
+                                    .menuAnchor()
+                                    .fillMaxWidth(),
+                                trailingIcon = {
+                                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                                },
+                                shape = RoundedCornerShape(14.dp),
+                                singleLine = true
+                            )
+
+                            ExposedDropdownMenu(
+                                expanded = expanded,
+                                onDismissRequest = { expanded = false }
+                            ) {
+                                uiState.devices.forEach { device ->
+                                    DropdownMenuItem(
+                                        text = { Text(device.displayName) },
+                                        onClick = {
+                                            viewModel.onDeviceSelected(device.id)
+                                            expanded = false
+                                        }
+                                    )
+                                }
                             }
                         }
                     }
                 }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Card(
-                modifier = Modifier.fillMaxWidth(0.9f),
-                shape = RoundedCornerShape(20.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.cardBackground
-                )
-            ) {
-                Column(
-                    modifier = Modifier.padding(20.dp)
+            item {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(20.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.cardBackground
+                    )
                 ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    Column(
+                        modifier = Modifier.padding(20.dp)
                     ) {
-                        Box(
-                            modifier = Modifier
-                                .size(14.dp)
-                                .clip(CircleShape)
-                                .background(
-                                    if (deviceInfo.isOnline) {
-                                        MaterialTheme.colorScheme.primary
-                                    } else {
-                                        MaterialTheme.colorScheme.outline
-                                    }
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .size(14.dp)
+                                    .clip(CircleShape)
+                                    .background(
+                                        if (deviceInfo.isOnline) {
+                                            MaterialTheme.colorScheme.primary
+                                        } else {
+                                            MaterialTheme.colorScheme.outline
+                                        }
+                                    )
+                            )
+
+                            Column {
+                                Text(
+                                    text = deviceInfo.name,
+                                    style = MaterialTheme.typography.headlineSmall
                                 )
+
+                                Spacer(modifier = Modifier.height(4.dp))
+
+                                Text(
+                                    text = deviceInfo.description,
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            InfoRow(text = deviceInfo.type)
+
+                            if (deviceInfo.room.isNotBlank() && deviceInfo.room != "null") {
+                                InfoRow(text = deviceInfo.room)
+                            }
+
+                            InfoRow(text = deviceInfo.status)
+                        }
+
+                        Spacer(modifier = Modifier.height(20.dp))
+
+                        Text(
+                            text = stringResource(R.string.current_value),
+                            style = MaterialTheme.typography.labelLarge,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
 
-                        Column {
-                            Text(
-                                text = deviceInfo.name,
-                                style = MaterialTheme.typography.headlineSmall
-                            )
+                        Spacer(modifier = Modifier.height(8.dp))
 
-                            Spacer(modifier = Modifier.height(4.dp))
-
-                            Text(
-                                text = deviceInfo.description,
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        }
+                        Text(
+                            text = deviceInfo.value,
+                            style = MaterialTheme.typography.displaySmall
+                        )
                     }
-
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        InfoRow(text = deviceInfo.type)
-
-                        if (deviceInfo.room.isNotBlank() && deviceInfo.room != "null") {
-                            InfoRow(text = deviceInfo.room)
-                        }
-
-                        InfoRow(text = deviceInfo.status)
-                    }
-
-                    Spacer(modifier = Modifier.height(20.dp))
-
-                    Text(
-                        text = stringResource(R.string.current_value),
-                        style = MaterialTheme.typography.labelLarge,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    Text(
-                        text = deviceInfo.value,
-                        style = MaterialTheme.typography.displaySmall
-                    )
                 }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Card(
-                modifier = Modifier.fillMaxWidth(0.9f),
-                shape = RoundedCornerShape(20.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.cardBackground
-                )
-            ) {
-                Column(
-                    modifier = Modifier.padding(vertical = 8.dp)
+            item {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(20.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.cardBackground
+                    )
                 ) {
-                    ActionRow(
-                        title = stringResource(R.string.rename_device),
-                        icon = {
-                            Icon(
-                                imageVector = Icons.Rounded.Edit,
-                                contentDescription = null
-                            )
-                        },
-                        onClick = viewModel::showRenameDialog
-                    )
+                    Column(
+                        modifier = Modifier.padding(vertical = 8.dp)
+                    ) {
+                        ActionRow(
+                            title = stringResource(R.string.rename_device),
+                            icon = {
+                                Icon(
+                                    imageVector = Icons.Rounded.Edit,
+                                    contentDescription = null
+                                )
+                            },
+                            onClick = viewModel::showRenameDialog
+                        )
 
-                    ActionRow(
-                        title = stringResource(R.string.change_room),
-                        icon = {
-                            Icon(
-                                imageVector = Icons.Rounded.Home,
-                                contentDescription = null
-                            )
-                        },
-                        onClick = viewModel::showChangeRoomDialog
-                    )
+                        ActionRow(
+                            title = stringResource(R.string.change_room),
+                            icon = {
+                                Icon(
+                                    imageVector = Icons.Rounded.Home,
+                                    contentDescription = null
+                                )
+                            },
+                            onClick = viewModel::showChangeRoomDialog
+                        )
 
-                    ActionRow(
-                        title = stringResource(R.string.delete_device),
-                        icon = {
-                            Icon(
-                                imageVector = Icons.Rounded.Delete,
-                                contentDescription = null
-                            )
-                        },
-                        onClick = viewModel::showDeleteDialog
-                    )
+                        ActionRow(
+                            title = stringResource(R.string.delete_device),
+                            icon = {
+                                Icon(
+                                    imageVector = Icons.Rounded.Delete,
+                                    contentDescription = null
+                                )
+                            },
+                            onClick = viewModel::showDeleteDialog
+                        )
+                    }
                 }
             }
         }
@@ -290,7 +309,12 @@ fun DevicesScreen(
         if (uiState.showChangeRoomDialog && selectedDevice != null) {
             SingleChoiceDialog(
                 title = stringResource(R.string.change_room),
-                options = uiState.availableRooms.map { room ->
+                options = listOf(
+                    DialogOption(
+                        id = "",
+                        title = stringResource(R.string.no_room)
+                    )
+                ) + uiState.availableRooms.map { room ->
                     DialogOption(
                         id = room.id,
                         title = room.name
@@ -301,7 +325,7 @@ fun DevicesScreen(
                 dismissText = stringResource(R.string.cancel),
                 onOptionSelected = viewModel::onRoomSelectedForDialog,
                 onConfirm = {
-                    viewModel.dismissDialogs()
+                    viewModel.updateSelectedDeviceRoom()
                 },
                 onDismiss = viewModel::dismissDialogs
             )

@@ -7,6 +7,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.QuestionMark
 import androidx.compose.material.icons.outlined.Lightbulb
 import androidx.compose.material.icons.outlined.Lock
+import androidx.compose.material.icons.outlined.RadioButtonChecked
 import androidx.compose.material.icons.rounded.MusicNote
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -44,7 +45,9 @@ fun DeviceCardItem(
         DeviceType.BRIGHTNESS,
         DeviceType.MOTION,
         DeviceType.TEMPERATURE,
-        DeviceType.TILT
+        DeviceType.TILT,
+        DeviceType.BUTTON,
+        DeviceType.DISTANCE,
     )
 
     val isSwitchDevice = device.deviceTypeEnum in listOf(
@@ -58,6 +61,10 @@ fun DeviceCardItem(
 
     val isButtonDevice = device.deviceTypeEnum in listOf(
         DeviceType.BUZZ
+    )
+
+    val isDisplay = device.deviceTypeEnum in listOf(
+        DeviceType.DISPLAY
     )
 
     Card(
@@ -96,6 +103,8 @@ fun DeviceCardItem(
                     DeviceType.MOTION -> painterResource(R.drawable.detector_24px)
                     DeviceType.TEMPERATURE -> painterResource(R.drawable.thermometer_24px)
                     DeviceType.TILT -> painterResource(R.drawable.diagonal_line_24px)
+                    DeviceType.BUTTON -> rememberVectorPainter(Icons.Outlined.RadioButtonChecked)
+                    DeviceType.DISTANCE -> painterResource(R.drawable.arrow_range_24px)
                     else -> rememberVectorPainter(Icons.Default.QuestionMark)
                 }
 
@@ -145,7 +154,7 @@ fun DeviceCardItem(
                 }
 
                 if (isSwitchDevice && onSwitchToggle != null) {
-                    val checked = device.value > device.minValue
+                    val checked = device.intValue > device.minValue
                     Switch(
                         checked = checked,
                         onCheckedChange = { if (device.online) onSwitchToggle(it) },
@@ -169,26 +178,50 @@ fun DeviceCardItem(
                         )
                     }
                 } else if (isSensor) {
-                    val valueText = when (device.deviceTypeEnum) {
-                        DeviceType.HUMIDITY,
-                        DeviceType.BRIGHTNESS,
-                        DeviceType.PHOTO -> "${device.value}%"
+                    if (device.deviceTypeEnum == DeviceType.BUTTON) {
+                        val isPressed = device.intValue > device.minValue
 
-                        DeviceType.TEMPERATURE -> "${device.value}°C"
+                        Box(
+                            modifier = Modifier.padding(end = 12.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .size(18.dp)
+                                    .clip(MaterialTheme.shapes.extraLarge)
+                                    .background(
+                                        if (isPressed)
+                                            MaterialTheme.colorScheme.primary
+                                        else
+                                            MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
+                                    )
+                            )
+                        }
 
-                        else -> device.value.toString()
+                    } else {
+                        val valueText = when (device.deviceTypeEnum) {
+                            DeviceType.HUMIDITY,
+                            DeviceType.BRIGHTNESS,
+                            DeviceType.PHOTO -> "${device.value}%"
+
+                            DeviceType.TEMPERATURE -> "${device.value}°C"
+
+                            DeviceType.DISTANCE -> "${device.value} mm"
+
+                            else -> device.value
+                        }
+
+                        Box(
+                            modifier = Modifier.padding(end = 12.dp)
+                        ) {
+                            Text(
+                                text = valueText,
+                                style = MaterialTheme.typography.headlineSmall,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                        }
                     }
-
-                    Box(
-                        modifier = Modifier.padding(end = 12.dp)
-                    ) {
-                        Text(
-                            text = valueText,
-                            style = MaterialTheme.typography.headlineSmall,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                }
+                } else if (isDisplay){ /* Leave the space blank. */ }
             }
 
             // Gray overlay when offline

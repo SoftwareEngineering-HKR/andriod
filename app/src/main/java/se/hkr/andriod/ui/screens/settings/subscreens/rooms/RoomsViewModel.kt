@@ -2,6 +2,7 @@ package se.hkr.andriod.ui.screens.settings.subscreens.rooms
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -13,15 +14,19 @@ import se.hkr.andriod.domain.model.device.Room
 
 data class RoomsUiState(
     val rooms: List<Room> = emptyList(),
-    val selectedRoom: Room? = null,
+    val selectedRoomId: String = "",
     val allDevices: List<Device> = emptyList(),
     val devicesInRoom: List<Device> = emptyList(),
     val availableDevices: List<Device> = emptyList(),
     val showCreateDialog: Boolean = false,
     val showRenameDialog: Boolean = false,
     val showDeleteDialog: Boolean = false,
-    val inputText: String = ""
-)
+    val inputText: String = "",
+    val isLoaded: Boolean = false
+) {
+    val selectedRoom: Room?
+        get() = rooms.firstOrNull { it.id == selectedRoomId }
+}
 
 class RoomsViewModel(
     private val roomStore: RoomStore,
@@ -32,56 +37,59 @@ class RoomsViewModel(
     val uiState: StateFlow<RoomsUiState> = _uiState
 
     init {
-        roomStore.getRooms()
-        deviceStore.fetchAllDeviceInfo()
-        observeStores()
-    }
-
-    private fun observeStores() {
         viewModelScope.launch {
-            roomStore.rooms.collect { rooms ->
-                _uiState.update { state ->
-                    val selected = rooms.find { it.id == state.selectedRoom?.id } ?: rooms.firstOrNull()
-                    val inRoom = state.allDevices.filter { it.room == selected?.name }
-                    val available = state.allDevices.filter { it.room != selected?.name }
+            roomStore.getRooms()
+            deviceStore.fetchAllDeviceInfo()
 
-                    state.copy(
-                        rooms = rooms,
-                        selectedRoom = selected,
-                        devicesInRoom = inRoom,
-                        availableDevices = available
-                    )
-                }
-            }
-        }
+            delay(500)
 
-        viewModelScope.launch {
-            deviceStore.allDevices.collect { devices ->
-                _uiState.update { state ->
-                    val room = state.selectedRoom
-                    state.copy(
-                        allDevices = devices,
-                        devicesInRoom = devices.filter { it.room == room?.name },
-                        availableDevices = devices.filter { it.room != room?.name }
-                    )
-                }
-            }
+            loadSnapshot()
         }
     }
 
-    fun onRoomSelected(room: Room) {
-        _uiState.update { state ->
-            state.copy(
-                selectedRoom = room,
-                devicesInRoom = state.allDevices.filter { it.room == room.name },
-                availableDevices = state.allDevices.filter { it.room != room.name }
+    private fun loadSnapshot() {
+        val rooms = roomStore.rooms.value
+        val devices = deviceStore.allDevices.value
+
+        val selectedRoomId = _uiState.value.selectedRoomId
+            .takeIf { id -> rooms.any { it.id == id } }
+            ?: rooms.firstOrNull()?.id.orEmpty()
+
+        val selectedRoom = rooms.firstOrNull { it.id == selectedRoomId }
+
+        _uiState.update {
+            it.copy(
+                rooms = rooms,
+                selectedRoomId = selectedRoomId,
+                allDevices = devices,
+                devicesInRoom = devices.filter { device ->
+                    device.room == selectedRoom?.name
+                },
+                availableDevices = devices.filter { device ->
+                    device.room != selectedRoom?.name
+                },
+                isLoaded = true
             )
         }
     }
 
-    fun devicesInSelectedRoom(): List<Device> = _uiState.value.devicesInRoom
+    fun onRoomSelected(roomId: String) {
+        _uiState.update { state ->
 
-    fun availableDevices(): List<Device> = _uiState.value.availableDevices
+            val selectedRoom = state.rooms.firstOrNull { it.id == roomId }
+                ?: return@update state
+
+            state.copy(
+                selectedRoomId = roomId,
+                devicesInRoom = state.allDevices.filter {
+                    it.room == selectedRoom.name
+                },
+                availableDevices = state.allDevices.filter {
+                    it.room != selectedRoom.name
+                }
+            )
+        }
+    }
 
     fun onInputChanged(value: String) {
         _uiState.update { it.copy(inputText = value) }
@@ -92,10 +100,10 @@ class RoomsViewModel(
     }
 
     fun showRenameDialog() {
-        _uiState.update {
-            it.copy(
+        _uiState.update { state ->
+            state.copy(
                 showRenameDialog = true,
-                inputText = it.selectedRoom?.name ?: ""
+                inputText = state.selectedRoom?.name ?: ""
             )
         }
     }
@@ -117,11 +125,14 @@ class RoomsViewModel(
 
     fun createRoom() {
         val name = _uiState.value.inputText.trim()
+
         if (name.isBlank()) return
 
         viewModelScope.launch {
             roomStore.createRoom(name)
             dismissDialogs()
+            delay(200)
+            loadSnapshot()
         }
     }
 
@@ -130,11 +141,13 @@ class RoomsViewModel(
         val room = state.selectedRoom ?: return
         val newName = state.inputText.trim()
 
-        if (newName.isBlank()) return
+        if (newName.isBlank() || newName == room.name) return
 
         viewModelScope.launch {
             roomStore.updateRoomName(room.id, newName)
             dismissDialogs()
+            delay(200)
+            loadSnapshot()
         }
     }
 
@@ -144,11 +157,36 @@ class RoomsViewModel(
         viewModelScope.launch {
             roomStore.deleteRoom(room.id)
             dismissDialogs()
+            delay(200)
+            loadSnapshot()
         }
     }
 
-    // TODO: implement when backend supports adding/removing devices to/from rooms
-    fun addDeviceToRoom(device: Device) {}
+    fun addDeviceToRoom(device: Device) {
+        val selectedRoom = _uiState.value.selectedRoom ?: return
 
-    fun removeDeviceFromRoom(device: Device) {}
+        deviceStore.updateDeviceRoom(
+            deviceId = device.id,
+            roomId = selectedRoom.id,
+            roomName = selectedRoom.name
+        )
+
+        viewModelScope.launch {
+            delay(200)
+            loadSnapshot()
+        }
+    }
+
+    fun removeDeviceFromRoom(device: Device) {
+        deviceStore.updateDeviceRoom(
+            deviceId = device.id,
+            roomId = "",
+            roomName = null
+        )
+
+        viewModelScope.launch {
+            delay(200)
+            loadSnapshot()
+        }
+    }
 }

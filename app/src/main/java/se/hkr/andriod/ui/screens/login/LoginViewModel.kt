@@ -21,7 +21,7 @@ data class LoginUiState(
 )
 
 class LoginViewModel(
-    private val connectionManager: ConnectionManager = ConnectionManager(),
+    private val connectionManager: ConnectionManager,
     private val authService: AuthService
 ) : ViewModel() {
 
@@ -47,7 +47,7 @@ class LoginViewModel(
             hasError = true
         }
 
-        if (currentState.password.length < 4) {
+        if (currentState.password.length < 8) {
             passwordErrorId = R.string.error_password_short
             hasError = true
         }

@@ -81,6 +81,7 @@
     <string name="text_on_display">Text on Display</string>
     <string name="display_text">Display Text</string>
     <string name="send">Send</string>
+    <string name="remove_device">Remove device</string>
 
     <!-- Mock Device -->
     <string name="brightness">Brightness</string>
@@ -137,7 +138,10 @@
     <string name="device_type_motion">Motion</string>
     <string name="device_type_temperature">Temperature</string>
     <string name="device_type_tilt">Tilt</string>
+    <string name="device_type_button">Button</string>
+    <string name="device_type_distance">Distance</string>
     <string name="device_value_percent">%d%%</string>
+    <string name="no_room">No room</string>
 
     <!-- Settings - Rooms -->
     <string name="rooms">Rooms</string>
@@ -179,6 +183,8 @@
     <string name="device_state_no_motion">No motion</string>
     <string name="device_state_locked">Locked</string>
     <string name="device_state_unlocked">Unlocked</string>
+    <string name="device_state_pushed">Pushed</string>
+    <string name="device_state_not_pushed">Not pushed</string>
     <string name="current_value">Current value</string>
 
     <!-- Settings - Account Info -->
@@ -218,6 +224,7 @@
     <string name="language_hungarian_native">Magyar</string>
     <string name="language_hungarian_display">Hungarian</string>
 
+<<<<<<< HEAD
     <!-- Schedules -->
     <string name="schedules_title">Schedules</string>
     <string name="add_schedule">Add Schedule</string>
@@ -226,4 +233,36 @@
     <string name="automate_devices">Automate your smart devices</string>
     <string name="active_schedules">Active Schedules</string>
     <string name="device_count">%1$d devices</string>
+=======
+    <!-- Errors -->
+    <string name="error_generic">An unexpected error occurred.</string>
+    <string name="error_access_denied">You do not have access to this device.</string>
+    <string name="error_rooms_fetch_failed">Could not get all rooms.</string>
+    <string name="error_room_create_failed">Failed to create room!</string>
+    <string name="error_room_update_failed">Failed to update room!</string>
+    <string name="error_room_delete_failed">Failed to delete room!</string>
+    <string name="error_device_info_failed">Could not get device info.</string>
+    <string name="error_bluetooth_scan_failed">Bluetooth scan failed.</string>
+    <string name="error_bluetooth_connect_failed">Bluetooth connection to device failed.</string>
+    <string name="error_device_update_failed">Failed to update device!</string>
+    <string name="error_device_update_room_failed">Failed to update device room!</string>
+    <string name="error_device_delete_failed">Failed to delete device!</string>
+    <string name="error_device_remove_self_failed">Failed to remove user from device.</string>
+    <string name="error_device_contact_failed">Device could not be contacted.</string>
+    <string name="error_users_fetch_failed">Failed to get users.</string>
+    <string name="error_user_role_update_failed">Error, could not update the user to desired role!</string>
+    <string name="error_user_delete_failed">Error in deleting user!</string>
+    <string name="error_device_assign_user_failed">Failed to connect user to device</string>
+    <string name="error_user_device_unassign_failed">Failed to remove user from device.</string>
+    <string name="error_unknown_error">An unknown error occurred.</string>
+    <string name="error_cannot_connect">Can not connect to server</string>
+    <string name="error_invalid_credentials">Incorrect username or password</string>
+    <string name="error_request_failed">Request failed</string>
+    <string name="error_empty_response">Empty response</string>
+    <string name="error_register_failed">Register failed</string>
+    <string name="error_logout_failed">Logout failed</string>
+    <string name="logout_success">Logged out</string>
+    <string name="error_refresh_failed">Refresh failed</string>
+
+>>>>>>> main
 </resources>

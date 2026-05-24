@@ -9,12 +9,12 @@ import se.hkr.andriod.ui.screens.login.LoginViewModel
 import se.hkr.andriod.ui.screens.signup.SignUpViewModel
 
 class AuthViewModelFactory(
-    private val context: Context
+    private val context: Context,
+    private val connectionManager: ConnectionManager
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
 
         val authService = AuthService(context.applicationContext)
-        val connectionManager = ConnectionManager()
 
         return when {
             modelClass.isAssignableFrom(LoginViewModel::class.java) -> {

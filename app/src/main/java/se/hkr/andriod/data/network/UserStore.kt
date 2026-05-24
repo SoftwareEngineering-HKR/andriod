@@ -18,6 +18,11 @@ class UserStore(private val webSocketManager: WebSocketManager) {
 
     private val scope = CoroutineScope(Dispatchers.Main)
 
+
+    fun clear () {
+        _users.value = emptyList()
+    }
+
     fun handleMessage(json: JSONObject) {
         try {
             val type = json.getString("type").lowercase()
@@ -106,6 +111,17 @@ class UserStore(private val webSocketManager: WebSocketManager) {
             put("payload", JSONObject().apply {
                 put("deviceId", deviceId)
                 put("userId", userId.toString())
+            })
+        }
+
+        webSocketManager.sendMessage(message.toString())
+    }
+
+    fun removeOwnUserFromDevice(deviceId: String) {
+        val message = JSONObject().apply {
+            put("type", "delete yourself from device")
+            put("payload", JSONObject().apply {
+                put("deviceId", deviceId)
             })
         }
 

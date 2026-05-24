@@ -12,6 +12,10 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -24,11 +28,11 @@ import se.hkr.andriod.ui.theme.cardBackground
 
 @Composable
 fun TextInputComponent(
-    value: String,
-    onValueChange: (String) -> Unit,
-    onSend: () -> Unit,
+    onSend: (String) -> Unit,
     device: Device
 ) {
+    var text by remember { mutableStateOf("") }
+
     Card(
         modifier = Modifier.fillMaxWidth(0.9f),
         shape = RoundedCornerShape(16.dp),
@@ -39,21 +43,25 @@ fun TextInputComponent(
         AppTextField(
             modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp),
             label = stringResource(R.string.display_text),
-            value = value,
-            onValueChange = onValueChange,
+            value = text,
+            onValueChange = {
+                if (it.length <= 32) {
+                    text = it
+                }
+            },
         )
 
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "${value.length}/32",
+                text = "${text.length}/32",
                 modifier = Modifier.weight(1f).padding(start = 20.dp, bottom = 4.dp)
             )
 
             AppButton(
                 text = stringResource(R.string.send),
-                onClick = onSend,
+                onClick = { onSend(text) },
                 enabled = device.online,
                 modifier = Modifier.width(120.dp).padding(end = 16.dp, bottom = 16.dp),
             )

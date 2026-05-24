@@ -2,15 +2,19 @@ package se.hkr.andriod.data.network
 
 import android.content.Context
 import android.util.Log
+import se.hkr.andriod.core.events.ErrorDispatcher
 
-class ConnectionManager(private val udpPort: Int = 4444) {
+class ConnectionManager(
+    private val udpPort: Int = 4444,
+    private val errorDispatcher: ErrorDispatcher
+) {
     private val udpDiscovery = UdpDiscovery()
     private val webSocketManager = WebSocketManager()
 
     val deviceStore = DeviceStore(webSocketManager)
     val userStore = UserStore(webSocketManager)
     val roomStore = RoomStore(webSocketManager)
-    val actionHandler = ActionResponseHandler()
+    val actionHandler = ActionResponseHandler(errorDispatcher)
 
     private val messageRouter = MessageRouter(
         deviceStore,
@@ -19,7 +23,6 @@ class ConnectionManager(private val udpPort: Int = 4444) {
         actionHandler
     )
 
-    private var isListening = false
     private var backendIp: String? = null
 
     // Prevent infinite refresh loops
@@ -31,12 +34,23 @@ class ConnectionManager(private val udpPort: Int = 4444) {
         onAuthFailure = listener
     }
 
+    fun triggerAuthFailure() {
+        onAuthFailure?.invoke()
+    }
+
     fun startConnection(onResult: (String?) -> Unit) {
+        // If we already have an IP, don't perform UDP discovery again.
+        backendIp?.let {
+            Log.d("CONNECTION", "Using existing backend IP: $it")
+            onResult(it)
+            return
+        }
+
+        Log.d("CONNECTION", "No backend IP, starting UDP discovery")
         udpDiscovery.discoverServer(port = udpPort) { ip ->
             if (ip != null) {
                 Log.d("CONNECTION", "Backend discovered at $ip")
                 backendIp = ip
-
                 onResult(ip)
             } else {
                 Log.d("CONNECTION", "Backend discovery failed")
@@ -52,52 +66,66 @@ class ConnectionManager(private val udpPort: Int = 4444) {
             return
         }
 
-        val token = AuthSession.getToken()
+        val token = AuthSession.getToken() ?: return
 
-        if (token == null) {
-            Log.d("CONNECTION", "No token available, cannot connect")
+        Log.d("CONNECTION", "Connecting WebSocket")
+
+        hasTriedRefresh = false
+
+        webSocketManager.clearMessageListeners()
+
+        webSocketManager.setOnOpenListener {
+            Log.d("CONNECTION", "Socket opened")
+        }
+
+        webSocketManager.setOnFailureListener {
+            Log.d("CONNECTION", "WebSocket failed")
+            handleConnectionLost(context)
+        }
+
+        webSocketManager.addMessageListener { message ->
+            Log.d("CONNECTION", "Received message: $message")
+            messageRouter.handle(message)
+        }
+
+        webSocketManager.connect(ip)
+    }
+
+    private fun handleConnectionLost(context: Context) {
+        if (hasTriedRefresh) {
+            Log.d("CONNECTION", "Already tried refresh, giving up")
             return
         }
 
-        Log.d("CONNECTION", "Connecting WebSocket with token")
+        hasTriedRefresh = true
 
-        webSocketManager.connect(ip)
+        val ip = backendIp ?: return
+        val authService = AuthService(context)
 
-        // Failure message listener
-        webSocketManager.setOnFailureListener {
-            Log.d("CONNECTION", "WebSocket failed")
+        Log.d("CONNECTION", "Refreshing token...")
 
-            if (!hasTriedRefresh) {
-                Log.d("CONNECTION", "Trying refresh...")
+        authService.refresh(ip) { success, newToken ->
 
-                hasTriedRefresh = true
+            if (success && newToken != null) {
 
-                val authService = AuthService(context)
+                AuthSession.saveToken(context, newToken)
 
-                authService.refresh(ip) { success, newToken ->
-                    if (success && newToken != null) {
-                        Log.d("CONNECTION", "Refresh successful, retrying connection")
+                Log.d("CONNECTION", "Refresh success: reconnecting")
 
-                        AuthSession.saveToken(context, newToken)
-                        connectWebSocket(context) // retry
-                    } else {
-                        Log.d("CONNECTION", "Refresh failed, user must log in again")
-                        onAuthFailure?.invoke()
-                    }
-                }
+                webSocketManager.disconnect()
+                connectWebSocket(context)
+
             } else {
-                Log.d("CONNECTION", "Already tried refresh, giving up")
+                Log.d("CONNECTION", "Refresh failed")
+                onAuthFailure?.invoke()
             }
         }
+    }
 
-        // Normal message listener
-        if (!isListening) {
-            webSocketManager.addMessageListener { message ->
-                Log.d("CONNECTION", "Received message: $message")
-                messageRouter.handle(message)
-            }
-            isListening = true
-        }
+    fun reconnectWebSocket(context: Context) {
+        Log.d("CONNECTION", "Manual reconnect")
+        webSocketManager.disconnect()
+        connectWebSocket(context)
     }
 
     fun sendMessage(message: String) {
@@ -113,11 +141,15 @@ class ConnectionManager(private val udpPort: Int = 4444) {
     fun disconnect() {
         Log.d("CONNECTION", "Disconnecting from backend")
         webSocketManager.disconnect()
-        isListening = false
-        hasTriedRefresh = false // reset for next session
+        // Clear stores
+        deviceStore.clear()
+        userStore.clear()
+        roomStore.clear()
+
+        // Reset for next session
+        backendIp = null
+        hasTriedRefresh = false
     }
 
-    fun getBackendIp(): String? {
-        return backendIp
-    }
+    fun getBackendIp(): String? = backendIp
 }

@@ -1,0 +1,29 @@
+@startuml
+
+actor User
+
+participant LoginScreen
+participant LoginViewModel
+participant AuthService
+participant AuthSession
+participant AppNavGraph
+participant MainScreen
+
+User -> LoginScreen : Enter credentials
+LoginScreen -> LoginViewModel : login(email, password)
+
+LoginViewModel -> AuthService : authenticate()
+
+AuthService --> LoginViewModel : success
+
+LoginViewModel -> AuthSession : saveSession()
+
+AuthSession --> LoginViewModel : session saved
+
+LoginViewModel --> LoginScreen : login success
+
+LoginScreen -> AppNavGraph : navigateToMain()
+
+AppNavGraph -> MainScreen : open main screen
+
+@enduml

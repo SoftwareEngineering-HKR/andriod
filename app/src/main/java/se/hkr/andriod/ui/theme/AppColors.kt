@@ -81,10 +81,11 @@ val ColorScheme.cardBackground: Color
     get() = if (LocalIsDarkTheme.current) CardBackgroundDark else CardBackgroundLight
 
 // Add device list item
-val ColorScheme.ListItemBackground: Color
+val ColorScheme.listItemBackground: Color
     @Composable
     @ReadOnlyComposable
-    get() = if (LocalIsDarkTheme.current) ListItemBackgroundDark else ListItemBackgroundLight
+    get() = if (LocalIsDarkTheme.current)
+        ListItemBackgroundDark else ListItemBackgroundLight
 
 // Gray card overlay
 val ColorScheme.GrayCardOverlay: Color

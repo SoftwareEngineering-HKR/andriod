@@ -15,19 +15,24 @@ import se.hkr.andriod.ui.screens.main.MainScreen
 import se.hkr.andriod.ui.screens.signup.SignUpScreen
 import se.hkr.andriod.ui.screens.signup.SignUpViewModel
 import se.hkr.andriod.ui.viewmodel.AuthViewModelFactory
+import se.hkr.andriod.ui.screens.SchedulesScreen
 
 @Composable
 fun AppNavGraph() {
+
     val navController = rememberNavController()
     val context = LocalContext.current
 
     // Load token once when app starts
     LaunchedEffect(Unit) {
+
         AuthSession.loadSession(context)
 
         if (AuthSession.isLoggedIn()) {
             navController.navigate(Routes.MAIN) {
-                popUpTo(Routes.LOGIN) { inclusive = true }
+                popUpTo(Routes.LOGIN) {
+                    inclusive = true
+                }
             }
         }
     }
@@ -36,17 +41,27 @@ fun AppNavGraph() {
         navController = navController,
         startDestination = Routes.LOGIN
     ) {
+
         composable(Routes.LOGIN) {
-            val factory = remember { AuthViewModelFactory(context) }
-            val loginViewModel: LoginViewModel = viewModel(factory = factory)
+
+            val factory = remember {
+                AuthViewModelFactory(context)
+            }
+
+            val loginViewModel: LoginViewModel =
+                viewModel(factory = factory)
 
             LoginScreen(
                 viewModel = loginViewModel,
+
                 onNavigateToHome = {
                     navController.navigate(Routes.MAIN) {
-                        popUpTo(Routes.LOGIN) { inclusive = true }
+                        popUpTo(Routes.LOGIN) {
+                            inclusive = true
+                        }
                     }
                 },
+
                 onSignUpClicked = {
                     navController.navigate(Routes.SIGN_UP)
                 }
@@ -54,16 +69,25 @@ fun AppNavGraph() {
         }
 
         composable(Routes.SIGN_UP) {
-            val factory = remember { AuthViewModelFactory(context) }
-            val registerViewModel: SignUpViewModel = viewModel(factory = factory)
+
+            val factory = remember {
+                AuthViewModelFactory(context)
+            }
+
+            val registerViewModel: SignUpViewModel =
+                viewModel(factory = factory)
 
             SignUpScreen(
                 viewModel = registerViewModel,
+
                 onNavigateToHome = {
                     navController.navigate(Routes.MAIN) {
-                        popUpTo(Routes.LOGIN) { inclusive = true }
+                        popUpTo(Routes.LOGIN) {
+                            inclusive = true
+                        }
                     }
                 },
+
                 onLoginClicked = {
                     navController.navigate(Routes.LOGIN)
                 }
@@ -71,15 +95,23 @@ fun AppNavGraph() {
         }
 
         composable(Routes.MAIN) {
+
             MainScreen(
                 onLogout = {
+
                     AuthSession.clear(context)
 
                     navController.navigate(Routes.LOGIN) {
-                        popUpTo(Routes.MAIN) { inclusive = true }
+                        popUpTo(Routes.MAIN) {
+                            inclusive = true
+                        }
                     }
                 }
             )
+        }
+
+        composable(Routes.SCHEDULES) {
+            SchedulesScreen()
         }
     }
 }

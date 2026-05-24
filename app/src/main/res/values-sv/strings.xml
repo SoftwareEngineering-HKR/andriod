@@ -222,4 +222,13 @@
     <string name="language_hungarian_native">Magyar</string>
     <string name="language_hungarian_display">Ungerska</string>
 
+    <!-- Schedules -->
+    <string name="schedules_title">Scheman</string>
+    <string name="add_schedule">Lägg till schema</string>
+    <string name="save_schedule">Spara schema</string>
+    <string name="schedule_name">Schemanamn</string>
+    <string name="automate_devices">Automatisera dina smarta enheter</string>
+    <string name="active_schedules">Aktiva scheman</string>
+    <string name="device_count">%1$d enheter</string>
+
 </resources>

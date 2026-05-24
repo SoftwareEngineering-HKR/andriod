@@ -218,4 +218,12 @@
     <string name="language_hungarian_native">Magyar</string>
     <string name="language_hungarian_display">Hungarian</string>
 
+    <!-- Schedules -->
+    <string name="schedules_title">Schedules</string>
+    <string name="add_schedule">Add Schedule</string>
+    <string name="save_schedule">Save Schedule</string>
+    <string name="schedule_name">Schedule Name</string>
+    <string name="automate_devices">Automate your smart devices</string>
+    <string name="active_schedules">Active Schedules</string>
+    <string name="device_count">%1$d devices</string>
 </resources>

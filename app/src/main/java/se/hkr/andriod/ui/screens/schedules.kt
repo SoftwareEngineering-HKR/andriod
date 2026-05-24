@@ -13,10 +13,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import se.hkr.andriod.R
+import se.hkr.andriod.ui.components.AppButton
+import se.hkr.andriod.ui.components.AppTextField
+import se.hkr.andriod.ui.theme.cardBackground
+import se.hkr.andriod.ui.theme.listItemBackground
 
 data class Schedule(
     val id: Int,
@@ -44,24 +47,24 @@ fun SchedulesScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFE5EBF3))
+            .background(MaterialTheme.colorScheme.background)
             .padding(16.dp)
     ) {
 
         Text(
-            text = "Schedules",
-            fontSize = 30.sp,
-            fontWeight = FontWeight.Bold,
+            text = stringResource(R.string.schedules_title),
+            style = MaterialTheme.typography.titleLarge,
             modifier = Modifier.padding(bottom = 20.dp)
         )
 
         Card(
             shape = RoundedCornerShape(24.dp),
             colors = CardDefaults.cardColors(
-                containerColor = Color.White
+                containerColor = MaterialTheme.colorScheme.cardBackground
             ),
             modifier = Modifier.fillMaxWidth()
         ) {
+
             Column(
                 modifier = Modifier.padding(20.dp)
             ) {
@@ -70,66 +73,67 @@ fun SchedulesScreen() {
                     modifier = Modifier
                         .size(70.dp)
                         .clip(CircleShape)
-                        .background(Color(0xFF5A3FF2))
+                        .background(MaterialTheme.colorScheme.primary)
                         .align(Alignment.CenterHorizontally),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text("⏰", fontSize = 28.sp)
+                    Text("⏰")
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
-                    text = "Create Schedule",
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold,
+                    text = stringResource(R.string.add_schedule),
+                    style = MaterialTheme.typography.titleLarge,
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
 
                 Text(
-                    text = "Automate your smart devices",
-                    color = Color.Gray,
+                    text = stringResource(R.string.automate_devices),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)
                         .padding(top = 4.dp, bottom = 20.dp)
                 )
 
-                OutlinedTextField(
+                AppTextField(
                     value = device,
                     onValueChange = { device = it },
-                    label = { Text("Device Name") },
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(14.dp)
+                    label = stringResource(R.string.schedule_name),
+                    modifier = Modifier.fillMaxWidth()
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                OutlinedTextField(
+                AppTextField(
                     value = room,
                     onValueChange = { room = it },
-                    label = { Text("Room") },
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(14.dp)
+                    label = stringResource(R.string.room_name),
+                    modifier = Modifier.fillMaxWidth()
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                OutlinedTextField(
+                AppTextField(
                     value = time,
                     onValueChange = { time = it },
-                    label = { Text("Schedule Time") },
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(14.dp)
+                    label = stringResource(R.string.save_schedule),
+                    modifier = Modifier.fillMaxWidth()
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))
 
-                Button(
+                AppButton(
+                    text = stringResource(R.string.add_schedule),
                     onClick = {
-                        if (device.isNotEmpty() &&
+
+                        if (
+                            device.isNotEmpty() &&
                             room.isNotEmpty() &&
                             time.isNotEmpty()
                         ) {
+
                             schedules = schedules + Schedule(
                                 id = schedules.size + 1,
                                 device = device,
@@ -144,23 +148,16 @@ fun SchedulesScreen() {
                     },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(54.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFF5A3FF2)
-                    ),
-                    shape = RoundedCornerShape(14.dp)
-                ) {
-                    Text("Add Schedule")
-                }
+                        .height(54.dp)
+                )
             }
         }
 
         Spacer(modifier = Modifier.height(24.dp))
 
         Text(
-            text = "Active Schedules",
-            fontSize = 20.sp,
-            fontWeight = FontWeight.SemiBold,
+            text = stringResource(R.string.active_schedules),
+            style = MaterialTheme.typography.titleMedium,
             modifier = Modifier.padding(bottom = 12.dp)
         )
 
@@ -173,7 +170,7 @@ fun SchedulesScreen() {
                 Card(
                     shape = RoundedCornerShape(20.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = Color.White
+                        containerColor = MaterialTheme.colorScheme.cardBackground
                     )
                 ) {
 
@@ -193,7 +190,7 @@ fun SchedulesScreen() {
                                 modifier = Modifier
                                     .size(50.dp)
                                     .clip(RoundedCornerShape(14.dp))
-                                    .background(Color(0xFFF1EEFF)),
+                                    .background(MaterialTheme.colorScheme.listItemBackground),
                                 contentAlignment = Alignment.Center
                             ) {
                                 Text("⏰")
@@ -202,14 +199,16 @@ fun SchedulesScreen() {
                             Spacer(modifier = Modifier.width(12.dp))
 
                             Column {
+
                                 Text(
                                     text = schedule.device,
-                                    fontWeight = FontWeight.Bold
+                                    style = MaterialTheme.typography.bodyLarge
                                 )
 
                                 Text(
                                     text = "${schedule.room} • ${schedule.time}",
-                                    color = Color.Gray
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }
                         }
@@ -221,9 +220,11 @@ fun SchedulesScreen() {
                                 }
                             }
                         ) {
+
                             Icon(
                                 imageVector = Icons.Default.Delete,
-                                contentDescription = "Delete"
+                                contentDescription = stringResource(R.string.save),
+                                tint = MaterialTheme.colorScheme.error
                             )
                         }
                     }

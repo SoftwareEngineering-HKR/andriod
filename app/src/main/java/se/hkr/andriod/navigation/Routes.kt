@@ -19,6 +19,7 @@ object Routes {
     const val LANGUAGE = "language"
     const val ACCOUNT = "account"
 
+
     const val DEVICE_CARD = "device_card/{type}/{id}"
     fun deviceCard(device: Device): String {
         return "device_card/${device.deviceTypeEnum.name}/${device.id}"

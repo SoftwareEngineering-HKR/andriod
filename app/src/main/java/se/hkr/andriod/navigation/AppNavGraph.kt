@@ -14,6 +14,7 @@ import se.hkr.andriod.core.events.ErrorDispatcher
 import se.hkr.andriod.data.network.AuthSession
 import se.hkr.andriod.data.network.SharedConnectionViewModel
 import se.hkr.andriod.ui.components.GlobalErrorSnackbarHost
+import se.hkr.andriod.ui.screens.SchedulesScreen
 import se.hkr.andriod.ui.screens.login.LoginScreen
 import se.hkr.andriod.ui.screens.login.LoginViewModel
 import se.hkr.andriod.ui.screens.main.MainScreen
@@ -23,31 +24,43 @@ import se.hkr.andriod.ui.viewmodel.AuthViewModelFactory
 
 @Composable
 fun AppNavGraph(errorDispatcher: ErrorDispatcher) {
+
     val navController = rememberNavController()
     val context = LocalContext.current
 
-    // Use ViewModel to hold the ConnectionManager so it survives configuration changes (like language switch)
+    // Use ViewModel to hold the ConnectionManager so it survives configuration changes
     val sharedConnectionViewModel: SharedConnectionViewModel = viewModel(
         factory = object : ViewModelProvider.Factory {
+
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 return SharedConnectionViewModel(errorDispatcher) as T
             }
         }
     )
+
     val connectionManager = sharedConnectionViewModel.connectionManager
 
     // Load token once when app starts
     LaunchedEffect(Unit) {
+
         AuthSession.loadSession(context)
 
-        // Only navigate to MAIN if we are logged in AND not already on the MAIN screen
-        // This prevents the reset during rotation
+        // Only navigate if not already on MAIN
         if (AuthSession.isLoggedIn()) {
-            val currentRoute = navController.currentBackStackEntry?.destination?.route
+
+            val currentRoute =
+                navController.currentBackStackEntry
+                    ?.destination
+                    ?.route
+
             if (currentRoute != Routes.MAIN) {
+
                 navController.navigate(Routes.MAIN) {
-                    popUpTo(Routes.LOGIN) { inclusive = true }
+
+                    popUpTo(Routes.LOGIN) {
+                        inclusive = true
+                    }
                 }
             }
         }
@@ -57,17 +70,29 @@ fun AppNavGraph(errorDispatcher: ErrorDispatcher) {
         navController = navController,
         startDestination = Routes.LOGIN
     ) {
+
         composable(Routes.LOGIN) {
-            val factory = remember(connectionManager) { AuthViewModelFactory(context, connectionManager) }
-            val loginViewModel: LoginViewModel = viewModel(factory = factory)
+
+            val factory = remember(connectionManager) {
+                AuthViewModelFactory(context, connectionManager)
+            }
+
+            val loginViewModel: LoginViewModel =
+                viewModel(factory = factory)
 
             LoginScreen(
                 viewModel = loginViewModel,
+
                 onNavigateToHome = {
+
                     navController.navigate(Routes.MAIN) {
-                        popUpTo(Routes.LOGIN) { inclusive = true }
+
+                        popUpTo(Routes.LOGIN) {
+                            inclusive = true
+                        }
                     }
                 },
+
                 onSignUpClicked = {
                     navController.navigate(Routes.SIGN_UP)
                 }
@@ -75,16 +100,27 @@ fun AppNavGraph(errorDispatcher: ErrorDispatcher) {
         }
 
         composable(Routes.SIGN_UP) {
-            val factory = remember(connectionManager) { AuthViewModelFactory(context, connectionManager) }
-            val registerViewModel: SignUpViewModel = viewModel(factory = factory)
+
+            val factory = remember(connectionManager) {
+                AuthViewModelFactory(context, connectionManager)
+            }
+
+            val registerViewModel: SignUpViewModel =
+                viewModel(factory = factory)
 
             SignUpScreen(
                 viewModel = registerViewModel,
+
                 onNavigateToHome = {
+
                     navController.navigate(Routes.MAIN) {
-                        popUpTo(Routes.LOGIN) { inclusive = true }
+
+                        popUpTo(Routes.LOGIN) {
+                            inclusive = true
+                        }
                     }
                 },
+
                 onLoginClicked = {
                     navController.navigate(Routes.LOGIN)
                 }
@@ -92,17 +128,28 @@ fun AppNavGraph(errorDispatcher: ErrorDispatcher) {
         }
 
         composable(Routes.MAIN) {
+
             MainScreen(
                 onLogout = {
+
                     AuthSession.clear(context)
 
                     navController.navigate(Routes.LOGIN) {
-                        popUpTo(Routes.MAIN) { inclusive = true }
+
+                        popUpTo(Routes.MAIN) {
+                            inclusive = true
+                        }
                     }
                 },
+
                 connectionManager = connectionManager,
             )
         }
+
+        composable(Routes.SCHEDULES) {
+            SchedulesScreen()
+        }
     }
+
     GlobalErrorSnackbarHost(errorDispatcher)
 }

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- TODO Check translation whether it's correct -->
 
     <string name="app_name">Interaktivt Hem</string>
 
@@ -45,6 +44,7 @@
 
     <!-- Rooms overview -->
     <string name="no_rooms">Inga rum</string>
+
     <plurals name="device_count">
         <item quantity="one">%d enhet</item>
         <item quantity="other">%d enheter</item>
@@ -209,7 +209,6 @@
     <string name="admin">Admin</string>
     <string name="base_user">Standardanvändare</string>
 
-
     <!-- Settings - Theme -->
     <string name="theme_light">Ljust</string>
     <string name="theme_dark">Mörkt</string>
@@ -227,6 +226,14 @@
     <string name="language_english_display">Engelska</string>
     <string name="language_hungarian_native">Magyar</string>
     <string name="language_hungarian_display">Ungerska</string>
+
+    <!-- Schedules -->
+    <string name="schedules_title">Scheman</string>
+    <string name="add_schedule">Lägg till schema</string>
+    <string name="save_schedule">Spara schema</string>
+    <string name="schedule_name">Schemanamn</string>
+    <string name="automate_devices">Automatisera dina smarta enheter</string>
+    <string name="active_schedules">Aktiva scheman</string>
 
     <!-- Errors -->
     <string name="error_generic">Ett oväntat fel inträffade.</string>

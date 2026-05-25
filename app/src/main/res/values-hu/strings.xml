@@ -82,7 +82,6 @@
     <string name="text_on_display">Szöveg a kijelzőn</string>
     <string name="display_text">Kijelző szövege</string>
     <string name="send">Küldés</string>
-    <string name="remove_device">Távolítsa el az eszközt</string>
 
     <!-- Mock Device -->
     <string name="brightness">Fényerő</string>
@@ -139,10 +138,8 @@
     <string name="device_type_motion">Mozgás</string>
     <string name="device_type_temperature">Hőmérséklet</string>
     <string name="device_type_tilt">Dőlés</string>
-    <string name="device_type_button">Gomb</string>
-    <string name="device_type_distance">Távolság</string>
     <string name="device_value_percent">%d%%</string>
-    <string name="no_room">Nincs szoba</string>
+    <string name="remove_device">Eszköz eltávolítása</string>
 
     <!-- Settings - Rooms -->
     <string name="rooms">Szobák</string>
@@ -184,8 +181,6 @@
     <string name="device_state_no_motion">Nincs mozgás</string>
     <string name="device_state_locked">Zárolva</string>
     <string name="device_state_unlocked">Feloldva</string>
-    <string name="device_state_pushed">Lenyomva</string>
-    <string name="device_state_not_pushed">Nincs lenyomva</string>
     <string name="current_value">Jelenlegi érték</string>
 
     <!-- Settings - Account Info -->
@@ -223,35 +218,4 @@
     <string name="language_english_display">Angol</string>
     <string name="language_hungarian_native">Magyar</string>
     <string name="language_hungarian_display">Magyar</string>
-
-    <!-- Errors -->
-    <string name="error_generic">Váratlan hiba történt.</string>
-    <string name="error_access_denied">Nincs hozzáférése ehhez az eszközhöz.</string>
-    <string name="error_rooms_fetch_failed">Nem sikerült lekérni az összes szobát.</string>
-    <string name="error_room_create_failed">Nem sikerült létrehozni a szobát!</string>
-    <string name="error_room_update_failed">Nem sikerült frissíteni a szobát!</string>
-    <string name="error_room_delete_failed">Nem sikerült törölni a szobát!</string>
-    <string name="error_device_info_failed">Nem sikerült lekérni az eszköz adatait.</string>
-    <string name="error_bluetooth_scan_failed">A Bluetooth keresés sikertelen volt.</string>
-    <string name="error_bluetooth_connect_failed">Nem sikerült Bluetooth kapcsolódni az eszközhöz.</string>
-    <string name="error_device_update_failed">Nem sikerült frissíteni az eszközt!</string>
-    <string name="error_device_update_room_failed">Nem sikerült frissíteni az eszköz szobáját!</string>
-    <string name="error_device_delete_failed">Nem sikerült törölni az eszközt!</string>
-    <string name="error_device_remove_self_failed">Nem sikerült eltávolítani a felhasználót az eszközről.</string>
-    <string name="error_device_contact_failed">Nem sikerült kapcsolatba lépni az eszközzel.</string>
-    <string name="error_users_fetch_failed">Nem sikerült lekérni a felhasználókat.</string>
-    <string name="error_user_role_update_failed">Hiba, nem sikerült a felhasználó szerepkörét frissíteni!</string>
-    <string name="error_user_delete_failed">Hiba történt a felhasználó törlése során!</string>
-    <string name="error_device_assign_user_failed">Nem sikerült a felhasználót az eszközhöz kapcsolni.</string>
-    <string name="error_user_device_unassign_failed">Nem sikerült eltávolítani a felhasználót az eszközről.</string>
-    <string name="error_unknown_error">Ismeretlen hiba történt.</string>
-    <string name="error_cannot_connect">Nem sikerült csatlakozni a szerverhez</string>
-    <string name="error_invalid_credentials">Helytelen felhasználónév vagy jelszó</string>
-    <string name="error_request_failed">A kérés meghiúsult</string>
-    <string name="error_empty_response">Üres válasz</string>
-    <string name="error_register_failed">A regisztráció meghiúsult</string>
-    <string name="error_logout_failed">A kijelentkezés meghiúsult</string>
-    <string name="logout_success">Sikeres kijelentkezés</string>
-    <string name="error_refresh_failed">A frissítés meghiúsult</string>
-
 </resources>

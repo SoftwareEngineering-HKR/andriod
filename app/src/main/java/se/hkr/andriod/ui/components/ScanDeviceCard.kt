@@ -16,14 +16,14 @@ import androidx.compose.ui.unit.dp
 import se.hkr.andriod.R
 import se.hkr.andriod.domain.model.device.Device
 import se.hkr.andriod.domain.model.device.DeviceType
-import se.hkr.andriod.ui.theme.ListItemBackground
+import se.hkr.andriod.ui.theme.ListItemBackgroundLight
 
 @Composable
 fun ScanDeviceCard(device: Device) {
     Card(
         shape = MaterialTheme.shapes.small,
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.ListItemBackground),
+        colors = CardDefaults.cardColors(containerColor = ListItemBackgroundLight),
     ) {
         Row(
             modifier = Modifier

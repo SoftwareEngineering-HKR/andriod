@@ -1,0 +1,69 @@
+@startuml
+
+package navigation {
+  class AppNavGraph
+  class Routes
+  class BottomNavItem
+}
+
+package ui.screens {
+  class LoginScreen
+  class SignUpScreen
+  class MainScreen
+  class SchedulesScreen
+}
+
+package ui.viewmodel {
+  class LoginViewModel
+  class SignUpViewModel
+  class SharedConnectionViewModel
+  class AuthViewModelFactory
+}
+
+package domain.model.device {
+  class Device
+  class Room
+  class DeviceState
+  class DeviceType
+}
+
+package domain.model.user {
+  class User
+  class Permission
+  class UserRole
+}
+
+package data.network {
+  class AuthService
+  class AuthSession
+  class ConnectionManager
+  class WebSocketManager
+  class DeviceStore
+  class RoomStore
+  class UserStore
+  class MessageRouter
+}
+
+AppNavGraph --> Routes
+AppNavGraph --> LoginScreen
+AppNavGraph --> SignUpScreen
+AppNavGraph --> MainScreen
+AppNavGraph --> SchedulesScreen
+
+AuthViewModelFactory --> LoginViewModel
+AuthViewModelFactory --> SignUpViewModel
+
+SharedConnectionViewModel --> ConnectionManager
+
+ConnectionManager --> WebSocketManager
+ConnectionManager --> MessageRouter
+
+Room --> Device
+User --> Permission
+User --> UserRole
+
+DeviceStore --> Device
+RoomStore --> Room
+UserStore --> User
+
+@enduml

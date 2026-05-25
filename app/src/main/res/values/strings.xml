@@ -216,7 +216,7 @@
     <string name="language">Language</string>
     <string name="choose_language">Choose language</string>
     <string name="save">Save</string>
-    <string name="saving">Saving...</string>
+    <string name="saving">Saving…</string>
     <string name="language_swedish_native">Svenska</string>
     <string name="language_swedish_display">Swedish</string>
     <string name="language_english_native">English</string>
@@ -224,7 +224,6 @@
     <string name="language_hungarian_native">Magyar</string>
     <string name="language_hungarian_display">Hungarian</string>
 
-<<<<<<< HEAD
     <!-- Schedules -->
     <string name="schedules_title">Schedules</string>
     <string name="add_schedule">Add Schedule</string>
@@ -233,7 +232,7 @@
     <string name="automate_devices">Automate your smart devices</string>
     <string name="active_schedules">Active Schedules</string>
     <string name="device_count">%1$d devices</string>
-=======
+
     <!-- Errors -->
     <string name="error_generic">An unexpected error occurred.</string>
     <string name="error_access_denied">You do not have access to this device.</string>
@@ -264,5 +263,4 @@
     <string name="logout_success">Logged out</string>
     <string name="error_refresh_failed">Refresh failed</string>
 
->>>>>>> main
 </resources>

@@ -139,6 +139,7 @@
     <string name="device_type_temperature">Hőmérséklet</string>
     <string name="device_type_tilt">Dőlés</string>
     <string name="device_value_percent">%d%%</string>
+    <string name="remove_device">Eszköz eltávolítása</string>
 
     <!-- Settings - Rooms -->
     <string name="rooms">Szobák</string>
